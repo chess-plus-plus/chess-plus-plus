@@ -1,5 +1,4 @@
 android {
-    buildToolsVersion "30.0.1"
     compileSdkVersion 30
     sourceSets {
         main {
@@ -14,11 +13,13 @@ android {
 
     }
     packagingOptions {
-        exclude 'META-INF/robovm/ios/robovm.xml'
+        resources {
+            excludes += ['META-INF/robovm/ios/robovm.xml']
+        }
     }
     defaultConfig {
         applicationId "com.chessplusplus"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -90,3 +91,4 @@ task run(type: Exec) {
 }
 
 eclipse.project.name = appName + "-android"
+apply plugin: 'com.google.gms.google-services'

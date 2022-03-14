@@ -8,9 +8,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class ChessPlusPlus extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
+	FireBaseInterface _FBIC;
+
+	public ChessPlusPlus(FireBaseInterface FBIC) {_FBIC = FBIC;}
 	
 	@Override
 	public void create () {
+		_FBIC.Status();
+		_FBIC.FirstFireBaseTest();
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
 	}
