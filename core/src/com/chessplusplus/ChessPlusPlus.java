@@ -12,10 +12,15 @@ import com.chessplusplus.game.Game;
 public class ChessPlusPlus extends ApplicationAdapter implements ApplicationListener, InputProcessor {
 	SpriteBatch batch;
 	Texture img;
+	FireBaseInterface _FBIC;
 	Game game;
+
+	public ChessPlusPlus(FireBaseInterface FBIC) {_FBIC = FBIC;}
 	
 	@Override
 	public void create () {
+		_FBIC.Status();
+		_FBIC.FirstFireBaseTest();
 		game = new Game();
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");

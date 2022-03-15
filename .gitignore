@@ -1,5 +1,7 @@
 ## Java
 
+android/google-services.json
+
 *.class
 *.war
 *.ear
