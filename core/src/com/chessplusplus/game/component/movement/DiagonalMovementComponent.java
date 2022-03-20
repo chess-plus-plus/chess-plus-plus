@@ -1,5 +1,10 @@
 package com.chessplusplus.game.component.movement;
 
+import com.chessplusplus.game.component.Position;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * DiagonalMovementComponent is used to represent movement along the diagonals
  * on the board.
@@ -36,6 +41,40 @@ public class DiagonalMovementComponent extends SimpleMovementComponent {
      */
     public static DiagonalMovementComponent unlimitedDiagonalMovement() {
         return new DiagonalMovementComponent(-1);
+    }
+
+    @Override
+    public List<Position> getPossibleMoves(Position piecePosition, int boardWidth, int boardHeight) {
+        List<Position> possibleMoves = new ArrayList<>();
+        // This algorithm for generating possible moves has a time-complexity of O(x*y) where
+        // x = board width and y = board height. This is inefficient, but for chess this is
+        // acceptable, since board is never going to be very large.
+
+        // Start by generating all possible positions on the board
+        List<Position> allPositions = new ArrayList<>();
+        for (int x = 0; x < boardWidth; x++) {
+            for (int y = 0; y < boardHeight; y++) {
+                Position position = new Position(x, y);
+                allPositions.add(position);
+            }
+        }
+
+        // Then we filter out potential positions according to 2 criteria:
+        // 1: The potential position should not be the same position as the piece
+        // 2; The difference between the potential position's and the piece position's
+        //      x and y values should be equal, since this indicates that the position
+        //      is diagonal to the piece's position
+        for (Position potentialPosition : allPositions) {
+            int xDiff = Math.abs(piecePosition.getX() - potentialPosition.getX());
+            int yDiff = Math.abs(piecePosition.getY() - potentialPosition.getY());
+
+            if (potentialPosition != piecePosition && xDiff == yDiff) {
+                possibleMoves.add(potentialPosition);
+            }
+        }
+
+        return possibleMoves;
+
     }
 
 }

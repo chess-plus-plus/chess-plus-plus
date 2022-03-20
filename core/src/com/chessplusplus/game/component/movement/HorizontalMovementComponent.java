@@ -1,5 +1,10 @@
 package com.chessplusplus.game.component.movement;
 
+import com.chessplusplus.game.component.Position;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * HorizontalMovementComponent is used to represent movement along the "x-axis"
  * on the board, aka sideways movement.
@@ -33,4 +38,36 @@ public class HorizontalMovementComponent extends SimpleMovementComponent {
         return new HorizontalMovementComponent(-1);
     }
 
+    @Override
+    public List<Position> getPossibleMoves(Position piecePosition, int boardWidth, int boardHeight) {
+        List<Position> possibleMoves = new ArrayList<>();
+
+        int rangeStart, rangeEnd; // Calculate range of possible y positions according to piece range
+        if (range == -1) { // Unlimited range just sets the range to equal the board size
+            rangeStart = 0;
+            rangeEnd = boardWidth;
+        } else { // Set range according to piece's position and range, then correct if range falls outside board
+            rangeStart = piecePosition.getX() - range;
+            if (rangeStart < 0) {
+                rangeStart = 0;
+            }
+
+            rangeEnd = piecePosition.getX() + range;
+            if (rangeEnd > boardWidth - 1) {
+                rangeStart = boardWidth - 1;
+            }
+        }
+
+        // Generate and add positions according to the range.
+        for (int i = rangeStart; i < rangeEnd; i++) {
+            Position position = new Position(i, piecePosition.getY());
+            // y is constant since this rule is for horizontal movement
+
+            if (!position.equals(piecePosition)) { // Filter out the position the piece is already in
+                possibleMoves.add(position);
+            }
+        }
+
+        return possibleMoves;
+    }
 }

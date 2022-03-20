@@ -1,7 +1,5 @@
 package com.chessplusplus.game.component.movement;
 
-import com.badlogic.ashley.core.Component;
-
 /**
  * A simple movement component is an abstract class that is used for all
  * movement components that can be characterised as a directional movement with a
@@ -12,7 +10,7 @@ import com.badlogic.ashley.core.Component;
  * squares in the given direction in one turn. For unlimited range, a value of
  * -1 is used instead.
  */
-public abstract class SimpleMovementComponent implements Component {
+public abstract class SimpleMovementComponent implements MovementComponent {
 
     public int range;
 
