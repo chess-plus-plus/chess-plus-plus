@@ -6,35 +6,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * VerticalMovementComponent is used to represent movement along the "y-axis"
- * on the board, aka upwards and downwards movement.
+ * HorizontalMovementRule is used to represent movement along the "x-axis"
+ * on the board, aka sideways movement.
  */
-public class VerticalMovementComponent extends SimpleMovementComponent {
+public class HorizontalMovementRule extends SimpleMovementRule {
 
-    public VerticalMovementComponent(int range) {
+    //TODO: Perhaps the default constructor should be private to reduce chance of us screwing it up
+    public HorizontalMovementRule(int range) {
         super(range);
     }
 
     /**
-     * Creates a movement component that gives the piece vertical movement
+     * Creates a movement rule that gives the piece horizontal movement
      * with a range of one square per turn.
      *
-     * In normal chess this is used by the King and the Pawns.
-     * @return HorizontalMovementComponent with range = 1.
+     * In normal chess this is used by the King.
+     * @return HorizontalMovementRule with range = 1.
      */
-    public static VerticalMovementComponent oneSquareVerticalMovement() {
-        return new VerticalMovementComponent(1);
+    public static HorizontalMovementRule oneSquareHorizontalMovement() {
+        return new HorizontalMovementRule(1);
     }
 
     /**
-     * Creates a movement component that gives the piece vertical movement
+     * Creates a movement rule that gives the piece horizontal movement
      * with an unlimited range per turn.
      *
      * In normal chess this is used by the Rook & the Queen.
-     * @return HorizontalMovementComponent with unlimited range.
+     * @return HorizontalMovementRule with unlimited range.
      */
-    public static VerticalMovementComponent unlimitedVerticalMovement() {
-        return new VerticalMovementComponent(-1);
+    public static HorizontalMovementRule unlimitedHorisontalMovement() {
+        return new HorizontalMovementRule(-1);
     }
 
     @Override
@@ -44,23 +45,23 @@ public class VerticalMovementComponent extends SimpleMovementComponent {
         int rangeStart, rangeEnd; // Calculate range of possible y positions according to piece range
         if (range == -1) { // Unlimited range just sets the range to equal the board size
             rangeStart = 0;
-            rangeEnd = boardHeight;
+            rangeEnd = boardWidth;
         } else { // Set range according to piece's position and range, then correct if range falls outside board
-            rangeStart = piecePosition.getY() - range;
+            rangeStart = piecePosition.getX() - range;
             if (rangeStart < 0) {
                 rangeStart = 0;
             }
 
-            rangeEnd = piecePosition.getY() + range;
-            if (rangeEnd > boardHeight - 1) {
-                rangeStart = boardHeight - 1;
+            rangeEnd = piecePosition.getX() + range;
+            if (rangeEnd > boardWidth - 1) {
+                rangeStart = boardWidth - 1;
             }
         }
 
         // Generate and add positions according to the range.
         for (int i = rangeStart; i < rangeEnd; i++) {
-            Position position = new Position(piecePosition.getX(), i);
-            // x is constant since this rule is for vertical movement
+            Position position = new Position(i, piecePosition.getY());
+            // y is constant since this rule is for horizontal movement
 
             if (!position.equals(piecePosition)) { // Filter out the position the piece is already in
                 possibleMoves.add(position);
@@ -69,5 +70,4 @@ public class VerticalMovementComponent extends SimpleMovementComponent {
 
         return possibleMoves;
     }
-
 }
