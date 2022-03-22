@@ -9,12 +9,8 @@ import com.chessplusplus.game.component.MovementComponent;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.component.PositionComponent;
 import com.chessplusplus.game.component.SizeComponent;
-import com.chessplusplus.game.component.movement.CurvingMovementRule;
-import com.chessplusplus.game.component.movement.DiagonalMovementRule;
-import com.chessplusplus.game.component.movement.HorizontalMovementRule;
-import com.chessplusplus.game.component.movement.VerticalMovementRule;
+import com.chessplusplus.game.component.StrikeComponent;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,11 +20,13 @@ public class MovementSystem extends EntitySystem {
     private Entity boardEntity;
     private HashMap<Entity, List<Position>> possibleMoves;
     private HashMap<Entity, List<Position>> legalMoves;  //TODO
+    private HashMap<Entity, List<Position>> possibleStrikes;
+    private HashMap<Entity, List<Position>> legalStrikes;  //TODO
 
     @Override
     public void addedToEngine(Engine engine) {
         Family pieces = Family
-                .all(PositionComponent.class, MovementComponent.class)
+                .all(PositionComponent.class, MovementComponent.class, StrikeComponent.class)
                 .get();
 
         this.pieces = engine.getEntitiesFor(pieces);
@@ -39,16 +37,26 @@ public class MovementSystem extends EntitySystem {
 
         this.boardEntity = engine.getEntitiesFor(board).first();
 
-        updatePossibleMoves();
+        SizeComponent boardSizeComponent = boardEntity.getComponent(SizeComponent.class);
+        updatePossibleMoves(boardSizeComponent.width, boardSizeComponent.height);
+        updatePossibleStrikes(boardSizeComponent.width, boardSizeComponent.height);
     }
 
-    private void updatePossibleMoves() {
+    private void updatePossibleMoves(int boardWidth, int boardHeight) {
         for (Entity piece : pieces) {
             //TODO: inefficient component getting
             Position piecePos = piece.getComponent(PositionComponent.class).position;
-            SizeComponent sizeComponent = boardEntity.getComponent(SizeComponent.class);
             List<Position> moves = piece.getComponent(MovementComponent.class)
-                    .getAllPossibleMoves(piecePos, sizeComponent.width, sizeComponent.height);
+                    .getAllPossibleMoves(piecePos, boardWidth, boardHeight);
+            possibleMoves.put(piece, moves);
+        }
+    }
+
+    private void updatePossibleStrikes(int boardWidth, int boardHeight) {
+        for (Entity piece : pieces) {
+            Position piecePos = piece.getComponent(PositionComponent.class).position;
+            List<Position> moves = piece.getComponent(MovementComponent.class)
+                    .getAllPossibleMoves(piecePos, boardWidth, boardHeight);
             possibleMoves.put(piece, moves);
         }
     }
@@ -56,7 +64,7 @@ public class MovementSystem extends EntitySystem {
     @Override
     public void update(float deltaTime) {
         // TODO
-        updatePossibleMoves();
+        // updatePossibleMoves();
     }
 
 }
