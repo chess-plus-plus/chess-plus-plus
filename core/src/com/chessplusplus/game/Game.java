@@ -2,7 +2,6 @@ package com.chessplusplus.game;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
-import com.chessplusplus.game.component.MovementComponent;
 import com.chessplusplus.game.component.PositionComponent;
 import com.chessplusplus.game.system.MovementSystem;
 
@@ -19,7 +18,7 @@ public class Game {
         engine.addEntity(piece);
 
         piece.add(new PositionComponent(3, 0));
-        piece.add(new MovementComponent(0, 1));
+        //piece.add(new MovementComponent(0, 1));
         MovementSystem movementSystem = new MovementSystem();
         engine.addSystem(movementSystem);
 
