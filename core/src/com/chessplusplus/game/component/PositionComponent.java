@@ -4,21 +4,22 @@ import com.badlogic.ashley.core.Component;
 
 public class PositionComponent implements Component {
 
-    public int x;
-    public int y;
+    public Position position;
 
     public PositionComponent(int x, int y) {
-        this.x = x;
-        this.y = y;
+        position = new Position(x, y);
+    }
+
+    public PositionComponent(Position position) {
+        this.position = position;
     }
 
     public PositionComponent() {
-        x = 0;
-        y = 0;
+        position = new Position(0, 0);
     }
 
     @Override
     public String toString() {
-        return "{x: " + x + ", y: " + y + "]";
+        return "{x: " + position.getX() + ", y: " + position.getY() + "]";
     }
 }
