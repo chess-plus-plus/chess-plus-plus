@@ -8,12 +8,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.chessplusplus.game.Game;
+import com.chessplusplus.game.views.BoardView;
 
 public class ChessPlusPlus extends ApplicationAdapter implements ApplicationListener, InputProcessor {
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 800;
+
 	SpriteBatch batch;
 	Texture img;
 	FireBaseInterface _FBIC;
 	Game game;
+	BoardView boardView;
 
 	public ChessPlusPlus(FireBaseInterface FBIC) {_FBIC = FBIC;}
 	
@@ -29,13 +34,15 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 		_FBIC.sendMove(gameID, "2 D6");
 
 		Gdx.input.setInputProcessor(this);
+
+		boardView = new BoardView(batch);
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
+		ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
 		batch.begin();
-		batch.draw(img, 0, 0);
+		boardView.render(Gdx.graphics.getDeltaTime());
 		batch.end();
 	}
 	
