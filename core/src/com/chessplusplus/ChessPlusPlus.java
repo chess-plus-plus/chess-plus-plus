@@ -27,7 +27,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 		String gameID = "example-game-123";
 		_FBIC.sendInitialState(gameID, "A3B4");
 		_FBIC.getGameUpdates(gameID);
-		game = new Game();
+		//game = new Game();
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
 		_FBIC.sendMove(gameID, "1 C5");
