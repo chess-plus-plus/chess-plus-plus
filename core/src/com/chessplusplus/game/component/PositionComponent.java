@@ -10,6 +10,10 @@ public class PositionComponent implements Component {
         position = new Position(x, y);
     }
 
+    public PositionComponent(Position position) {
+        this.position = position;
+    }
+
     public PositionComponent() {
         position = new Position(0, 0);
     }
