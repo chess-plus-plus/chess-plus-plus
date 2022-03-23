@@ -1,8 +1,8 @@
 package com.chessplusplus;
 
 public interface FireBaseInterface {
-    void Status();
-    void FirstFireBaseTest();
-    void SetOnValueChangedListener();
-    void SetValueInDb(String target, String value);
+    void getStatus();
+    void sendInitialState (String id, String state);
+    void sendMove (String id, String move);
+    void getGameUpdates (String id);
 }

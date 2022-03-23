@@ -4,22 +4,22 @@ import com.chessplusplus.FireBaseInterface;
 
 public class FirebaseDesktopInterface implements FireBaseInterface {
     @Override
-    public void Status() {
+    public void getStatus() {
         System.out.println("################## Starting in Desktop, Firebase not accessible.");
     }
 
     @Override
-    public void FirstFireBaseTest() {
+    public void sendInitialState(String id, String state) {
 
     }
 
     @Override
-    public void SetOnValueChangedListener() {
+    public void sendMove(String id, String move) {
 
     }
 
     @Override
-    public void SetValueInDb(String target, String value) {
+    public void getGameUpdates(String id) {
 
     }
 }
