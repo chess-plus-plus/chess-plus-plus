@@ -1,0 +1,19 @@
+{
+  BitmapFont: {
+    default-font: {
+      file: default.fnt
+    }
+  },
+  TextButtonStyle: {
+    default: {
+      down: default-round-down,
+      up: default-round,
+      font: default-font
+    },
+  },
+  WindowStyle: {
+    default: {
+      titleFont: default-font
+    }
+  }
+}

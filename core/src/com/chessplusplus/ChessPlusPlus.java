@@ -8,26 +8,41 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.chessplusplus.game.Game;
+import com.chessplusplus.game.views.BoardView;
 
 public class ChessPlusPlus extends ApplicationAdapter implements ApplicationListener, InputProcessor {
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 800;
+
 	SpriteBatch batch;
 	Texture img;
+	FireBaseInterface _FBIC;
 	Game game;
+	BoardView boardView;
+
+	public ChessPlusPlus(FireBaseInterface FBIC) {_FBIC = FBIC;}
 	
 	@Override
 	public void create () {
-		game = new Game();
+		String gameID = "example-game-123";
+		_FBIC.sendInitialState(gameID, "A3B4");
+		_FBIC.getGameUpdates(gameID);
+		//game = new Game();
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
+		_FBIC.sendMove(gameID, "1 C5");
+		_FBIC.sendMove(gameID, "2 D6");
 
 		Gdx.input.setInputProcessor(this);
+
+		boardView = new BoardView(batch);
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
+		ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
 		batch.begin();
-		batch.draw(img, 0, 0);
+		boardView.render(Gdx.graphics.getDeltaTime());
 		batch.end();
 	}
 	
