@@ -15,8 +15,10 @@ import com.chessplusplus.game.component.movement.VerticalMovementRule;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: Will likely be remodeled into a factory-esque class for easily creating piece entities.
-public class Piece {
+/**
+ * Creates chess piece Entities.
+ */
+public class PieceEntityFactory {
 
     /**
      * Creates a Pawn piece Entity in a given position.
