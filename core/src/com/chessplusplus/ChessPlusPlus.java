@@ -20,6 +20,8 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	Game game;
 	BoardView boardView;
 
+	ApplicationAdapter screen;
+
 	public ChessPlusPlus(FireBaseInterface FBIC) {_FBIC = FBIC;}
 	
 	@Override
@@ -28,33 +30,45 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 		_FBIC.sendInitialState(gameID, "A3B4");
 		_FBIC.getGameUpdates(gameID);
 		//game = new Game();
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		//batch = new SpriteBatch();
+		//img = new Texture("badlogic.jpg");
 		_FBIC.sendMove(gameID, "1 C5");
 		_FBIC.sendMove(gameID, "2 D6");
 
-		Gdx.input.setInputProcessor(this);
+		//Gdx.input.setInputProcessor(this);
 
 		boardView = new BoardView(batch);
+
+		//screen = new StartMenu(this);
+		//screen.create();
+		this.setScreen(new StartMenu(this));
+	}
+
+	public void setScreen(ApplicationAdapter applicationAdapter){
+		screen = applicationAdapter;
+		screen.create();
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
-		batch.begin();
-		boardView.render(Gdx.graphics.getDeltaTime());
-		batch.end();
+
+		screen.render();
+
+		//ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
+		//batch.begin();
+		//boardView.render(Gdx.graphics.getDeltaTime());
+		//batch.end();
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+		//batch.dispose();
+		//img.dispose();
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
-		game.update();
+		//game.update();
 		return false;
 	}
 
@@ -70,7 +84,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		game.update();
+		//game.update();
 		return false;
 	}
 

@@ -16,7 +16,7 @@ public class TestGame extends Game {
 
     @Override
     public void create() {
-        scene = new StartMenu();
+        //scene = new StartMenu();
         scene.create();
     }
 
