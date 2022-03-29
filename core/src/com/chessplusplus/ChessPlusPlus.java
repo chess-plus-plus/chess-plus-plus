@@ -51,19 +51,13 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	@Override
 	public void render () {
-
+		this.dispose();
 		screen.render();
-
-		//ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
-		//batch.begin();
-		//boardView.render(Gdx.graphics.getDeltaTime());
-		//batch.end();
 	}
 	
 	@Override
 	public void dispose () {
-		//batch.dispose();
-		//img.dispose();
+		screen.dispose();
 	}
 
 	@Override

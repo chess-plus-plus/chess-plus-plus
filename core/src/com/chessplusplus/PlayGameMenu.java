@@ -35,11 +35,25 @@ public class PlayGameMenu extends ApplicationAdapter {
         table.align(Align.center);
         table.setPosition(0, 0);
 
-        //final TextField titleField = new TextField("Play Game", skin, "default");
+        final TextField titleField = new TextField("Play Game", skin, "default");
+        titleField.setDisabled(true);
+        titleField.setAlignment(Align.center);
 
         final TextButton joinGameButton = new TextButton("Join Game", skin, "default");
+        joinGameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                chessPlusPlus.setScreen(new JoinGameMenu(chessPlusPlus));
+            }
+        });
 
         final TextButton hostGameButton = new TextButton("Host Game", skin, "default");
+        hostGameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                chessPlusPlus.setScreen(new HostGameMenu(chessPlusPlus));
+            }
+        });
 
         final TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
@@ -49,8 +63,8 @@ public class PlayGameMenu extends ApplicationAdapter {
             }
         });
 
-        //table.add(titleField).padBottom(30).width(stage.getWidth()/3);
-        //table.row();
+        table.add(titleField).padBottom(50).width(stage.getWidth()/3);
+        table.row();
         table.add(joinGameButton).padBottom(30).width(stage.getWidth()/3);
         table.row();
         table.add(hostGameButton).padBottom(30).width(stage.getWidth()/3);

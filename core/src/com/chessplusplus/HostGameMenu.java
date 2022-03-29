@@ -2,30 +2,30 @@ package com.chessplusplus;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class StartMenu extends ApplicationAdapter {
+public class HostGameMenu extends ApplicationAdapter {
 
     private ChessPlusPlus chessPlusPlus;
     private Stage stage;
     private Skin skin;
 
-    public StartMenu(ChessPlusPlus c){
+    public HostGameMenu(ChessPlusPlus c){
         chessPlusPlus = c;
     }
 
+    @Override
     public void create() {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         stage = new Stage(new ScreenViewport());
@@ -37,33 +37,43 @@ public class StartMenu extends ApplicationAdapter {
         table.align(Align.center);
         table.setPosition(0, 0);
 
-        final TextField titleField = new TextField("Start Menu", skin, "default");
+        final Dialog wrongPinDialog = new Dialog("Game cannot be created", skin, "default");
+
+        final TextField titleField = new TextField("Input game pin:", skin, "default");
         titleField.setDisabled(true);
         titleField.setAlignment(Align.center);
 
-        final TextButton playGameButton = new TextButton("Play Game", skin, "default");
-        playGameButton.addListener(new ClickListener() {
+        final TextField gamePinInput = new TextField("", skin, "default");
+
+        final TextButton startGameButton = new TextButton("Start Game", skin, "default");
+        startGameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                wrongPinDialog.show(stage);
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        wrongPinDialog.hide();
+                    }
+                }, 2);
+            }
+        });
+
+        final TextButton backButton = new TextButton("Back", skin);
+        backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
                 chessPlusPlus.setScreen(new PlayGameMenu(chessPlusPlus));
             }
         });
 
-        final TextButton tutorialButton = new TextButton("Tutorial", skin, "default");
-
-        final TextButton settingsButton = new TextButton("Settings", skin, "default");
-
-        final TextButton manualButton = new TextButton("Manual", skin, "default");
-
         table.add(titleField).padBottom(50).width(stage.getWidth()/3);
         table.row();
-        table.add(playGameButton).padBottom(30).width(stage.getWidth()/3);
+        table.add(gamePinInput).padBottom(30).width(stage.getWidth()/3);
         table.row();
-        table.add(tutorialButton).padBottom(30).width(stage.getWidth()/3);
+        table.add(startGameButton).padBottom(30).width(stage.getWidth()/3);
         table.row();
-        table.add(settingsButton).padBottom(30).width(stage.getWidth()/3);
-        table.row();
-        table.add(manualButton).padBottom(30).width(stage.getWidth()/3);
+        table.add(backButton).width(stage.getWidth()/3);
 
         stage.addActor(table);
 
