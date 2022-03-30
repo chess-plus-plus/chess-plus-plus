@@ -1,32 +1,29 @@
-package com.chessplusplus.Views;
+package com.chessplusplus.game.views;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.chessplusplus.ChessPlusPlus;
 
-public class JoinGameMenuView extends ApplicationAdapter {
+public class SettingsView extends ApplicationAdapter {
 
     private ChessPlusPlus chessPlusPlus;
     private Stage stage;
     private Skin skin;
 
-    public JoinGameMenuView(ChessPlusPlus c){
+    public SettingsView(ChessPlusPlus c){
         chessPlusPlus = c;
     }
 
-    @Override
     public void create() {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         stage = new Stage(new ScreenViewport());
@@ -38,40 +35,19 @@ public class JoinGameMenuView extends ApplicationAdapter {
         table.align(Align.center);
         table.setPosition(0, 0);
 
-        final Dialog wrongPinDialog = new Dialog("Game does not exist", skin, "default");
-
-        final TextField titleField = new TextField("Input game pin:", skin, "default");
+        final TextField titleField = new TextField("Settings", skin, "default");
         titleField.setDisabled(true);
         titleField.setAlignment(Align.center);
-        final TextField gamePinInput = new TextField("", skin, "default");
-
-        final TextButton startGameButton = new TextButton("Start Game", skin, "default");
-        startGameButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                wrongPinDialog.show(stage);
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        wrongPinDialog.hide();
-                    }
-                }, 2);
-            }
-        });
 
         final TextButton backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new PlayGameMenuView(chessPlusPlus));
+                chessPlusPlus.setScreen(new StartMenuView(chessPlusPlus));
             }
         });
 
         table.add(titleField).padBottom(50).width(stage.getWidth()/2);
-        table.row();
-        table.add(gamePinInput).padBottom(30).width(stage.getWidth()/2);
-        table.row();
-        table.add(startGameButton).padBottom(30).width(stage.getWidth()/2);
         table.row();
         table.add(backButton).width(stage.getWidth()/2);
 

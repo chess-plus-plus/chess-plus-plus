@@ -1,4 +1,4 @@
-package com.chessplusplus.Views;
+package com.chessplusplus.game.views;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -14,13 +14,13 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.chessplusplus.ChessPlusPlus;
 
-public class ManualView extends ApplicationAdapter {
+public class TutorialView extends ApplicationAdapter {
 
     private ChessPlusPlus chessPlusPlus;
     private Stage stage;
     private Skin skin;
 
-    public ManualView(ChessPlusPlus c){
+    public TutorialView(ChessPlusPlus c){
         chessPlusPlus = c;
     }
 
@@ -35,7 +35,7 @@ public class ManualView extends ApplicationAdapter {
         table.align(Align.center);
         table.setPosition(0, 0);
 
-        final TextField titleField = new TextField("Manual", skin, "default");
+        final TextField titleField = new TextField("Tutorial", skin, "default");
         titleField.setDisabled(true);
         titleField.setAlignment(Align.center);
 

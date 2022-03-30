@@ -5,7 +5,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.chessplusplus.Views.StartMenuView;
+import com.chessplusplus.game.views.StartMenuView;
 import com.chessplusplus.game.Game;
 import com.chessplusplus.game.views.BoardView;
 

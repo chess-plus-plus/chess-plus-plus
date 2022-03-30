@@ -1,4 +1,4 @@
-package com.chessplusplus.Views;
+package com.chessplusplus.game.views;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -14,17 +14,16 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.chessplusplus.ChessPlusPlus;
 
-public class PlayGameMenuView extends ApplicationAdapter {
+public class StartMenuView extends ApplicationAdapter {
 
     private ChessPlusPlus chessPlusPlus;
     private Stage stage;
     private Skin skin;
 
-    public PlayGameMenuView(ChessPlusPlus c){
+    public StartMenuView(ChessPlusPlus c){
         chessPlusPlus = c;
     }
 
-    @Override
     public void create() {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         stage = new Stage(new ScreenViewport());
@@ -36,41 +35,51 @@ public class PlayGameMenuView extends ApplicationAdapter {
         table.align(Align.center);
         table.setPosition(0, 0);
 
-        final TextField titleField = new TextField("Play Game", skin, "default");
+        final TextField titleField = new TextField("Start Menu", skin, "default");
         titleField.setDisabled(true);
         titleField.setAlignment(Align.center);
 
-        final TextButton joinGameButton = new TextButton("Join Game", skin, "default");
-        joinGameButton.addListener(new ClickListener() {
+        final TextButton playGameButton = new TextButton("Play Game", skin, "default");
+        playGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new JoinGameMenuView(chessPlusPlus));
+                chessPlusPlus.setScreen(new PlayGameMenuView(chessPlusPlus));
             }
         });
 
-        final TextButton hostGameButton = new TextButton("Host Game", skin, "default");
-        hostGameButton.addListener(new ClickListener() {
+        final TextButton tutorialButton = new TextButton("Tutorial", skin, "default");
+        tutorialButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new HostGameMenuView(chessPlusPlus));
+                chessPlusPlus.setScreen(new TutorialView(chessPlusPlus));
             }
         });
 
-        final TextButton backButton = new TextButton("Back", skin);
-        backButton.addListener(new ClickListener() {
+        final TextButton settingsButton = new TextButton("Settings", skin, "default");
+        settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new StartMenuView(chessPlusPlus));
+                chessPlusPlus.setScreen(new SettingsView(chessPlusPlus));
+            }
+        });
+
+        final TextButton manualButton = new TextButton("Manual", skin, "default");
+        manualButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                chessPlusPlus.setScreen(new ManualView(chessPlusPlus));
             }
         });
 
         table.add(titleField).padBottom(50).width(stage.getWidth()/2);
         table.row();
-        table.add(joinGameButton).padBottom(30).width(stage.getWidth()/2);
+        table.add(playGameButton).padBottom(30).width(stage.getWidth()/2);
         table.row();
-        table.add(hostGameButton).padBottom(30).width(stage.getWidth()/2);
+        table.add(tutorialButton).padBottom(30).width(stage.getWidth()/2);
         table.row();
-        table.add(backButton).width(stage.getWidth()/2);
+        table.add(settingsButton).padBottom(30).width(stage.getWidth()/2);
+        table.row();
+        table.add(manualButton).padBottom(30).width(stage.getWidth()/2);
 
         stage.addActor(table);
 
