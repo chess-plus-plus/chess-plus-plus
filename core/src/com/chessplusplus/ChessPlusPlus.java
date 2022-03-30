@@ -32,6 +32,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 		img = new Texture("badlogic.jpg");
 		_FBIC.sendMove(gameID, "1 C5");
 		_FBIC.sendMove(gameID, "2 D6");
+		_FBIC.getStatus();
 
 		Gdx.input.setInputProcessor(this);
 
