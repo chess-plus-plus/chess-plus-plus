@@ -4,7 +4,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -20,16 +19,16 @@ public class BoardView implements Screen {
     private boolean playerIsWhite = true;
     private int spriteSize = 70;
 
-    ArrayList<TextureRegion> textures = new ArrayList<>();
+    ArrayList<Texture> textures = new ArrayList<>();
 
     public BoardView(SpriteBatch sb) {
         batch = sb;
-        textures.add(new TextureRegion(new Texture("pieces/white/king.png")));
-        textures.add(new TextureRegion(new Texture("pieces/white/queen.png")));
-        textures.add(new TextureRegion(new Texture("pieces/white/bishop.png")));
-        textures.add(new TextureRegion(new Texture("pieces/white/knight.png")));
-        textures.add(new TextureRegion(new Texture("pieces/white/rook.png")));
-        textures.add(new TextureRegion(new Texture("pieces/white/pawn.png")));
+        textures.add(new Texture("pieces/white/king.png"));
+        textures.add(new Texture("pieces/white/queen.png"));
+        textures.add(new Texture("pieces/white/bishop.png"));
+        textures.add(new Texture("pieces/white/knight.png"));
+        textures.add(new Texture("pieces/white/rook.png"));
+        textures.add(new Texture("pieces/white/pawn.png"));
 
     }
 
@@ -57,7 +56,7 @@ public class BoardView implements Screen {
 
         //Loops through the squares and colors squares with opposite color of initial color
         pixmap.setColor(playerIsWhite ? whiteColor : blackColor);
-        int xStart = 0;
+        int xStart;
         for (int y = 0; y < boardDimension; y++) {
             xStart = (y % 2 == 0 ? 0 : 1);
             for (int x = xStart; x < boardDimension; x += 2) {
@@ -88,7 +87,7 @@ public class BoardView implements Screen {
     /*Renders a single piece.
     * x and y params represents coordinates on the board, on which the piece will be rendered on, starting from index 0
     * (0, 1, 2, ....)*/
-    private void renderPiece(TextureRegion sprite, int x, int y) {
+    private void renderPiece(Texture sprite, int x, int y) {
         float xOffset = squareSize - spriteSize;
         xOffset /= 2;
         batch.draw(sprite, x * squareSize + xOffset, y*squareSize, spriteSize, spriteSize);
@@ -116,6 +115,8 @@ public class BoardView implements Screen {
 
     @Override
     public void dispose() {
-
+        for (Texture text: textures) {
+            text.dispose();
+        }
     }
 }
