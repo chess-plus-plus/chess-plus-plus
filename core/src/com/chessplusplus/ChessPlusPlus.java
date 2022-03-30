@@ -2,11 +2,10 @@ package com.chessplusplus;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.chessplusplus.Views.StartMenuView;
 import com.chessplusplus.game.Game;
 import com.chessplusplus.game.views.BoardView;
 
@@ -19,7 +18,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	FireBaseInterface _FBIC;
 	Game game;
 	BoardView boardView;
-
 	ApplicationAdapter screen;
 
 	public ChessPlusPlus(FireBaseInterface FBIC) {_FBIC = FBIC;}
@@ -41,7 +39,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 		//screen = new StartMenu(this);
 		//screen.create();
-		this.setScreen(new StartMenu(this));
+		this.setScreen(new StartMenuView(this));
 	}
 
 	public void setScreen(ApplicationAdapter applicationAdapter){
@@ -51,7 +49,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	@Override
 	public void render () {
-		this.dispose();
+		dispose();
 		screen.render();
 	}
 	

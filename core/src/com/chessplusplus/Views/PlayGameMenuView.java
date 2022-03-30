@@ -1,4 +1,4 @@
-package com.chessplusplus;
+package com.chessplusplus.Views;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -12,14 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.chessplusplus.ChessPlusPlus;
 
-public class PlayGameMenu extends ApplicationAdapter {
+public class PlayGameMenuView extends ApplicationAdapter {
 
     private ChessPlusPlus chessPlusPlus;
     private Stage stage;
     private Skin skin;
 
-    public PlayGameMenu(ChessPlusPlus c){
+    public PlayGameMenuView(ChessPlusPlus c){
         chessPlusPlus = c;
     }
 
@@ -43,7 +44,7 @@ public class PlayGameMenu extends ApplicationAdapter {
         joinGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new JoinGameMenu(chessPlusPlus));
+                chessPlusPlus.setScreen(new JoinGameMenuView(chessPlusPlus));
             }
         });
 
@@ -51,7 +52,7 @@ public class PlayGameMenu extends ApplicationAdapter {
         hostGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new HostGameMenu(chessPlusPlus));
+                chessPlusPlus.setScreen(new HostGameMenuView(chessPlusPlus));
             }
         });
 
@@ -59,17 +60,17 @@ public class PlayGameMenu extends ApplicationAdapter {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new StartMenu(chessPlusPlus));
+                chessPlusPlus.setScreen(new StartMenuView(chessPlusPlus));
             }
         });
 
-        table.add(titleField).padBottom(50).width(stage.getWidth()/3);
+        table.add(titleField).padBottom(50).width(stage.getWidth()/2);
         table.row();
-        table.add(joinGameButton).padBottom(30).width(stage.getWidth()/3);
+        table.add(joinGameButton).padBottom(30).width(stage.getWidth()/2);
         table.row();
-        table.add(hostGameButton).padBottom(30).width(stage.getWidth()/3);
+        table.add(hostGameButton).padBottom(30).width(stage.getWidth()/2);
         table.row();
-        table.add(backButton).width(stage.getWidth()/3);
+        table.add(backButton).width(stage.getWidth()/2);
 
         stage.addActor(table);
 
