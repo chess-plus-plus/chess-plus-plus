@@ -2,11 +2,10 @@ package com.chessplusplus;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.chessplusplus.game.views.StartMenuView;
 import com.chessplusplus.game.Game;
 import com.chessplusplus.game.views.BoardView;
 
@@ -19,6 +18,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	FireBaseInterface _FBIC;
 	Game game;
 	BoardView boardView;
+	ApplicationAdapter screen;
 
 	public ChessPlusPlus(FireBaseInterface FBIC) {_FBIC = FBIC;}
 	
@@ -28,34 +28,40 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 		_FBIC.sendInitialState(gameID, "A3B4");
 		_FBIC.getGameUpdates(gameID);
 		//game = new Game();
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		//batch = new SpriteBatch();
+		//img = new Texture("badlogic.jpg");
 		_FBIC.sendMove(gameID, "1 C5");
 		_FBIC.sendMove(gameID, "2 D6");
 		_FBIC.getStatus();
 
-		Gdx.input.setInputProcessor(this);
+		//Gdx.input.setInputProcessor(this);
 
 		boardView = new BoardView(batch);
+
+		//screen = new StartMenu(this);
+		//screen.create();
+		this.setScreen(new StartMenuView(this));
+	}
+
+	public void setScreen(ApplicationAdapter applicationAdapter){
+		screen = applicationAdapter;
+		screen.create();
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
-		batch.begin();
-		boardView.render(Gdx.graphics.getDeltaTime());
-		batch.end();
+		dispose();
+		screen.render();
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+		screen.dispose();
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
-		game.update();
+		//game.update();
 		return false;
 	}
 
@@ -71,7 +77,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		game.update();
+		//game.update();
 		return false;
 	}
 
