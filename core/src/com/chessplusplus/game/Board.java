@@ -1,16 +1,18 @@
 package com.chessplusplus.game;
 
-import com.badlogic.ashley.core.Entity;
+import com.chessplusplus.game.component.Position;
 
 import java.util.List;
 
 public interface Board {
 
-    public int getHeight();
+    int getHeight();
 
-    public int getWidth();
+    int getWidth();
 
-    public Entity getPiece(int x, int y);
+    Piece getPiece(Position position);
 
-    public List<Entity> getPieces();
+    Piece getPiece(int x, int y);
+
+    List<Piece> getPieces();
 }

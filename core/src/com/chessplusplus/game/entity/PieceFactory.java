@@ -1,11 +1,8 @@
 package com.chessplusplus.game.entity;
 
 
-import com.badlogic.ashley.core.Entity;
-import com.chessplusplus.game.component.MovementComponent;
+import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.component.Position;
-import com.chessplusplus.game.component.PositionComponent;
-import com.chessplusplus.game.component.StrikeComponent;
 import com.chessplusplus.game.component.movement.CurvingMovementRule;
 import com.chessplusplus.game.component.movement.DiagonalMovementRule;
 import com.chessplusplus.game.component.movement.HorizontalMovementRule;
@@ -16,17 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Creates chess piece Entities.
+ * Creates chess pieces.
  */
-public class PieceEntityFactory {
+public class PieceFactory {
 
     /**
-     * Creates a Pawn piece Entity in a given position.
+     * Creates a Pawn piece object in a given position.
      *
      * @param position Position of the piece.
-     * @return New Pawn piece Entity.
+     * @return New Pawn piece object
      */
-    public static Entity createPawn(Position position) {
+    public static Piece createPawn(Position position) {
         List<MovementRule> movementRules = new ArrayList<>();
         List<MovementRule> strikeRules = new ArrayList<>();
         movementRules.add(VerticalMovementRule.oneSquareVerticalMovement());
@@ -41,12 +38,12 @@ public class PieceEntityFactory {
     }
 
     /**
-     * Creates a Bishop piece Entity in a given position.
+     * Creates a Bishop piece object in a given position.
      *
      * @param position Position of the piece.
-     * @return New Bishop piece Entity.
+     * @return New Bishop piece object
      */
-    public static Entity createBishop(Position position) {
+    public static Piece createBishop(Position position) {
         List<MovementRule> movementRules = new ArrayList<>();
         movementRules.add(DiagonalMovementRule.unlimitedDiagonalMovement());
 
@@ -54,12 +51,12 @@ public class PieceEntityFactory {
     }
 
     /**
-     * Creates a Knight (horse) piece Entity in a given position.
+     * Creates a Knight (horse) piece object in a given position.
      *
      * @param position Position of the piece.
-     * @return New Knight piece Entity.
+     * @return New Knight piece object.
      */
-    public static Entity createKnight(Position position) {
+    public static Piece createKnight(Position position) {
         List<MovementRule> movementRules = new ArrayList<>();
         movementRules.add(CurvingMovementRule.standardKnightMovement());
 
@@ -67,12 +64,12 @@ public class PieceEntityFactory {
     }
 
     /**
-     * Creates a Rook piece Entity in a given position.
+     * Creates a Rook piece object in a given position.
      *
      * @param position Position of the piece.
-     * @return New Rook piece Entity.
+     * @return New Rook piece object
      */
-    public static Entity createRook(Position position) {
+    public static Piece createRook(Position position) {
         List<MovementRule> movementRules = new ArrayList<>();
         movementRules.add(HorizontalMovementRule.unlimitedHorisontalMovement());
         movementRules.add(VerticalMovementRule.unlimitedVerticalMovement());
@@ -82,12 +79,12 @@ public class PieceEntityFactory {
     }
 
     /**
-     * Creates a Queen piece Entity in a given position.
+     * Creates a Queen piece object in a given position.
      *
      * @param position Position of the piece.
-     * @return New Queen piece Entity.
+     * @return New Queen piece object
      */
-    public static Entity createQueen(Position position) {
+    public static Piece createQueen(Position position) {
         List<MovementRule> movementRules = new ArrayList<>();
         movementRules.add(HorizontalMovementRule.unlimitedHorisontalMovement());
         movementRules.add(VerticalMovementRule.unlimitedVerticalMovement());
@@ -97,12 +94,12 @@ public class PieceEntityFactory {
     }
 
     /**
-     * Creates a King piece Entity in a given position.
+     * Creates a King piece object in a given position.
      *
      * @param position Position of the piece.
-     * @return New King piece Entity.
+     * @return New King piece object
      */
-    public static Entity createKing(Position position) {
+    public static Piece createKing(Position position) {
         List<MovementRule> movementRules = new ArrayList<>();
         movementRules.add(HorizontalMovementRule.oneSquareHorizontalMovement());
         movementRules.add(VerticalMovementRule.oneSquareVerticalMovement());
@@ -113,31 +110,28 @@ public class PieceEntityFactory {
     }
 
     /**
-     * Creates a piece Entity where the strike and movement rules are identical.
+     * Creates a piece object where the strike and movement rules are identical.
      * Strike rules are copied from movement rules, so they can be differentiated later.
      *
      * @param position      Position of the piece.
      * @param movementRules List of all movement rules.
-     * @return Piece Entity.
+     * @return Piece object
      */
-    private static Entity createSimplePiece(Position position, List<MovementRule> movementRules) {
+    private static Piece createSimplePiece(Position position, List<MovementRule> movementRules) {
         return createPiece(position, movementRules, new ArrayList<>(movementRules));
     }
 
     /**
-     * Creates a piece Entity from a position, a list of movement rules and a list of strike rules.
+     * Creates a piece object from a position, a list of movement rules and a list of strike rules.
      *
      * @param position      Position of the piece.
      * @param movementRules List of all movement rules.
      * @param strikeRules   List of all strike rules.
-     * @return Piece Entity.
+     * @return Piece object
      */
-    private static Entity createPiece(Position position, List<MovementRule> movementRules,
-                                      List<MovementRule> strikeRules) {
-        return new Entity()
-                .add(new PositionComponent(position))
-                .add(new MovementComponent(movementRules))
-                .add(new StrikeComponent(strikeRules));
+    private static Piece createPiece(Position position, List<MovementRule> movementRules,
+                                     List<MovementRule> strikeRules) {
+        return new Piece(position, movementRules, strikeRules);
     }
 
 }
