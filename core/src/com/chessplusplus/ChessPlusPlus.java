@@ -24,7 +24,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	
 	@Override
 	public void create () {
-		String gameID = "example-game-123";
+		String gameID = _FBIC.createGameID();
 		_FBIC.sendInitialState(gameID, "A3B4");
 		_FBIC.getGameUpdates(gameID);
 		//game = new Game();

@@ -73,4 +73,10 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
             }
         });
     }
+
+    @Override
+    public String createGameID() {
+        String key = dataRef.push().getKey();
+        return key;
+    }
 }
