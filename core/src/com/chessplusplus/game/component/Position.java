@@ -26,4 +26,11 @@ public class Position {
         return x == position.x && y == position.y;
     }
 
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
