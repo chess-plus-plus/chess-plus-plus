@@ -58,7 +58,7 @@ public class VerticalMovementRule extends SimpleMovementRule {
         }
 
         // Generate and add positions according to the range.
-        for (int i = rangeStart; i < rangeEnd; i++) {
+        for (int i = rangeStart; i <= rangeEnd; i++) {
             Position position = new Position(piecePosition.getX(), i);
             // x is constant since this rule is for vertical movement
 
