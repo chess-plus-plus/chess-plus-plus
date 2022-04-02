@@ -1,46 +1,28 @@
 package com.chessplusplus.game;
 
 import com.chessplusplus.game.component.Position;
-import com.chessplusplus.game.component.movement.MovementRule;
+import com.chessplusplus.game.component.movement.MovementRuleSet;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Piece {
 
-    Position position;
-    List<MovementRule> movementRules;
-    List<MovementRule> strikeRules;
+    private Position position;
+    private MovementRuleSet movementRuleSet;
 
-    public Piece(Position position, List<MovementRule> movementRules, List<MovementRule> strikeRules) {
+    int xp = 0;
+
+    public Piece(Position position, MovementRuleSet movementRuleSet) {
         this.position = position;
-        this.movementRules = movementRules;
-        this.strikeRules = strikeRules;
+        this.movementRuleSet = movementRuleSet;
     }
 
-    /**
-     * Utility method that generates all possible moves arising from the movement rules.
-     *
-     * @param piecePosition The position of the piece.
-     * @param boardWidth    Width of game board.
-     * @param boardHeight   Height of game board.
-     * @return All possible moves this movement rule implies.
-     */
-    public List<Position> getAllPossibleMoves(Position piecePosition, int boardWidth, int boardHeight) {
-        List<Position> possibleMoves = new ArrayList<>();
+    public Position getPosition() {
+        return position;
+    }
 
-        for (MovementRule movementRule : movementRules) {
-            List<Position> ruleMoves = movementRule.getPossibleMoves(piecePosition, boardWidth, boardHeight);
-
-            // Make sure to only add positions that haven't already been added to the set.
-            for (Position position : ruleMoves) {
-                if (!possibleMoves.contains(position)) {
-                    possibleMoves.add(position);
-                }
-            }
-        }
-
-        return possibleMoves;
+    public List<Position> getLegalMoves(int boardWidth, int boardHeight) {
+        return movementRuleSet.getLegalMoves(position, boardWidth, boardHeight);
     }
 
 }

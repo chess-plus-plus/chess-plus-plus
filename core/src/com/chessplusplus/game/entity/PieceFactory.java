@@ -5,8 +5,11 @@ import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.component.movement.CurvingMovementRule;
 import com.chessplusplus.game.component.movement.DiagonalMovementRule;
+import com.chessplusplus.game.component.movement.DirectionalMovementRestriction;
 import com.chessplusplus.game.component.movement.HorizontalMovementRule;
+import com.chessplusplus.game.component.movement.MovementRestriction;
 import com.chessplusplus.game.component.movement.MovementRule;
+import com.chessplusplus.game.component.movement.MovementRuleSet;
 import com.chessplusplus.game.component.movement.VerticalMovementRule;
 
 import java.util.ArrayList;
@@ -23,18 +26,22 @@ public class PieceFactory {
      * @param position Position of the piece.
      * @return New Pawn piece object
      */
-    public static Piece createPawn(Position position) {
+    public static Piece createPawn(Position position, int dirFilterY) {
         List<MovementRule> movementRules = new ArrayList<>();
-        List<MovementRule> strikeRules = new ArrayList<>();
         movementRules.add(VerticalMovementRule.oneSquareVerticalMovement());
+
+        List<MovementRule> strikeRules = new ArrayList<>();
         strikeRules.add(DiagonalMovementRule.oneSquareDiagonalMovement());
+
+        List<MovementRestriction> restrictions = new ArrayList<>();
+        restrictions.add(new DirectionalMovementRestriction(0, dirFilterY));
         //TODO: Needs special rules:
         // 1: Promotion
-        // 2: Directional movement
         // 3: Double move on first move
         // 4: En passant
 
-        return createPiece(position, movementRules, strikeRules);
+        MovementRuleSet ruleSet = new MovementRuleSet(movementRules, restrictions, strikeRules);
+        return new Piece(position, ruleSet);
     }
 
     /**
@@ -47,7 +54,7 @@ public class PieceFactory {
         List<MovementRule> movementRules = new ArrayList<>();
         movementRules.add(DiagonalMovementRule.unlimitedDiagonalMovement());
 
-        return createSimplePiece(position, movementRules);
+        return new Piece(position, new MovementRuleSet(movementRules));
     }
 
     /**
@@ -60,7 +67,7 @@ public class PieceFactory {
         List<MovementRule> movementRules = new ArrayList<>();
         movementRules.add(CurvingMovementRule.standardKnightMovement());
 
-        return createSimplePiece(position, movementRules);
+        return new Piece(position, new MovementRuleSet(movementRules));
     }
 
     /**
@@ -75,7 +82,7 @@ public class PieceFactory {
         movementRules.add(VerticalMovementRule.unlimitedVerticalMovement());
 
         //TODO: Needs to support castling
-        return createSimplePiece(position, movementRules);
+        return new Piece(position, new MovementRuleSet(movementRules));
     }
 
     /**
@@ -90,7 +97,7 @@ public class PieceFactory {
         movementRules.add(VerticalMovementRule.unlimitedVerticalMovement());
         movementRules.add(DiagonalMovementRule.unlimitedDiagonalMovement());
 
-        return createSimplePiece(position, movementRules);
+        return new Piece(position, new MovementRuleSet(movementRules));
     }
 
     /**
@@ -106,32 +113,7 @@ public class PieceFactory {
         movementRules.add(DiagonalMovementRule.oneSquareDiagonalMovement());
 
         //TODO: Needs to support castling
-        return createSimplePiece(position, movementRules);
-    }
-
-    /**
-     * Creates a piece object where the strike and movement rules are identical.
-     * Strike rules are copied from movement rules, so they can be differentiated later.
-     *
-     * @param position      Position of the piece.
-     * @param movementRules List of all movement rules.
-     * @return Piece object
-     */
-    private static Piece createSimplePiece(Position position, List<MovementRule> movementRules) {
-        return createPiece(position, movementRules, new ArrayList<>(movementRules));
-    }
-
-    /**
-     * Creates a piece object from a position, a list of movement rules and a list of strike rules.
-     *
-     * @param position      Position of the piece.
-     * @param movementRules List of all movement rules.
-     * @param strikeRules   List of all strike rules.
-     * @return Piece object
-     */
-    private static Piece createPiece(Position position, List<MovementRule> movementRules,
-                                     List<MovementRule> strikeRules) {
-        return new Piece(position, movementRules, strikeRules);
+        return new Piece(position, new MovementRuleSet(movementRules));
     }
 
 }

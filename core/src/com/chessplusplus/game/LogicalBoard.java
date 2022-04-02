@@ -14,7 +14,7 @@ public class LogicalBoard implements Board {
 
     public LogicalBoard(List<Piece> pieces, int boardWidth, int boardHeight) {
         for (Piece piece : pieces) {
-            board.put(piece.position, piece);
+            board.put(piece.getPosition(), piece);
         }
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
