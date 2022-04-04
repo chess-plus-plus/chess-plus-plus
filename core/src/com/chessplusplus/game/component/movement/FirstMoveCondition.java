@@ -12,7 +12,7 @@ public class FirstMoveCondition implements GameCondition {
 
     @Override
     public boolean checkCondition(Piece piece, Board board) {
-        return piece.getXp() == 0;
+        return piece.getMoves() == 0;
     }
 
 }

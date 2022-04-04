@@ -18,6 +18,14 @@ public class Position {
         return y;
     }
 
+    public Position adjacentLeftPosition() {
+        return new Position(x-1, y);
+    }
+
+    public Position adjacentRightPosition() {
+        return new Position(x+1, y);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

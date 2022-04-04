@@ -7,6 +7,7 @@ import com.chessplusplus.game.component.movement.ConditionalMove;
 import com.chessplusplus.game.component.movement.CurvingMovementRule;
 import com.chessplusplus.game.component.movement.DiagonalMovementRule;
 import com.chessplusplus.game.component.movement.DirectionalMovementRestriction;
+import com.chessplusplus.game.component.movement.EnPassantCondition;
 import com.chessplusplus.game.component.movement.FirstMoveCondition;
 import com.chessplusplus.game.component.movement.HorizontalMovementRule;
 import com.chessplusplus.game.component.movement.MovementRestriction;
@@ -39,14 +40,19 @@ public class PieceFactory {
         restrictions.add(new DirectionalMovementRestriction(0, dirFilterY));
 
         List<ConditionalMove> conditionalMoves = new ArrayList<>();
-        conditionalMoves.add(new ConditionalMove(new FirstMoveCondition(), new VerticalMovementRule(2)));
+        conditionalMoves.add(new ConditionalMove(
+                new FirstMoveCondition(), new VerticalMovementRule(2)));
+
+        List<ConditionalMove> conditionalStrikes = new ArrayList<>();
+        conditionalStrikes.add(new ConditionalMove(
+                new EnPassantCondition(), DiagonalMovementRule.oneSquareDiagonalMovement()));
 
         //TODO: Needs special rules:
         // 1: Promotion
-        // 4: En passant
         MovementRuleSet ruleSet = new MovementRuleSet.Builder(movementRules, strikeRules)
-                .movementRestrictions(restrictions)
                 .conditionalMoves(conditionalMoves)
+                .movementRestrictions(restrictions)
+                .conditionalStrikes(conditionalStrikes)
                 .strikeRestrictions(restrictions)
                 .build();
         return new Piece(position, ruleSet);
