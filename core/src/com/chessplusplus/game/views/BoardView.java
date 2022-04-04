@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import java.util.ArrayList;
+
 public class BoardView implements Screen {
 
     private SpriteBatch batch;
@@ -18,8 +20,17 @@ public class BoardView implements Screen {
     private boolean playerIsWhite = true;
     private int spriteSize = 70;
 
+    ArrayList<TextureRegion> textures = new ArrayList<>();
+
     public BoardView(SpriteBatch sb) {
         batch = sb;
+        textures.add(new TextureRegion(new Texture("pieces/white/king.png")));
+        textures.add(new TextureRegion(new Texture("pieces/white/queen.png")));
+        textures.add(new TextureRegion(new Texture("pieces/white/bishop.png")));
+        textures.add(new TextureRegion(new Texture("pieces/white/knight.png")));
+        textures.add(new TextureRegion(new Texture("pieces/white/rook.png")));
+        textures.add(new TextureRegion(new Texture("pieces/white/pawn.png")));
+
     }
 
     @Override
@@ -59,17 +70,17 @@ public class BoardView implements Screen {
         TextureRegion boardTextureRegion = new TextureRegion(boardTexture,0,0,boardSize,boardSize);
         batch.draw(boardTextureRegion,0,0);
 
-        renderPiece(new TextureRegion(new Texture("pieces/white/king.png")), 4, 0);
-        renderPiece(new TextureRegion(new Texture("pieces/white/queen.png")), 3, 0);
-        renderPiece(new TextureRegion(new Texture("pieces/white/bishop.png")), 2, 0);
-        renderPiece(new TextureRegion(new Texture("pieces/white/bishop.png")), 5, 0);
-        renderPiece(new TextureRegion(new Texture("pieces/white/knight.png")), 1, 0);
-        renderPiece(new TextureRegion(new Texture("pieces/white/knight.png")), 6, 0);
-        renderPiece(new TextureRegion(new Texture("pieces/white/rook.png")), 0, 0);
-        renderPiece(new TextureRegion(new Texture("pieces/white/rook.png")), 7, 0);
+        renderPiece(textures.get(0), 4, 0);
+        renderPiece(textures.get(1), 3, 0);
+        renderPiece(textures.get(2), 2, 0);
+        renderPiece(textures.get(2), 5, 0);
+        renderPiece(textures.get(3), 1, 0);
+        renderPiece(textures.get(3), 6, 0);
+        renderPiece(textures.get(4), 0, 0);
+        renderPiece(textures.get(4), 7, 0);
 
         for (int i = 0; i < boardDimension; i++) {
-            renderPiece(new TextureRegion(new Texture("pieces/white/pawn.png")), i, 1);
+            renderPiece(textures.get(5), i, 1);
         }
 
     }
