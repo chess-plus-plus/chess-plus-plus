@@ -13,31 +13,20 @@ import java.util.List;
 public class MovementRuleSet {
 
     private List<MovementRule> movementRules;
+    private List<ConditionalMove> conditionalMoves;
     private List<MovementRestriction> movementRestrictions;
 
-
     private List<MovementRule> strikeRules;
+    private List<ConditionalMove> conditionalStrikes;
+    private List<MovementRestriction> strikeRestrictions;
 
-    public MovementRuleSet(List<MovementRule> movementRules,
-                           List<MovementRestriction> movementRestrictions,
-                           List<MovementRule> strikeRules) {
-        this.movementRules = movementRules;
-        this.movementRestrictions = movementRestrictions;
-        this.strikeRules = strikeRules;
-    }
-
-    /**
-     * Creates a MovementRuleSet with no movement restrictions.
-     */
-    public MovementRuleSet(List<MovementRule> movementRules, List<MovementRule> strikeRules) {
-        this(movementRules, new ArrayList<>(), strikeRules);
-    }
-
-    /**
-     * Creates a MovementRuleSet where the movement and strike rules are identical.
-     */
-    public MovementRuleSet(List<MovementRule> movementRules) {
-        this(movementRules, new ArrayList<>(movementRules));
+    public MovementRuleSet(Builder builder) {
+        movementRules = builder.movementRules;
+        conditionalMoves = builder.conditionalMoves;
+        movementRestrictions = builder.movementRestrictions;
+        strikeRules = builder.strikeRules;
+        conditionalStrikes = builder.conditionalStrikes;
+        strikeRestrictions = builder.strikeRestrictions;
     }
 
     /**
@@ -77,6 +66,61 @@ public class MovementRuleSet {
         }
 
         return possiblePositions;
+    }
+
+    /**
+     * Builder class that makes generating movement rule sets much easier.
+     */
+    public static class Builder {
+
+        private final List<MovementRule> movementRules;
+        private List<ConditionalMove> conditionalMoves = new ArrayList<>();
+        private List<MovementRestriction> movementRestrictions = new ArrayList<>();
+
+        private final List<MovementRule> strikeRules;
+        private List<ConditionalMove> conditionalStrikes = new ArrayList<>();
+        private List<MovementRestriction> strikeRestrictions = new ArrayList<>();
+
+        /**
+         * Standard constructor, used for pieces where movement and strike rules are different.
+         */
+        public Builder(List<MovementRule> movementRules, List<MovementRule> strikeRules) {
+            this.movementRules = movementRules;
+            this.strikeRules = strikeRules;
+        }
+
+        /**
+         * Simple constructor that copies strike rules from movement rules.
+         */
+        public Builder(List<MovementRule> movementRules) {
+            this.movementRules = movementRules;
+            this.strikeRules = new ArrayList<>(movementRules);
+        }
+
+        public Builder conditionalMoves(List<ConditionalMove> conditionalMoves) {
+            this.conditionalMoves = conditionalMoves;
+            return this;
+        }
+
+        public Builder movementRestrictions(List<MovementRestriction> movementRestrictions) {
+            this.movementRestrictions = movementRestrictions;
+            return this;
+        }
+
+        public Builder conditionalStrikes(List<ConditionalMove> conditionalStrikes) {
+            this.conditionalStrikes = conditionalStrikes;
+            return this;
+        }
+
+        public Builder strikeRestrictions(List<MovementRestriction> strikeRestrictions) {
+            this.strikeRestrictions = strikeRestrictions;
+            return this;
+        }
+
+        public MovementRuleSet build() {
+            return new MovementRuleSet(this);
+        }
+
     }
 
 }

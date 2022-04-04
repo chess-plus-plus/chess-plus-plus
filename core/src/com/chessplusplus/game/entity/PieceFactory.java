@@ -3,9 +3,11 @@ package com.chessplusplus.game.entity;
 
 import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.component.Position;
+import com.chessplusplus.game.component.movement.ConditionalMove;
 import com.chessplusplus.game.component.movement.CurvingMovementRule;
 import com.chessplusplus.game.component.movement.DiagonalMovementRule;
 import com.chessplusplus.game.component.movement.DirectionalMovementRestriction;
+import com.chessplusplus.game.component.movement.FirstMoveCondition;
 import com.chessplusplus.game.component.movement.HorizontalMovementRule;
 import com.chessplusplus.game.component.movement.MovementRestriction;
 import com.chessplusplus.game.component.movement.MovementRule;
@@ -35,12 +37,18 @@ public class PieceFactory {
 
         List<MovementRestriction> restrictions = new ArrayList<>();
         restrictions.add(new DirectionalMovementRestriction(0, dirFilterY));
+
+        List<ConditionalMove> conditionalMoves = new ArrayList<>();
+        conditionalMoves.add(new ConditionalMove(new FirstMoveCondition(), new VerticalMovementRule(2)));
+
         //TODO: Needs special rules:
         // 1: Promotion
-        // 3: Double move on first move
         // 4: En passant
-
-        MovementRuleSet ruleSet = new MovementRuleSet(movementRules, restrictions, strikeRules);
+        MovementRuleSet ruleSet = new MovementRuleSet.Builder(movementRules, strikeRules)
+                .movementRestrictions(restrictions)
+                .conditionalMoves(conditionalMoves)
+                .strikeRestrictions(restrictions)
+                .build();
         return new Piece(position, ruleSet);
     }
 
@@ -54,7 +62,7 @@ public class PieceFactory {
         List<MovementRule> movementRules = new ArrayList<>();
         movementRules.add(DiagonalMovementRule.unlimitedDiagonalMovement());
 
-        return new Piece(position, new MovementRuleSet(movementRules));
+        return new Piece(position, new MovementRuleSet.Builder(movementRules).build());
     }
 
     /**
@@ -67,7 +75,7 @@ public class PieceFactory {
         List<MovementRule> movementRules = new ArrayList<>();
         movementRules.add(CurvingMovementRule.standardKnightMovement());
 
-        return new Piece(position, new MovementRuleSet(movementRules));
+        return new Piece(position, new MovementRuleSet.Builder(movementRules).build());
     }
 
     /**
@@ -82,7 +90,7 @@ public class PieceFactory {
         movementRules.add(VerticalMovementRule.unlimitedVerticalMovement());
 
         //TODO: Needs to support castling
-        return new Piece(position, new MovementRuleSet(movementRules));
+        return new Piece(position, new MovementRuleSet.Builder(movementRules).build());
     }
 
     /**
@@ -97,7 +105,7 @@ public class PieceFactory {
         movementRules.add(VerticalMovementRule.unlimitedVerticalMovement());
         movementRules.add(DiagonalMovementRule.unlimitedDiagonalMovement());
 
-        return new Piece(position, new MovementRuleSet(movementRules));
+        return new Piece(position, new MovementRuleSet.Builder(movementRules).build());
     }
 
     /**
@@ -113,7 +121,7 @@ public class PieceFactory {
         movementRules.add(DiagonalMovementRule.oneSquareDiagonalMovement());
 
         //TODO: Needs to support castling
-        return new Piece(position, new MovementRuleSet(movementRules));
+        return new Piece(position, new MovementRuleSet.Builder(movementRules).build());
     }
 
 }
