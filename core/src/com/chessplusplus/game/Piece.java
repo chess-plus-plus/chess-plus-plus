@@ -25,4 +25,7 @@ public class Piece {
         return movementRuleSet.getLegalMoves(position, boardWidth, boardHeight);
     }
 
+    public int getXp() {
+        return xp;
+    }
 }
