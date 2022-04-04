@@ -3,6 +3,7 @@ package com.chessplusplus.game.entity;
 
 import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.component.Position;
+import com.chessplusplus.game.component.movement.CastlingCondition;
 import com.chessplusplus.game.component.movement.ConditionalMove;
 import com.chessplusplus.game.component.movement.CurvingMovementRule;
 import com.chessplusplus.game.component.movement.DiagonalMovementRule;
@@ -47,8 +48,6 @@ public class PieceFactory {
         conditionalStrikes.add(new ConditionalMove(
                 new EnPassantCondition(), DiagonalMovementRule.oneSquareDiagonalMovement()));
 
-        //TODO: Needs special rules:
-        // 1: Promotion
         MovementRuleSet ruleSet = new MovementRuleSet.Builder(movementRules, strikeRules)
                 .conditionalMoves(conditionalMoves)
                 .movementRestrictions(restrictions)
@@ -95,7 +94,6 @@ public class PieceFactory {
         movementRules.add(HorizontalMovementRule.unlimitedHorisontalMovement());
         movementRules.add(VerticalMovementRule.unlimitedVerticalMovement());
 
-        //TODO: Needs to support castling
         return new Piece(position, new MovementRuleSet.Builder(movementRules).build());
     }
 
@@ -126,8 +124,13 @@ public class PieceFactory {
         movementRules.add(VerticalMovementRule.oneSquareVerticalMovement());
         movementRules.add(DiagonalMovementRule.oneSquareDiagonalMovement());
 
-        //TODO: Needs to support castling
-        return new Piece(position, new MovementRuleSet.Builder(movementRules).build());
+        List<ConditionalMove> conditionalMoves = new ArrayList<>();
+        conditionalMoves.add(new ConditionalMove(
+                new CastlingCondition(), new HorizontalMovementRule(2)));
+
+
+        return new Piece(position, new MovementRuleSet.Builder(movementRules)
+                .conditionalMoves(conditionalMoves).build());
     }
 
 }
