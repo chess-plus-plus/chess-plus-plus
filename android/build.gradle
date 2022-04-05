@@ -90,9 +90,5 @@ task run(type: Exec) {
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.chessplusplus/com.chessplusplus.AndroidLauncher'
 }
 
-dependencies {
-    implementation 'com.google.firebase:firebase-auth:21.0.2'
-}
-
 eclipse.project.name = appName + "-android"
 apply plugin: 'com.google.gms.google-services'
