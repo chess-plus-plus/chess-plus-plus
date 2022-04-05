@@ -4,6 +4,7 @@ import com.chessplusplus.game.component.Position;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Turn {
 
@@ -13,6 +14,19 @@ public class Turn {
     public Turn(String playerId, List<Action> actions) {
         this.actions = Collections.unmodifiableList(actions);
         this.playerId = playerId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Turn turn = (Turn) o;
+        return actions.equals(turn.actions) && playerId.equals(turn.playerId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(actions, playerId);
     }
 
     public static class Action {
@@ -27,6 +41,19 @@ public class Turn {
             this.actionType = actionType;
             this.startPos = startPos;
             this.actionPos = actionPos;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Action action = (Action) o;
+            return piece.equals(action.piece) && actionType == action.actionType && startPos.equals(action.startPos) && actionPos.equals(action.actionPos);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(piece, actionType, startPos, actionPos);
         }
 
     }

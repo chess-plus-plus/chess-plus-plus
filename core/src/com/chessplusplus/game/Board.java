@@ -18,4 +18,11 @@ public interface Board {
 
     List<Piece> getAllPieces();
 
+    /**
+     * Updates the board after the board has been edited.
+     */
+    void updateBoard();
+
+    void removePiece(Piece piece);
+
 }

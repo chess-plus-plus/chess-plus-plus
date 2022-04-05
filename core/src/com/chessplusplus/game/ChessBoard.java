@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ChessBoard implements Board {
 
-    private final HashMap<Position, Piece> board = new HashMap<>();
+    private HashMap<Position, Piece> board = new HashMap<>();
     private final int boardWidth;
     private final int boardHeight;
 
@@ -54,5 +54,21 @@ public class ChessBoard implements Board {
     public List<Piece> getAllPieces() {
         return new ArrayList<>(board.values());
     }
+
+    @Override
+    public void updateBoard() {
+        List<Piece> pieces = getAllPieces();
+        board = new HashMap<>();
+
+        for (Piece piece : pieces) {
+            board.put(piece.getPosition(), piece);
+        }
+    }
+
+    @Override
+    public void removePiece(Piece piece) {
+        board.put(piece.getPosition(), null);
+    }
+
 
 }

@@ -72,14 +72,13 @@ public class Piece {
     }
 
     /**
-     * Generates a set of turns the piece can initiate according to its rules.
+     * Get all legal turns the piece can take.
      *
-     * @param boardWidth  Width of the game board.
-     * @param boardHeight Height of the game board.
-     * @return Set of all possible moves.
+     * @param gameBoard Game board.
+     * @return Set of all legal turns.
      */
-    public List<Turn> getLegalTurns(int boardWidth, int boardHeight) {
-        return null;
+    public List<Turn> getLegalTurns(Board gameBoard) {
+        return movement.getLegalTurns(this, gameBoard);
     }
 
     /**
