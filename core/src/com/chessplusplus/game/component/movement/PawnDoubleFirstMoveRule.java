@@ -43,14 +43,18 @@ public class PawnDoubleFirstMoveRule implements SpecialMoveRule {
     /**
      * Generates a list of 2 positions, the first is the one the pawn will move through,
      * the second is the one the pawn wants to move into.
-     * @param pawn Pawn piece.
+     *
+     * @param pawn      Pawn piece.
      * @param gameBoard Game board.
      * @return List of 1st and 2nd position.
      */
     private List<Position> getMoveSquares(Piece pawn, Board gameBoard) {
         List<Position> squares = new ArrayList<>();
-        Position firstSquare = pawn.getMovementRules().getLegalMoves(pawn.getPosition(),
-                gameBoard.getWidth(), gameBoard.getHeight()).get(0);
+
+        // TODO: game might crash if a pawn has a piece in front of it and it has not moved yet
+        // We get the first square by extracting it from the legal turns it has (this might be bad)
+        Position firstSquare = pawn.getMovementRules().getLegalTurns(pawn, gameBoard)
+                .get(0).actions.get(0).actionPos;
 
         int moveDeltaY = pawn.getPosition().getY() - firstSquare.getY();
         Position secondSquare = new Position(firstSquare.getY() + moveDeltaY,
