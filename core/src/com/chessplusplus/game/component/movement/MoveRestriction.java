@@ -5,13 +5,13 @@ import com.chessplusplus.game.component.Position;
 import java.util.List;
 
 /**
- * A MovementRestriction is the inverse of a MovementRule in that it defines what
- * moves are not legal.
+ * A MoveRestriction is the inverse of a MovementPattern in that it defines what
+ * moves are *not* legal.
  * <p>
  * A MovementRestriction should be applied *after* generating possible moves from
- * all of the MovementRules.
+ * all of the MovementPatterns.
  */
-public interface MovementRestriction {
+public interface MoveRestriction {
 
     /**
      * Takes in a set of possible moves and filters out the moves that

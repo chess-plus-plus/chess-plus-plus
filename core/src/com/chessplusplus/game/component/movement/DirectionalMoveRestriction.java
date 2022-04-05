@@ -5,7 +5,10 @@ import com.chessplusplus.game.component.Position;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirectionalMovementRestriction implements MovementRestriction {
+/**
+ * The DirectionalMoveRestriction restricts a piece to only be able to move in a single direction.
+ */
+public class DirectionalMoveRestriction implements MoveRestriction {
 
     /* Defines which positions (relative to the Piece's position) are considered valid.
      * A directional filter value of 1 means that positions with a higher or equal relative value to
@@ -18,7 +21,7 @@ public class DirectionalMovementRestriction implements MovementRestriction {
     public int dirFilterY;
 
     // TODO: A constructor that doesn't directly supply int values would be good.
-    public DirectionalMovementRestriction(int dirFilterX, int dirFilterY) {
+    public DirectionalMoveRestriction(int dirFilterX, int dirFilterY) {
         this.dirFilterX = dirFilterX;
         this.dirFilterY = dirFilterY;
     }
