@@ -16,23 +16,17 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	SpriteBatch batch;
 	Texture img;
-	FireBaseInterface _FBIC;
 	Game game;
 	BoardView boardView;
+	FirebaseController FBC;
 
-	public ChessPlusPlus(FireBaseInterface FBIC) {_FBIC = FBIC;}
+	public ChessPlusPlus(FireBaseInterface FBIC) {FBC = new FirebaseController(FBIC);}
 	
 	@Override
 	public void create () {
-		String gameID = _FBIC.createGameID();
-		_FBIC.sendInitialState(gameID, "A3B4");
-		_FBIC.getGameUpdates(gameID);
 		//game = new Game();
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-		_FBIC.sendMove(gameID, "1 C5");
-		_FBIC.sendMove(gameID, "2 D6");
-		_FBIC.getStatus();
+		img = new Texture("badlogic.jpg");;
 
 		Gdx.input.setInputProcessor(this);
 
