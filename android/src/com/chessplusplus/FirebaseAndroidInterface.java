@@ -2,6 +2,7 @@ package com.chessplusplus;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,6 +15,9 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
     FirebaseDatabase database;
     DatabaseReference dataRef;
     DatabaseReference pingRef;
+    AndroidFirebaseAuth mAuth;
+    FirebaseUser user;
+
     boolean connected;
 
     // Singleton?
@@ -21,6 +25,14 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
         database = FirebaseDatabase.getInstance("https://chessplusplus-815c2-default-rtdb.europe-west1.firebasedatabase.app");
         dataRef = database.getReference("games");
         pingRef = database.getReference(".info/connected");
+        mAuth = new AndroidFirebaseAuth();
+        this.getStatus();
+    }
+
+    public void loginAnonymously() {
+        if (this.user != null)
+            return;
+        user = mAuth.loginAnonymously();
     }
 
     // ping-echo
@@ -72,5 +84,19 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
                 System.out.println("###FIREBASE### Failed to read value: " + error.toException());
             }
         });
+    }
+
+    @Override
+    public String createGameID() {
+        if (user == null)
+            return null;
+        String key = dataRef.push().getKey();
+        dataRef.child(key).child("player1").setValue(user.getIdToken(false));
+        dataRef.child(key).child("player2").setValue("");
+        return key;
+    }
+
+    public boolean isConnected() {
+        return connected;
     }
 }
