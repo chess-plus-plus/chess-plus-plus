@@ -10,6 +10,17 @@ public class Position {
         this.y = y;
     }
 
+    /**
+     * Short-hand utility method that can be imported statically to save time.
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     * @return new Position object
+     */
+    public static Position pos(int x, int y) {
+        return new Position(x, y);
+    }
+
     public int getX() {
         return x;
     }
@@ -19,11 +30,11 @@ public class Position {
     }
 
     public Position adjacentLeftPosition() {
-        return new Position(x-1, y);
+        return new Position(x - 1, y);
     }
 
     public Position adjacentRightPosition() {
-        return new Position(x+1, y);
+        return new Position(x + 1, y);
     }
 
     @Override

@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class LogicalBoard implements Board {
+public class ChessBoard implements Board {
 
     private final HashMap<Position, Piece> board = new HashMap<>();
     private final int boardWidth;
     private final int boardHeight;
 
-    public LogicalBoard(List<Piece> pieces, int boardWidth, int boardHeight) {
+    public ChessBoard(List<Piece> pieces, int boardWidth, int boardHeight) {
         for (Piece piece : pieces) {
             board.put(piece.getPosition(), piece);
         }
@@ -20,7 +20,7 @@ public class LogicalBoard implements Board {
         this.boardHeight = boardHeight;
     }
 
-    public LogicalBoard(List<Piece> pieces) {
+    public ChessBoard(List<Piece> pieces) {
         this(pieces, 8, 8);
     }
 
@@ -40,12 +40,18 @@ public class LogicalBoard implements Board {
     }
 
     @Override
-    public Piece getPiece(int x, int y) {
-        return getPiece(new Position(x, y));
+    public boolean squareIsEmpty(Position position) {
+        return board.get(position) == null;
     }
 
     @Override
-    public List<Piece> getPieces() {
+    public boolean squareIsUnderAttack(Position position, String playerId) {
+        //TODO: This one is a bit tricky.
+        return false;
+    }
+
+    @Override
+    public List<Piece> getAllPieces() {
         return new ArrayList<>(board.values());
     }
 
