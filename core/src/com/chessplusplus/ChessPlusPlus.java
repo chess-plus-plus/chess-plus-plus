@@ -5,9 +5,10 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.chessplusplus.game.views.StartMenuView;
-import com.chessplusplus.game.Game;
+import com.chessplusplus.game.BoardFactory;
+import com.chessplusplus.game.ChessGameImpl;
 import com.chessplusplus.game.views.BoardView;
+import com.chessplusplus.game.views.StartMenuView;
 
 public class ChessPlusPlus extends ApplicationAdapter implements ApplicationListener, InputProcessor {
 	public static final int WIDTH = 800;
@@ -16,7 +17,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	SpriteBatch batch;
 	Texture img;
 	FireBaseInterface _FBIC;
-	Game game;
+	ChessGameImpl game;
 	BoardView boardView;
 	ApplicationAdapter screen;
 
@@ -27,7 +28,12 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 		String gameID = "example-game-123";
 		_FBIC.sendInitialState(gameID, "A3B4");
 		_FBIC.getGameUpdates(gameID);
-		//game = new Game();
+
+		String playerId1 = "1";
+		String playerId2 = "2";
+		game = new ChessGameImpl(
+				BoardFactory.standardBoardAndPieces(playerId1, playerId2),
+				playerId1, playerId2);
 		//batch = new SpriteBatch();
 		//img = new Texture("badlogic.jpg");
 		_FBIC.sendMove(gameID, "1 C5");
