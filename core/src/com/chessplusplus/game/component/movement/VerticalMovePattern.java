@@ -6,35 +6,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * VerticalMovementRule is used to represent movement along the "y-axis"
+ * VerticalMovePattern is used to represent movement along the "y-axis"
  * on the board, aka upwards and downwards movement.
  */
-public class VerticalMovementRule extends SimpleMovementRule {
+public class VerticalMovePattern extends SimpleMovePattern {
 
-    public VerticalMovementRule(int range) {
+    public VerticalMovePattern(int range) {
         super(range);
     }
 
-    /**
-     * Creates a movement rule that gives the piece vertical movement
-     * with a range of one square per turn.
-     *
-     * In normal chess this is used by the King and the Pawns.
-     * @return HorizontalMovementRule with range = 1.
-     */
-    public static VerticalMovementRule oneSquareVerticalMovement() {
-        return new VerticalMovementRule(1);
+    public VerticalMovePattern() {
+        super();
     }
 
     /**
-     * Creates a movement rule that gives the piece vertical movement
+     * Creates a movement Pattern that gives the piece vertical movement
+     * with a range of one square per turn.
+     *
+     * In normal chess this is used by the King and the Pawns.
+     * @return VerticalMovePattern with range = 1.
+     */
+    public static VerticalMovePattern oneSquareVerticalMovement() {
+        return new VerticalMovePattern(1);
+    }
+
+    /**
+     * Creates a movement pattern that gives the piece vertical movement
      * with an unlimited range per turn.
      *
      * In normal chess this is used by the Rook & the Queen.
-     * @return HorizontalMovementRule with unlimited range.
+     * @return VerticalMovePattern with unlimited range.
      */
-    public static VerticalMovementRule unlimitedVerticalMovement() {
-        return new VerticalMovementRule(-1);
+    public static VerticalMovePattern unlimitedVerticalMovement() {
+        return new VerticalMovePattern(-1);
     }
 
     @Override
