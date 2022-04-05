@@ -12,7 +12,10 @@ public interface Board {
 
     Piece getPiece(Position position);
 
-    Piece getPiece(int x, int y);
+    boolean squareIsEmpty(Position position);
 
-    List<Piece> getPieces();
+    boolean squareIsUnderAttack(Position position, String playerId);
+
+    List<Piece> getAllPieces();
+
 }
