@@ -8,21 +8,25 @@ import java.util.List;
 public class Turn {
 
     public final List<Action> actions;
+    public final String playerId;
 
-    public Turn(List<Action> actions) {
+    public Turn(String playerId, List<Action> actions) {
         this.actions = Collections.unmodifiableList(actions);
+        this.playerId = playerId;
     }
 
     public static class Action {
 
         public final Piece piece;           // The piece being affected
         public final ActionType actionType; // The type of action
-        public final Position position;     // The position of the piece at the end of the turn
+        public final Position startPos;     // The position of the piece before action is taken
+        public final Position actionPos;    // The position where the piece strikes/moves to
 
-        public Action(Piece piece, ActionType actionType, Position position) {
+        public Action(Piece piece, ActionType actionType, Position startPos, Position actionPos) {
             this.piece = piece;
             this.actionType = actionType;
-            this.position = position;
+            this.startPos = startPos;
+            this.actionPos = actionPos;
         }
 
     }
