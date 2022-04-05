@@ -2,6 +2,7 @@ package com.chessplusplus.game.views;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -29,6 +30,18 @@ public class PlayGameMenuView extends ApplicationAdapter {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         stage = new Stage(new ScreenViewport());
         skin.getFont("default-font").getData().setScale(3,3);
+
+        final TextButton connectedButton = new TextButton("", skin, "default");
+        connectedButton.setDisabled(true);
+        connectedButton.align(Align.center);
+        connectedButton.setWidth(stage.getWidth());
+        if (chessPlusPlus.getConnected()){
+            connectedButton.setText("Connected");
+            connectedButton.setColor(Color.GREEN);
+        } else {
+            connectedButton.setText("Not Connected");
+            connectedButton.setColor(Color.RED);
+        }
 
         Table table = new Table();
         table.setWidth(stage.getWidth());
@@ -72,6 +85,7 @@ public class PlayGameMenuView extends ApplicationAdapter {
         table.row();
         table.add(backButton).width(stage.getWidth()/2);
 
+        stage.addActor(connectedButton);
         stage.addActor(table);
 
         Gdx.input.setInputProcessor(stage);

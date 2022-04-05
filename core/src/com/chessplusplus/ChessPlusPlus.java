@@ -3,8 +3,10 @@ package com.chessplusplus;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.chessplusplus.game.views.StartMenuView;
 import com.chessplusplus.game.Game;
 import com.chessplusplus.game.views.BoardView;
@@ -19,6 +21,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	Game game;
 	BoardView boardView;
 	ApplicationAdapter screen;
+	boolean connected = false;
 
 	public ChessPlusPlus(FireBaseInterface FBIC) {_FBIC = FBIC;}
 	
@@ -100,4 +103,9 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	public boolean scrolled(float amountX, float amountY) {
 		return false;
 	}
+
+	public boolean getConnected(){
+		return this.connected;
+	}
+	
 }
