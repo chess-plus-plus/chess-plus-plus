@@ -37,6 +37,7 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
+
 }
 
 project(":desktop") {
@@ -80,6 +81,12 @@ project(":android") {
 
 project(":core") {
     apply plugin: "java-library"
+
+//    compileJava {
+//        sourceCompatibility = '1.9'
+//        targetCompatibility = '1.9'
+//    }
+
 
 
     dependencies {

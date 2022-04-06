@@ -2,7 +2,7 @@ package com.chessplusplus.game.component;
 
 import java.util.Objects;
 
-public class Position {
+public class Position implements Comparable<Position>{
 
     private final int x;
     private final int y;
@@ -58,5 +58,10 @@ public class Position {
                 "x=" + x +
                 ", y=" + y +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Position position) {
+        return this.hashCode() - position.hashCode();
     }
 }

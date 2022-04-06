@@ -4,6 +4,11 @@ import com.chessplusplus.game.component.Position;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.DoublePredicate;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * DiagonalMovePattern is used to represent movement along the diagonals
@@ -47,39 +52,26 @@ public class DiagonalMovePattern extends SimpleMovePattern {
         return new DiagonalMovePattern(-1);
     }
 
+
+
     @Override
-    public List<Position> getPossibleMoves(Position piecePosition, int boardWidth, int boardHeight) {
-        List<Position> possibleMoves = new ArrayList<>();
-        // This algorithm for generating possible moves has a time-complexity of O(x*y) where
-        // x = board width and y = board height. This is inefficient, but for chess this is
-        // acceptable, since board is never going to be very large.
+    public List<Position> getPossibleMoves(Position piece, int boardWidth, int boardHeight) {
+        int maxMoveDistance = (range==-1) ? boardWidth: range;
 
-        // Start by generating all possible positions on the board
-        List<Position> allPositions = new ArrayList<>();
-        for (int x = 0; x < boardWidth; x++) {
-            for (int y = 0; y < boardHeight; y++) {
+        // diagonal defined as y = x and y = -x
+        // absolute both axes results in simple test case x == y
+        Predicate<Position> isDiagonalAndInRange = (move) -> {
+            int x = Math.abs(piece.getX() - move.getX());
+            int y = Math.abs(piece.getY() - move.getY());
+            return x == y && x <= maxMoveDistance;
+        };
 
-                Position position = new Position(x, y);
-                allPositions.add(position);
-            }
-        }
-
-        // Then we filter out potential positions according to 2 criteria:
-        // 1: The potential position should not be the same position as the piece
-        // 2; The difference between the potential position's and the piece position's
-        //      x and y values should be equal, since this indicates that the position
-        //      is diagonal to the piece's position
-        for (Position potentialPosition : allPositions) {
-            int xDiff = Math.abs(piecePosition.getX() - potentialPosition.getX());
-            int yDiff = Math.abs(piecePosition.getY() - potentialPosition.getY());
-
-            if (potentialPosition != piecePosition && xDiff == yDiff && xDiff <= range) {
-                possibleMoves.add(potentialPosition);
-            }
-        }
-
-        return possibleMoves;
-
+        return IntStream
+                .range(0, boardWidth * boardHeight)
+                .mapToObj(i -> new Position(i%boardWidth, i/boardWidth))
+                .filter(isDiagonalAndInRange)
+                .filter(m -> !m.equals(piece)) // move is not own position
+                .collect(Collectors.toList());
     }
 
 }
