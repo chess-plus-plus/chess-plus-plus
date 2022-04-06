@@ -53,7 +53,7 @@ public class EnPassantMoveRule implements SpecialMoveRule {
             legalTurns.add(new Turn(playerId, actionList));
         }
 
-        return null;
+        return legalTurns;
     }
 
     /**
