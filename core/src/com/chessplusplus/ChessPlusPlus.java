@@ -109,4 +109,9 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	public boolean isConnected(){
 		return this.FBC.pingEcho();
 	}
+
+	public SpriteBatch getBatch(){
+		return this.batch;
+	}
+
 }

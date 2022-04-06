@@ -39,12 +39,6 @@ public class JoinGameMenuView extends ApplicationAdapter {
         connectedButton.align(Align.center);
         connectedButton.setWidth(stage.getWidth());
         conBut = connectedButton;
-        connectedButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.changeConnected();
-            }
-        });
 
         Table table = new Table();
         table.setWidth(stage.getWidth());
