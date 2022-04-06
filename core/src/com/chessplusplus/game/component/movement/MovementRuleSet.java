@@ -51,8 +51,7 @@ public class MovementRuleSet {
         legalTurns.addAll(mapMovesToTurns(piece, legalStrikes, true));
 
         for (SpecialMoveRule specialMoveRule : specialMoveRules) {
-            //TODO: Special moves are breaking the game, fix on a case-by-case basis
-            //legalTurns.addAll(specialMoveRule.getLegalTurns(piece.getPlayerId(), piece, board));
+            legalTurns.addAll(specialMoveRule.getLegalTurns(piece.getPlayerId(), piece, board));
         }
 
         return legalTurns;
@@ -97,7 +96,7 @@ public class MovementRuleSet {
      * @param movementRestrictions Movement restrictions used for candidate filtering.
      * @return List of legal moves (not turns).
      */
-    private List<Position> getLegalMoves(Position piecePosition, Board board, boolean isStrike,
+    public List<Position> getLegalMoves(Position piecePosition, Board board, boolean isStrike,
                                          List<MovePattern> movementPatterns, String playerId,
                                          List<MoveRestriction> movementRestrictions) {
 

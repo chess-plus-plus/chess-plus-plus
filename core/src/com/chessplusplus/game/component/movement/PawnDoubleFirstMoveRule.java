@@ -50,11 +50,12 @@ public class PawnDoubleFirstMoveRule implements SpecialMoveRule {
      */
     private List<Position> getMoveSquares(Piece pawn, Board gameBoard) {
         List<Position> squares = new ArrayList<>();
+        MovementRuleSet pawnMoveset = pawn.getMovementRules();
 
-        // TODO: game might crash if a pawn has a piece in front of it and it has not moved yet
-        // We get the first square by extracting it from the legal turns it has (this might be bad)
-        Position firstSquare = pawn.getMovementRules().getLegalTurns(pawn, gameBoard)
-                .get(0).actions.get(0).actionPos;
+        List<Position> possibleMoves = pawnMoveset.getLegalMoves(
+                pawn.getPosition(), gameBoard, false, pawnMoveset.getMovePatternsCopy(),
+                pawn.getPlayerId(), pawnMoveset.getMoveRestrictionsCopy());
+        Position firstSquare = possibleMoves.get(0);
 
         int moveDeltaY = pawn.getPosition().getY() - firstSquare.getY();
         Position secondSquare = new Position(firstSquare.getY() + moveDeltaY,

@@ -82,7 +82,7 @@ public class CastlingMoveRule implements SpecialMoveRule {
         List<Position> inbetweenSquares = new ArrayList<>();
         while (tmp != rook.getPosition().getX()) {
             inbetweenSquares.add(new Position(tmp, kingPos.getY()));
-            tmp++;
+            tmp += dirDelta;
         }
 
         // Verify that all the squares in-between the rook and king are empty. Verify condition #3.
