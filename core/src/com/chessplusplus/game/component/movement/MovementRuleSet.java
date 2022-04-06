@@ -97,7 +97,7 @@ public class MovementRuleSet {
      * @param movementRestrictions Movement restrictions used for candidate filtering.
      * @return List of legal moves (not turns).
      */
-    private List<Position> getLegalMoves(Position piecePosition, Board board, boolean isStrike,
+    public List<Position> getLegalMoves(Position piecePosition, Board board, boolean isStrike,
                                          List<MovePattern> movementPatterns, String playerId,
                                          List<MoveRestriction> movementRestrictions) {
 
