@@ -22,6 +22,7 @@ public class JoinGameMenuView extends ApplicationAdapter {
     private ChessPlusPlus chessPlusPlus;
     private Stage stage;
     private Skin skin;
+    private TextButton conBut;
 
     public JoinGameMenuView(ChessPlusPlus c){
         chessPlusPlus = c;
@@ -37,13 +38,13 @@ public class JoinGameMenuView extends ApplicationAdapter {
         connectedButton.setDisabled(true);
         connectedButton.align(Align.center);
         connectedButton.setWidth(stage.getWidth());
-        if (chessPlusPlus.getConnected()){
-            connectedButton.setText("Connected");
-            connectedButton.setColor(Color.GREEN);
-        } else {
-            connectedButton.setText("Not Connected");
-            connectedButton.setColor(Color.RED);
-        }
+        conBut = connectedButton;
+        connectedButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                chessPlusPlus.changeConnected();
+            }
+        });
 
         Table table = new Table();
         table.setWidth(stage.getWidth());
@@ -96,6 +97,15 @@ public class JoinGameMenuView extends ApplicationAdapter {
 
     @Override
     public void render() {
+
+        if (chessPlusPlus.isConnected()){
+            conBut.setText("Connected");
+            conBut.setColor(Color.GREEN);
+        } else {
+            conBut.setText("Not Connected");
+            conBut.setColor(Color.RED);
+        }
+
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();

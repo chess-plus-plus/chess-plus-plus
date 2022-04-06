@@ -4,12 +4,9 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.chessplusplus.game.views.StartMenuView;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.chessplusplus.game.Game;
 import com.chessplusplus.game.views.BoardView;
 
@@ -22,7 +19,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	Game game;
 	BoardView boardView;
 	ApplicationAdapter screen;
-	boolean connected = false;
 	FirebaseController FBC;
 
 	public ChessPlusPlus(FireBaseInterface FBIC) {FBC = new FirebaseController(FBIC);}
@@ -53,6 +49,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 		boardView.render(Gdx.graphics.getDeltaTime());
 		batch.end();
 		*/
+
 
 		dispose();
 		screen.render();
@@ -109,8 +106,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 		return false;
 	}
 
-	public boolean getConnected(){
-		return this.connected;
+	public boolean isConnected(){
+		return this.FBC.pingEcho();
 	}
-	
 }
