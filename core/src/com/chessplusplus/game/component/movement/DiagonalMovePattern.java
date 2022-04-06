@@ -58,6 +58,7 @@ public class DiagonalMovePattern extends SimpleMovePattern {
         List<Position> allPositions = new ArrayList<>();
         for (int x = 0; x < boardWidth; x++) {
             for (int y = 0; y < boardHeight; y++) {
+
                 Position position = new Position(x, y);
                 allPositions.add(position);
             }
@@ -72,7 +73,7 @@ public class DiagonalMovePattern extends SimpleMovePattern {
             int xDiff = Math.abs(piecePosition.getX() - potentialPosition.getX());
             int yDiff = Math.abs(piecePosition.getY() - potentialPosition.getY());
 
-            if (potentialPosition != piecePosition && xDiff == yDiff) {
+            if (potentialPosition != piecePosition && xDiff == yDiff && xDiff <= range) {
                 possibleMoves.add(potentialPosition);
             }
         }

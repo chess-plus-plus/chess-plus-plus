@@ -62,7 +62,7 @@ public class HorizontalMovePattern extends SimpleMovePattern {
         }
 
         // Generate and add positions according to the range.
-        for (int i = rangeStart; i < rangeEnd; i++) {
+        for (int i = rangeStart; i <= rangeEnd; i++) {
             Position position = new Position(i, piecePosition.getY());
             // y is constant since this rule is for horizontal movement
 

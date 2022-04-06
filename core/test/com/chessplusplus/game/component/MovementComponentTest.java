@@ -1,20 +1,10 @@
 package com.chessplusplus.game.component;
 
-import static com.chessplusplus.game.component.movement.HorizontalMovePattern.oneSquareHorizontalMovement;
-import static com.chessplusplus.game.component.movement.HorizontalMovementRule.oneSquareHorizontalMovement;
-import static com.chessplusplus.game.component.movement.VerticalMovePattern.oneSquareVerticalMovement;
-import static com.chessplusplus.game.component.movement.VerticalMovementRule.oneSquareVerticalMovement;
-import static com.chessplusplus.game.component.movement.VerticalMovementRule.unlimitedVerticalMovement;
-
 import com.chessplusplus.game.Board;
 import com.chessplusplus.game.BoardFactory;
 import com.chessplusplus.game.ChessBoard;
 import com.chessplusplus.game.Piece;
-import com.chessplusplus.game.PieceType;
 import com.chessplusplus.game.Turn;
-import com.chessplusplus.game.component.movement.MovementRule;
-import com.chessplusplus.game.component.movement.MovementRuleSet;
-import com.chessplusplus.game.component.movement.SimpleMovementRule;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,7 +12,6 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class MovementComponentTest {
 
@@ -63,16 +52,17 @@ public class MovementComponentTest {
     }
 
 
-    public void testValidMoves(List<MovementRule> rules, Position piecePosition, List<Position> expectedMoves, String message){
+    public void testValidMoves(Piece piece, List<Position> expectedMoves, String message){
 
-        MovementComponent movementComponent = new MovementComponent(rules);
+        Board board = new ChessBoard(Arrays.asList(piece), boardWidth, boardHeight);
+        List<Turn> turns = piece.getMovementRules().getLegalTurns(piece, board);
 
-        List<Position> actualMoves = movementComponent.getAllPossibleMoves(
-                piecePosition, boardWidth, boardHeight
-        );
 
-        String visualizedBoard = visualizedBoard(actualMoves, expectedMoves, piecePosition);
-        String rulesNames = rules.stream().map(r -> r.getClass().getSimpleName()).collect(Collectors.joining(" "));
+        List<Position> actualMoves = turns.stream().map(turn -> turn.actions.get(0).actionPos).collect(Collectors.toList());
+
+
+        String visualizedBoard = visualizedBoard(actualMoves, expectedMoves, piece.getPosition());
+        String rulesNames = piece.getMovementRules().getStrikePatternsCopy().stream().map(r -> r.getClass().getSimpleName()).collect(Collectors.joining(" "));
         String assertMessage = message + "\nFor rules: " + rulesNames + "\n" + visualizedBoard;
 
         Assert.assertEquals(
@@ -82,33 +72,39 @@ public class MovementComponentTest {
         );
     }
 
+    public String moveSpaceToPositions(String text){
+        rows = text.split("\n");
+    }
+
     @Test
     public void tesKingMoves() {
-
-
 
         Position piecePosition = new Position(2,2);
 
         Piece piece = BoardFactory.createKing("123", piecePosition);
 
-        Board board = new ChessBoard(Arrays.asList(piece), boardWidth, boardHeight);
+        String expectedMoves =
+              // 1  2  3  4  5  6  7  8  9
+                "x  x  x  -  -  -  -  -  -  \n" + //1
+                "x  -  x  -  -  -  -  -  -  \n" + //2
+                "x  x  x  -  -  -  -  -  -  \n" + //3
+                "-  -  -  -  -  -  -  -  -  \n" + //4
+                "-  -  -  -  -  -  -  -  -  \n" + //5
+                "-  -  -  -  -  -  -  -  -  \n" + //6
+                "-  -  -  -  -  -  -  -  -  \n" + //7
+                "-  -  -  -  -  -  -  -  -  \n" + //8
+                "-  -  -  -  -  -  -  -  -    ";  //9
 
-        List<Turn> turns = piece.getMovementRules().getLegalTurns(piece, board);
-
-        turns.forEach(System.out::println);
-//        Piece piece = new Piece("123",new PieceType(), piecePosition, rules);
-
-
-        List<Position> expectedMoves = Arrays.asList(
-                new Position(1,2),
-                new Position(2,1),
-                new Position(3,2),
-                new Position(2,3)
-        );
+//        List<Position> expectedMoves = Arrays.asList(
+//                new Position(1,2),
+//                new Position(2,1),
+//                new Position(3,2),
+//                new Position(2,3)
+//        );
 
         String message = "Possible king moves should give expected result";
 
-//        testValidMoves(rules, piecePosition, expectedMoves, message);
+        testValidMoves(piece, expectedMoves, message);
     }
 
 
