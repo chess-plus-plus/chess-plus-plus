@@ -27,7 +27,7 @@ public class AndroidFirebaseAuth implements Executor {
                             System.out.println("signInAnonymously:success");
                         } else {
                             // If sign in fails, display a message to the user.
-                            System.out.println("signInAnonymously:failure");
+                            System.out.println("signInAnonymously:failure: " + task.getException());
                         }
                     }
                 });
@@ -37,5 +37,9 @@ public class AndroidFirebaseAuth implements Executor {
     @Override
     public void execute(Runnable runnable) {
         runnable.run();
+    }
+
+    public FirebaseUser getUser() {
+        return mAuth.getCurrentUser();
     }
 }

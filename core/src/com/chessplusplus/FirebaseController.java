@@ -13,10 +13,25 @@ public class FirebaseController {
         // do smth in front end
     }
 
-    public void createNewGame() {
-        // not fully implemented yet, will probably return null
+    public String createNewGame() {
         String gameID = this.FBIC.createGameID();
 
+        System.out.println("created game with gameID: " + gameID);
+
+        return gameID;
+
         // do smth in front end
+    }
+
+    public void joinGame(String gameID) {
+        // if joined is true, the ID exists and everything worked
+        // otherwise, some kind of error occured
+        boolean joined = this.FBIC.joinGame(gameID);
+        if (joined)
+            System.out.println("joined game " + gameID);
+    }
+
+    public void reconnect () {
+        this.FBIC.goOnline();
     }
 }

@@ -8,4 +8,6 @@ public interface FireBaseInterface {
     String createGameID ();
     void loginAnonymously();
     boolean isConnected();
+    boolean joinGame(String gameID);
+    void goOnline();
 }
