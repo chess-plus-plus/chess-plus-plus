@@ -7,6 +7,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.chessplusplus.game.BoardFactory;
+import com.chessplusplus.game.ChessGame;
 import com.chessplusplus.game.ChessGameImpl;
 import com.chessplusplus.game.views.BoardView;
 import com.chessplusplus.game.views.StartMenuView;
@@ -22,6 +23,8 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	ApplicationAdapter screen;
 	FirebaseController FBC;
 
+	ChessGame game;
+
 	public ChessPlusPlus(FireBaseInterface FBIC) {FBC = new FirebaseController(FBIC);}
 	
 	@Override
@@ -32,9 +35,9 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 		String playerId1 = "1";
 		String playerId2 = "2";
-		//game = new ChessGameImpl(
-		//		BoardFactory.standardBoardAndPieces(playerId1, playerId2),
-		//		playerId1, playerId2);
+		game = new ChessGameImpl(
+				BoardFactory.standardBoardAndPieces(playerId1, playerId2),
+				playerId1, playerId2);
 
 		Gdx.input.setInputProcessor(this);
 
@@ -73,7 +76,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	@Override
 	public boolean keyDown(int keycode) {
-		game.update();
 		return false;
 	}
 
@@ -89,7 +91,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		game.update();
 		return false;
 	}
 
