@@ -22,4 +22,9 @@ public class FirebaseDesktopInterface implements FireBaseInterface {
     public void getGameUpdates(String id) {
 
     }
+
+    @Override
+    public String createGameID() {
+        return null;
+    }
 }

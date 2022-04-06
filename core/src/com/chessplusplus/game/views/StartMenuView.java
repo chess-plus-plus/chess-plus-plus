@@ -2,6 +2,7 @@ package com.chessplusplus.game.views;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -19,6 +20,7 @@ public class StartMenuView extends ApplicationAdapter {
     private ChessPlusPlus chessPlusPlus;
     private Stage stage;
     private Skin skin;
+    private TextButton conBut;
 
     public StartMenuView(ChessPlusPlus c){
         chessPlusPlus = c;
@@ -28,6 +30,12 @@ public class StartMenuView extends ApplicationAdapter {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         stage = new Stage(new ScreenViewport());
         skin.getFont("default-font").getData().setScale(3,3);
+
+        final TextButton connectedButton = new TextButton("", skin, "default");
+        connectedButton.setDisabled(true);
+        connectedButton.align(Align.center);
+        connectedButton.setWidth(stage.getWidth());
+        conBut = connectedButton;
 
         Table table = new Table();
         table.setWidth(stage.getWidth());
@@ -81,6 +89,7 @@ public class StartMenuView extends ApplicationAdapter {
         table.row();
         table.add(manualButton).padBottom(30).width(stage.getWidth()/2);
 
+        stage.addActor(connectedButton);
         stage.addActor(table);
 
         Gdx.input.setInputProcessor(stage);
@@ -88,6 +97,15 @@ public class StartMenuView extends ApplicationAdapter {
 
     @Override
     public void render() {
+
+        if (chessPlusPlus.isConnected()){
+            conBut.setText("Connected");
+            conBut.setColor(Color.GREEN);
+        } else {
+            conBut.setText("Not Connected");
+            conBut.setColor(Color.RED);
+        }
+
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
