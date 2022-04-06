@@ -42,7 +42,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	public void render () {
 		ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
 		batch.begin();
-		boardView.render(Gdx.graphics.getDeltaTime());
+//		boardView.render(Gdx.graphics.getDeltaTime());
 		batch.end();
 	}
 	
