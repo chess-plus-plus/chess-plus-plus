@@ -7,8 +7,8 @@ public class FirebaseController {
         this.FBIC = FBIC;
     }
 
-    public void pingEcho() {
-        boolean connected = this.FBIC.isConnected();
+    public boolean pingEcho() {
+        return this.FBIC.isConnected();
 
         // do smth in front end
     }
