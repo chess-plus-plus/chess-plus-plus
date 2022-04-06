@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * CurvingMovementRule is used to represent complex moves where the
+ * CurvingMovePattern is used to represent complex moves where the
  * piece moves in an L-like curve according to a given ratio.
  *
  * This movement is represented as a ratio of squares the piece can move
@@ -14,25 +14,25 @@ import java.util.List;
  * 1:2, e.g. for every 1 square it moves in 1 axis it has to move 2 squares
  * along the other axis.
  */
-public class CurvingMovementRule implements MovementRule {
+public class CurvingMovePattern implements MovePattern {
 
     public int ratioNum1;
     public int ratioNum2;
 
-    public CurvingMovementRule(int ratioNum1, int ratioNum2) {
+    public CurvingMovePattern(int ratioNum1, int ratioNum2) {
         this.ratioNum1 = ratioNum1;
         this.ratioNum2 = ratioNum2;
     }
 
     /**
-     * Creates a movement rule that gives the piece a curving movement
+     * Creates a movement pattern that gives the piece a curving movement
      * with a ratio of 1:2, following an "L"-shape.
      *
      * In normal chess this is used by the Knight.
-     * @return CurvingMovementRule with ratio 1:2.
+     * @return CurvingMovePattern with ratio 1:2.
      */
-    public static CurvingMovementRule standardKnightMovement() {
-        return new CurvingMovementRule(1, 2);
+    public static CurvingMovePattern standardKnightMovement() {
+        return new CurvingMovePattern(1, 2);
     }
 
     @Override
