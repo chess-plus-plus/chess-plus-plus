@@ -27,6 +27,13 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
         pingRef = database.getReference(".info/connected");
         mAuth = new AndroidFirebaseAuth();
         this.getStatus();
+        this.loginAnonymously();
+    }
+
+    public FirebaseUser getCurrentUser() {
+        if (this.user != null)
+            return user;
+        return mAuth.getUser();
     }
 
     public void loginAnonymously() {
@@ -88,15 +95,29 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
 
     @Override
     public String createGameID() {
+        user = this.getCurrentUser();
         if (user == null)
             return null;
         String key = dataRef.push().getKey();
-        dataRef.child(key).child("player1").setValue(user.getIdToken(false));
-        dataRef.child(key).child("player2").setValue("");
+        dataRef.child(key).child("player1").setValue(user.getUid());
+        this.getGameUpdates(key);
         return key;
+    }
+
+    public boolean joinGame(String gameID) {
+        user = this.getCurrentUser();
+        if (user == null)
+            return false;
+        dataRef.child(gameID).child("player2").setValue(user.getUid());
+        this.getGameUpdates(gameID);
+        return true;
     }
 
     public boolean isConnected() {
         return connected;
+    }
+
+    public void goOnline() {
+        database.goOnline();
     }
 }
