@@ -1,7 +1,6 @@
 package com.chessplusplus.game;
 
 import com.badlogic.ashley.core.Entity;
-import com.chessplusplus.game.entity.Piece;
 
 import java.util.List;
 
