@@ -6,36 +6,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * HorizontalMovementRule is used to represent movement along the "x-axis"
+ * HorizontalMovePattern is used to represent movement along the "x-axis"
  * on the board, aka sideways movement.
  */
-public class HorizontalMovementRule extends SimpleMovementRule {
+public class HorizontalMovePattern extends SimpleMovePattern {
 
-    //TODO: Perhaps the default constructor should be private to reduce chance of us screwing it up
-    public HorizontalMovementRule(int range) {
+    public HorizontalMovePattern(int range) {
         super(range);
     }
 
-    /**
-     * Creates a movement rule that gives the piece horizontal movement
-     * with a range of one square per turn.
-     *
-     * In normal chess this is used by the King.
-     * @return HorizontalMovementRule with range = 1.
-     */
-    public static HorizontalMovementRule oneSquareHorizontalMovement() {
-        return new HorizontalMovementRule(1);
+    public HorizontalMovePattern() {
+        super();
     }
 
     /**
-     * Creates a movement rule that gives the piece horizontal movement
+     * Creates a movement pattern that gives the piece horizontal movement
+     * with a range of one square per turn.
+     *
+     * In normal chess this is used by the King.
+     * @return HorizontalMovePattern with range = 1.
+     */
+    public static HorizontalMovePattern oneSquareHorizontalMovement() {
+        return new HorizontalMovePattern(1);
+    }
+
+    /**
+     * Creates a movement pattern that gives the piece horizontal movement
      * with an unlimited range per turn.
      *
      * In normal chess this is used by the Rook & the Queen.
-     * @return HorizontalMovementRule with unlimited range.
+     * @return HorizontalMovePattern with unlimited range.
      */
-    public static HorizontalMovementRule unlimitedHorisontalMovement() {
-        return new HorizontalMovementRule(-1);
+    public static HorizontalMovePattern unlimitedHorizontalMovement() {
+        return new HorizontalMovePattern(-1);
     }
 
     @Override

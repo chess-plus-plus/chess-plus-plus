@@ -6,41 +6,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DiagonalMovementRule is used to represent movement along the diagonals
+ * DiagonalMovePattern is used to represent movement along the diagonals
  * on the board.
  *
  * Note that all diagonal movement has a constant "ratio" of 1:1, e.g. when a
  * piece moves 2 squares up the x-axis it must also move 2 squares up or down
  * along the y axis.
  *
- * For diagonal movement with a ratio that is not 1:1 use the CuringMovementRule.
+ * For diagonal movement with a ratio that is not 1:1 use the CuringMovePattern.
  */
-public class DiagonalMovementRule extends SimpleMovementRule {
+public class DiagonalMovePattern extends SimpleMovePattern {
 
-    public DiagonalMovementRule(int range) {
+    public DiagonalMovePattern(int range) {
         super(range);
     }
 
-    /**
-     * Creates a movement rule that gives the piece diagonal movement
-     * with a range of one square per turn.
-     *
-     * In normal chess this is used by the King.
-     * @return HorizontalMovementRule with range = 1.
-     */
-    public static DiagonalMovementRule oneSquareDiagonalMovement() {
-        return new DiagonalMovementRule(1);
+    public DiagonalMovePattern() {
+        super();
     }
 
     /**
-     * Creates a movement rule that gives the piece diagonal movement
+     * Creates a movement pattern that gives the piece diagonal movement
+     * with a range of one square per turn.
+     *
+     * In normal chess this is used by the King.
+     * @return DiagonalMovePattern with range = 1.
+     */
+    public static DiagonalMovePattern oneSquareDiagonalMovement() {
+        return new DiagonalMovePattern(1);
+    }
+
+    /**
+     * Creates a movement pattern that gives the piece diagonal movement
      * with an unlimited range per turn.
      *
      * In normal chess this is used by the Bishop & the Queen.
-     * @return HorizontalMovementRule with unlimited range.
+     * @return DiagonalMovePattern with unlimited range.
      */
-    public static DiagonalMovementRule unlimitedDiagonalMovement() {
-        return new DiagonalMovementRule(-1);
+    public static DiagonalMovePattern unlimitedDiagonalMovement() {
+        return new DiagonalMovePattern(-1);
     }
 
     @Override

@@ -2,13 +2,13 @@ package com.chessplusplus;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.chessplusplus.game.Game;
+import com.chessplusplus.game.BoardFactory;
+import com.chessplusplus.game.ChessGameImpl;
 import com.chessplusplus.game.views.BoardView;
+import com.chessplusplus.game.views.StartMenuView;
 
 public class ChessPlusPlus extends ApplicationAdapter implements ApplicationListener, InputProcessor {
 	public static final int WIDTH = 800;
@@ -16,9 +16,13 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	SpriteBatch batch;
 	Texture img;
-	Game game;
-	BoardView boardView;
+
 	FirebaseController FBC;
+
+	ChessGameImpl game;
+	BoardView boardView;
+	ApplicationAdapter screen;
+
 
 	public ChessPlusPlus(FireBaseInterface FBIC) {FBC = new FirebaseController(FBIC);}
 	
@@ -28,28 +32,42 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");;
 
-		Gdx.input.setInputProcessor(this);
+
+		String playerId1 = "1";
+		String playerId2 = "2";
+		game = new ChessGameImpl(
+				BoardFactory.standardBoardAndPieces(playerId1, playerId2),
+				playerId1, playerId2);
+
+
+		//Gdx.input.setInputProcessor(this);
 
 		boardView = new BoardView(batch);
+
+		//screen = new StartMenu(this);
+		//screen.create();
+		this.setScreen(new StartMenuView(this));
+	}
+
+	public void setScreen(ApplicationAdapter applicationAdapter){
+		screen = applicationAdapter;
+		screen.create();
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
-		batch.begin();
-		boardView.render(Gdx.graphics.getDeltaTime());
-		batch.end();
+		dispose();
+		screen.render();
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+		screen.dispose();
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
-		game.update();
+		//game.update();
 		return false;
 	}
 
@@ -65,7 +83,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		game.update();
+		//game.update();
 		return false;
 	}
 
