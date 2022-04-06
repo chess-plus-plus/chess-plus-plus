@@ -1,16 +1,28 @@
 package com.chessplusplus.game;
 
-import com.badlogic.ashley.core.Entity;
+import com.chessplusplus.game.component.Position;
 
 import java.util.List;
 
 public interface Board {
 
-    public int getHeight();
+    int getHeight();
 
-    public int getWidth();
+    int getWidth();
 
-    public Entity getPiece(int x, int y);
+    Piece getPiece(Position position);
 
-    public List<Entity> getPieces();
+    boolean squareIsEmpty(Position position);
+
+    boolean squareIsUnderAttack(Position position, String playerId);
+
+    List<Piece> getAllPieces();
+
+    /**
+     * Updates the board after the board has been edited.
+     */
+    void updateBoard();
+
+    void removePiece(Piece piece);
+
 }

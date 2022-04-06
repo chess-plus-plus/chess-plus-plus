@@ -1,5 +1,7 @@
 package com.chessplusplus.game.component;
 
+import java.util.Objects;
+
 public class Position {
 
     private final int x;
@@ -10,12 +12,31 @@ public class Position {
         this.y = y;
     }
 
+    /**
+     * Short-hand utility method that can be imported statically to save time.
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     * @return new Position object
+     */
+    public static Position pos(int x, int y) {
+        return new Position(x, y);
+    }
+
     public int getX() {
         return x;
     }
 
     public int getY() {
         return y;
+    }
+
+    public Position adjacentLeftPosition() {
+        return new Position(x - 1, y);
+    }
+
+    public Position adjacentRightPosition() {
+        return new Position(x + 1, y);
     }
 
     @Override
@@ -26,4 +47,16 @@ public class Position {
         return x == position.x && y == position.y;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }
