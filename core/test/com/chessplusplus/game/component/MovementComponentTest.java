@@ -223,6 +223,7 @@ public class MovementComponentTest {
         );
     }
 
+    // TODO: this fails, can move to it's own location
     @Test
     public void testSimplePawnMove() {
         testValidMoves(
