@@ -51,8 +51,7 @@ public class MovementRuleSet {
         legalTurns.addAll(mapMovesToTurns(piece, legalStrikes, true));
 
         for (SpecialMoveRule specialMoveRule : specialMoveRules) {
-            //TODO: Special moves are breaking the game, fix on a case-by-case basis
-            //legalTurns.addAll(specialMoveRule.getLegalTurns(piece.getPlayerId(), piece, board));
+            legalTurns.addAll(specialMoveRule.getLegalTurns(piece.getPlayerId(), piece, board));
         }
 
         return legalTurns;
