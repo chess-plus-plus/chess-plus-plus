@@ -35,9 +35,9 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 		String playerId1 = "1";
 		String playerId2 = "2";
-		game = new ChessGameImpl(
-				BoardFactory.standardBoardAndPieces(playerId1, playerId2),
-				playerId1, playerId2);
+		//game = new ChessGameImpl(
+		//		BoardFactory.standardBoardAndPieces(playerId1, playerId2),
+		//		playerId1, playerId2);
 
 
 		//Gdx.input.setInputProcessor(this);
