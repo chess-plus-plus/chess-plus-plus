@@ -2,6 +2,7 @@ package com.chessplusplus;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,12 +18,9 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	SpriteBatch batch;
 	Texture img;
 
-	FirebaseController FBC;
-
-	ChessGameImpl game;
 	BoardView boardView;
 	ApplicationAdapter screen;
-
+	FirebaseController FBC;
 
 	public ChessPlusPlus(FireBaseInterface FBIC) {FBC = new FirebaseController(FBIC);}
 	
@@ -32,20 +30,16 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");;
 
-
 		String playerId1 = "1";
 		String playerId2 = "2";
 		//game = new ChessGameImpl(
 		//		BoardFactory.standardBoardAndPieces(playerId1, playerId2),
 		//		playerId1, playerId2);
 
-
-		//Gdx.input.setInputProcessor(this);
+		Gdx.input.setInputProcessor(this);
 
 		boardView = new BoardView(batch);
 
-		//screen = new StartMenu(this);
-		//screen.create();
 		this.setScreen(new StartMenuView(this));
 	}
 
@@ -56,6 +50,14 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	@Override
 	public void render () {
+		/*
+		ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
+		batch.begin();
+		boardView.render(Gdx.graphics.getDeltaTime());
+		batch.end();
+		*/
+
+
 		dispose();
 		screen.render();
 	}
@@ -63,11 +65,15 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	@Override
 	public void dispose () {
 		screen.dispose();
+		/*
+		batch.dispose();
+		img.dispose();
+		 */
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
-		//game.update();
+		game.update();
 		return false;
 	}
 
@@ -83,7 +89,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		//game.update();
+		game.update();
 		return false;
 	}
 
@@ -106,4 +112,13 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	public boolean scrolled(float amountX, float amountY) {
 		return false;
 	}
+
+	public boolean isConnected(){
+		return this.FBC.pingEcho();
+	}
+
+	public SpriteBatch getBatch(){
+		return this.batch;
+	}
+
 }
