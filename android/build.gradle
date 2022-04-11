@@ -19,8 +19,8 @@ android {
     }
     defaultConfig {
         applicationId "com.chessplusplus"
-        minSdkVersion 19
-        targetSdkVersion 30
+        minSdk 24
+        targetSdk 24
         versionCode 1
         versionName "1.0"
     }
@@ -88,6 +88,10 @@ task run(type: Exec) {
 
     def adb = path + "/platform-tools/adb"
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.chessplusplus/com.chessplusplus.AndroidLauncher'
+}
+
+dependencies {
+    implementation 'com.google.firebase:firebase-auth:21.0.2'
 }
 
 eclipse.project.name = appName + "-android"

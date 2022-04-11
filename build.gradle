@@ -26,6 +26,7 @@ allprojects {
         ashleyVersion = '1.7.3'
         aiVersion = '1.8.2'
         gdxControllersVersion = '2.1.0'
+        junitVersion = '4.12'
     }
 
     repositories {
@@ -36,6 +37,7 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
+
 }
 
 project(":desktop") {
@@ -80,6 +82,12 @@ project(":android") {
 project(":core") {
     apply plugin: "java-library"
 
+//    compileJava {
+//        sourceCompatibility = '1.9'
+//        targetCompatibility = '1.9'
+//    }
+
+
 
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -87,5 +95,6 @@ project(":core") {
         api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
         api "com.badlogicgames.ashley:ashley:$ashleyVersion"
 
+        testImplementation "junit:junit:$junitVersion"
     }
 }

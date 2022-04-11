@@ -4,27 +4,67 @@ import com.chessplusplus.game.component.Position;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Turn {
 
     public final List<Action> actions;
+    public final String playerId;
 
-    public Turn(List<Action> actions) {
+    public Turn(String playerId, List<Action> actions) {
         this.actions = Collections.unmodifiableList(actions);
+        this.playerId = playerId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Turn turn = (Turn) o;
+        return actions.equals(turn.actions) && playerId.equals(turn.playerId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(actions, playerId);
     }
 
     public static class Action {
 
         public final Piece piece;           // The piece being affected
         public final ActionType actionType; // The type of action
-        public final Position position;     // The position of the piece at the end of the turn
+        public final Position startPos;     // The position of the piece before action is taken
+        public final Position actionPos;    // The position where the piece strikes/moves to
 
-        public Action(Piece piece, ActionType actionType, Position position) {
+        public Action(Piece piece, ActionType actionType, Position startPos, Position actionPos) {
             this.piece = piece;
             this.actionType = actionType;
-            this.position = position;
+            this.startPos = startPos;
+            this.actionPos = actionPos;
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Action action = (Action) o;
+            return piece.equals(action.piece) && actionType == action.actionType && startPos.equals(action.startPos) && actionPos.equals(action.actionPos);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(piece, actionType, startPos, actionPos);
+        }
+
+        @Override
+        public String toString() {
+            return "Action{" +
+                    "piece=" + piece +
+                    ", actionType=" + actionType +
+                    ", startPos=" + startPos +
+                    ", actionPos=" + actionPos +
+                    '}';
+        }
     }
 
     public enum ActionType {
@@ -36,4 +76,11 @@ public class Turn {
 
     }
 
+    @Override
+    public String toString() {
+        return "Turn{" +
+                "actions=" + actions +
+                ", playerId='" + playerId + '\'' +
+                '}';
+    }
 }

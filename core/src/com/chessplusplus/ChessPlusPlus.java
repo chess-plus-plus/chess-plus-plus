@@ -6,9 +6,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.chessplusplus.game.Game;
+import com.chessplusplus.game.BoardFactory;
+import com.chessplusplus.game.ChessGame;
+import com.chessplusplus.game.ChessGameImpl;
 import com.chessplusplus.game.views.BoardView;
+import com.chessplusplus.game.views.StartMenuView;
 
 public class ChessPlusPlus extends ApplicationAdapter implements ApplicationListener, InputProcessor {
 	public static final int WIDTH = 800;
@@ -16,45 +18,64 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	SpriteBatch batch;
 	Texture img;
-	FireBaseInterface _FBIC;
-	Game game;
-	BoardView boardView;
 
-	public ChessPlusPlus(FireBaseInterface FBIC) {_FBIC = FBIC;}
+	BoardView boardView;
+	ApplicationAdapter screen;
+	FirebaseController FBC;
+
+	ChessGame game;
+
+	public ChessPlusPlus(FireBaseInterface FBIC) {FBC = new FirebaseController(FBIC);}
 	
 	@Override
 	public void create () {
-		String gameID = "example-game-123";
-		_FBIC.sendInitialState(gameID, "A3B4");
-		_FBIC.getGameUpdates(gameID);
 		//game = new Game();
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-		_FBIC.sendMove(gameID, "1 C5");
-		_FBIC.sendMove(gameID, "2 D6");
+		img = new Texture("badlogic.jpg");;
+
+		String playerId1 = "1";
+		String playerId2 = "2";
+		game = new ChessGameImpl(
+				BoardFactory.standardBoardAndPieces(playerId1, playerId2),
+				playerId1, playerId2);
 
 		Gdx.input.setInputProcessor(this);
 
 		boardView = new BoardView(batch);
+
+		this.setScreen(new StartMenuView(this));
+	}
+
+	public void setScreen(ApplicationAdapter applicationAdapter){
+		screen = applicationAdapter;
+		screen.create();
 	}
 
 	@Override
 	public void render () {
+		/*
 		ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
 		batch.begin();
 		boardView.render(Gdx.graphics.getDeltaTime());
 		batch.end();
+		*/
+
+
+		dispose();
+		screen.render();
 	}
 	
 	@Override
 	public void dispose () {
+		screen.dispose();
+		/*
 		batch.dispose();
 		img.dispose();
+		 */
 	}
 
 	@Override
 	public boolean keyDown(int keycode) {
-		game.update();
 		return false;
 	}
 
@@ -70,7 +91,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		game.update();
 		return false;
 	}
 
@@ -93,4 +113,13 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	public boolean scrolled(float amountX, float amountY) {
 		return false;
 	}
+
+	public boolean isConnected(){
+		return this.FBC.pingEcho();
+	}
+
+	public SpriteBatch getBatch(){
+		return this.batch;
+	}
+
 }
