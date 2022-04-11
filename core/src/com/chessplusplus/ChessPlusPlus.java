@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.chessplusplus.game.BoardFactory;
 import com.chessplusplus.game.ChessGame;
 import com.chessplusplus.game.ChessGameImpl;
@@ -53,16 +54,16 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	@Override
 	public void render () {
-		/*
+
 		ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
 		batch.begin();
 		boardView.render(Gdx.graphics.getDeltaTime());
 		batch.end();
-		*/
 
 
+		/*
 		dispose();
-		screen.render();
+		screen.render();*/
 	}
 	
 	@Override

@@ -1,11 +1,16 @@
 package com.chessplusplus.game.views;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
@@ -15,22 +20,28 @@ public class BoardView extends Viewport implements Screen {
     private SpriteBatch batch;
 
     private int boardDimension = 8;
-    private int boardSize = 600;
-    private int squareSize = boardSize / boardDimension;
     private boolean playerIsWhite = true;
-    private int spriteSize = 70;
+    private int boardSize;
+    private int squareSize;
+    private int spriteSize;
+    private int boardYOffset;
 
     ArrayList<Texture> textures = new ArrayList<>();
 
     public BoardView(SpriteBatch sb) {
         batch = sb;
+
+        boardSize = Gdx.graphics.getWidth();
+        squareSize = boardSize / boardDimension;
+        spriteSize = squareSize;
+        boardYOffset = (Gdx.graphics.getHeight() - boardSize) / 2;
+
         textures.add(new Texture("pieces/white/king.png"));
         textures.add(new Texture("pieces/white/queen.png"));
         textures.add(new Texture("pieces/white/bishop.png"));
         textures.add(new Texture("pieces/white/knight.png"));
         textures.add(new Texture("pieces/white/rook.png"));
         textures.add(new Texture("pieces/white/pawn.png"));
-
     }
 
     @Override
@@ -65,10 +76,10 @@ public class BoardView extends Viewport implements Screen {
             }
         }
 
-        Texture boardTexture = new Texture( pixmap );
+        Texture boardTexture = new Texture(pixmap);
         pixmap.dispose();
         TextureRegion boardTextureRegion = new TextureRegion(boardTexture,0,0,boardSize,boardSize);
-        batch.draw(boardTextureRegion,0,0);
+        batch.draw(boardTextureRegion,0,boardYOffset);
 
         renderPiece(textures.get(0), 4, 0);
         renderPiece(textures.get(1), 3, 0);
@@ -91,7 +102,7 @@ public class BoardView extends Viewport implements Screen {
     private void renderPiece(Texture sprite, int x, int y) {
         float xOffset = squareSize - spriteSize;
         xOffset /= 2;
-        batch.draw(sprite, x * squareSize + xOffset, y*squareSize, spriteSize, spriteSize);
+        batch.draw(sprite, x * squareSize + xOffset, y*squareSize +boardYOffset, spriteSize, spriteSize);
     }
 
     @Override
@@ -116,8 +127,8 @@ public class BoardView extends Viewport implements Screen {
 
     @Override
     public void dispose() {
-        for (Texture text: textures) {
-            text.dispose();
+        for (Texture texture: textures) {
+            texture.dispose();
         }
     }
 }
