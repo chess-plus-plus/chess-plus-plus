@@ -27,6 +27,8 @@ public class BoardView extends Viewport implements Screen {
     private int boardYOffset;
 
     ArrayList<Texture> textures = new ArrayList<>();
+    private Texture boardTexture;
+    private TextureRegion boardTextureRegion;
 
     public BoardView(SpriteBatch sb) {
         batch = sb;
@@ -42,20 +44,14 @@ public class BoardView extends Viewport implements Screen {
         textures.add(new Texture("pieces/white/knight.png"));
         textures.add(new Texture("pieces/white/rook.png"));
         textures.add(new Texture("pieces/white/pawn.png"));
+
+        makeBoardTexture();
     }
 
-    @Override
-    public void show() {
-
-    }
-
-    /**/
-    @Override
-    public void render(float delta) {
-        renderBoard();
-    }
-
-    private void renderBoard() {
+    /*
+     * Sets texture for the board using the Pixmap class
+     * */
+    private void makeBoardTexture() {
         Pixmap pixmap = new Pixmap( boardSize, boardSize, Pixmap.Format.RGBA8888 );
 
         //Sets colors representing the black and white squares
@@ -76,9 +72,24 @@ public class BoardView extends Viewport implements Screen {
             }
         }
 
-        Texture boardTexture = new Texture(pixmap);
+        boardTexture = new Texture(pixmap);
         pixmap.dispose();
-        TextureRegion boardTextureRegion = new TextureRegion(boardTexture,0,0,boardSize,boardSize);
+        boardTextureRegion = new TextureRegion(boardTexture,0,0,boardSize,boardSize);
+    }
+
+    @Override
+    public void show() {
+
+    }
+
+    /**/
+    @Override
+    public void render(float delta) {
+        renderBoard();
+    }
+
+    /*Renders the board texture as well as all the pieces by calling the renderPiece method*/
+    private void renderBoard() {
         batch.draw(boardTextureRegion,0,boardYOffset);
 
         renderPiece(textures.get(0), 4, 0);
@@ -130,5 +141,6 @@ public class BoardView extends Viewport implements Screen {
         for (Texture texture: textures) {
             texture.dispose();
         }
+        boardTexture.dispose();
     }
 }
