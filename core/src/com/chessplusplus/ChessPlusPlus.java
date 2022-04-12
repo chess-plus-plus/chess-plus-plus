@@ -18,7 +18,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	public static final int HEIGHT = 800;
 
 	SpriteBatch batch;
-	Texture img;
 
 	BoardView boardView;
 	ApplicationAdapter screen;
@@ -32,7 +31,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	public void create () {
 		//game = new Game();
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");;
 
 		String playerId1 = "1";
 		String playerId2 = "2";
@@ -57,7 +55,8 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 		ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
 		batch.begin();
-		boardView.render(Gdx.graphics.getDeltaTime());
+		//boardView.render(Gdx.graphics.getDeltaTime());
+		screen.render();
 		batch.end();
 
 
@@ -69,8 +68,9 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	@Override
 	public void dispose () {
 		screen.dispose();
-		/*
+
 		batch.dispose();
+		/*
 		img.dispose();
 		 */
 	}
