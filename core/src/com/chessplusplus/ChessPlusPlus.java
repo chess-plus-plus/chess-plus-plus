@@ -46,6 +46,9 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	}
 
 	public void setScreen(ApplicationAdapter applicationAdapter){
+		if (screen != null) {
+			screen.dispose();
+		}
 		screen = applicationAdapter;
 		screen.create();
 	}

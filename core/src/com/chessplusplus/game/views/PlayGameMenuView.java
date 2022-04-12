@@ -112,4 +112,10 @@ public class PlayGameMenuView extends ApplicationAdapter {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
+
+    @Override
+    public void dispose() {
+        skin.dispose();
+        stage.dispose();
+    }
 }
