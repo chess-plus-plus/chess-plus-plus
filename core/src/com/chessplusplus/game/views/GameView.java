@@ -19,7 +19,7 @@ public class GameView extends ApplicationAdapter {
 
     @Override
     public void create() {
-
+        boardView.show();
     }
 
     @Override

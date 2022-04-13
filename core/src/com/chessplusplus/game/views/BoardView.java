@@ -38,6 +38,13 @@ public class BoardView extends Viewport implements Screen {
 
     public BoardView(SpriteBatch sb) {
         batch = sb;
+    }
+
+    /**
+    * Sets up all relevant attributes and textures for the object.
+    * */
+    @Override
+    public void show() {
         font = new BitmapFont();
         font.setColor(Color.CYAN);
         font.getData().setScale(3);
@@ -84,11 +91,6 @@ public class BoardView extends Viewport implements Screen {
         boardTexture = new Texture(pixmap);
         pixmap.dispose();
         boardTextureRegion = new TextureRegion(boardTexture, 0, 0, boardSize, boardSize);
-    }
-
-    @Override
-    public void show() {
-
     }
 
     /**/
