@@ -1,5 +1,6 @@
 package com.chessplusplus.game;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.component.movement.MovementRuleSet;
 
@@ -15,6 +16,8 @@ public class Piece {
     private PieceType pieceType;
     private Position position;
     private MovementRuleSet movement;
+    private PieceColor color;
+    private Texture texture;
 
     private int xp = 0;
     private final List<Turn.Action> actions = new ArrayList<>(); // All actions the piece have made
@@ -24,6 +27,35 @@ public class Piece {
         this.pieceType = pieceType;
         this.position = position;
         this.movement = movement;
+
+        this.color = PieceColor.WHITE;
+        String colorPath = "black";
+        if (this.color == PieceColor.WHITE) {
+            colorPath = "white";
+        }
+        String typePath = "pawn";
+        switch (pieceType) {
+            case KING:
+                typePath = "king.png";
+                break;
+            case PAWN:
+                typePath = "pawn.png";
+                break;
+            case ROOK:
+                typePath = "rook.png";
+                break;
+            case QUEEN:
+                typePath = "queen.png";
+                break;
+            case BISHOP:
+                typePath = "bishop.png";
+                break;
+            case KNIGHT:
+                typePath = "knight.png";
+                break;
+        }
+        String textureLocation = String.format("pieces/%s/%s", colorPath, typePath);
+        this.texture = new Texture(textureLocation);
     }
 
     /**
@@ -108,6 +140,15 @@ public class Piece {
 
     public void addAction(Turn.Action action) {
         actions.add(action);
+    }
+
+    public Texture getTexture() {
+        return this.texture;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Piece: %s\nPosition: %s", this.pieceType, this.position);
     }
 
 }

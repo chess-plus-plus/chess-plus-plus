@@ -3,41 +3,43 @@ package com.chessplusplus.game.views;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.chessplusplus.game.Board;
+import com.chessplusplus.game.BoardFactory;
+import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.utils.FontUtils;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class BoardView extends Viewport implements Screen {
 
     private SpriteBatch batch;
     private BitmapFont font;
 
-    private int boardDimension = 8;
     private boolean playerIsWhite = true;
     private int boardSize;
     private int squareSize;
     private int spriteSize;
     private int boardYOffset;
 
-    ArrayList<Texture> textures = new ArrayList<>();
+    private Board gameBoard;
+
     private Texture boardTexture;
     private TextureRegion boardTextureRegion;
 
     public BoardView(SpriteBatch sb) {
         batch = sb;
+        gameBoard = BoardFactory.standardBoardAndPieces("1", "2");
+        for (Piece piece: gameBoard.getAllPieces()) {
+            System.out.println(piece);
+        }
     }
 
     /**
@@ -50,16 +52,9 @@ public class BoardView extends Viewport implements Screen {
         font.getData().setScale(3);
 
         boardSize = Gdx.graphics.getWidth();
-        squareSize = boardSize / boardDimension;
+        squareSize = boardSize / gameBoard.getWidth();
         spriteSize = squareSize;
         boardYOffset = (Gdx.graphics.getHeight() - boardSize) / 2;
-
-        textures.add(new Texture("pieces/white/king.png"));
-        textures.add(new Texture("pieces/white/queen.png"));
-        textures.add(new Texture("pieces/white/bishop.png"));
-        textures.add(new Texture("pieces/white/knight.png"));
-        textures.add(new Texture("pieces/white/rook.png"));
-        textures.add(new Texture("pieces/white/pawn.png"));
 
         makeBoardTexture();
     }
@@ -81,9 +76,9 @@ public class BoardView extends Viewport implements Screen {
         //Loops through the squares and colors squares with opposite color of initial color
         pixmap.setColor(playerIsWhite ? whiteColor : blackColor);
         int xStart;
-        for (int y = 0; y < boardDimension; y++) {
+        for (int y = 0; y < gameBoard.getHeight(); y++) {
             xStart = (y % 2 == 0 ? 0 : 1);
-            for (int x = xStart; x < boardDimension; x += 2) {
+            for (int x = xStart; x < gameBoard.getWidth(); x += 2) {
                 pixmap.fillRectangle(x * squareSize, y * squareSize, squareSize, squareSize);
             }
         }
@@ -103,17 +98,8 @@ public class BoardView extends Viewport implements Screen {
     private void renderBoard() {
         batch.draw(boardTextureRegion, 0, boardYOffset);
 
-        renderPiece(textures.get(0), 4, 0, 0);
-        renderPiece(textures.get(1), 3, 0, 2);
-        renderPiece(textures.get(2), 2, 0, 1);
-        renderPiece(textures.get(2), 5, 0, 0);
-        renderPiece(textures.get(3), 1, 0, 1);
-        renderPiece(textures.get(3), 6, 0, 0);
-        renderPiece(textures.get(4), 0, 0, 0);
-        renderPiece(textures.get(4), 7, 0, 0);
-
-        for (int i = 0; i < boardDimension; i++) {
-            renderPiece(textures.get(5), i, 1, 0);
+        for (Piece piece : gameBoard.getAllPieces()) {
+            renderPiece(piece.getTexture(), piece.getPosition().getX(), piece.getPosition().getY(), 1);
         }
     }
 
@@ -161,8 +147,8 @@ public class BoardView extends Viewport implements Screen {
 
     @Override
     public void dispose() {
-        for (Texture texture : textures) {
-            texture.dispose();
+        for (Piece piece:gameBoard.getAllPieces()) {
+            piece.getTexture().dispose();
         }
         boardTexture.dispose();
     }
