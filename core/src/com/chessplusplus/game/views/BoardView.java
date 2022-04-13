@@ -25,6 +25,8 @@ public class BoardView extends Viewport implements Screen {
 
     private boolean playerIsWhite = true;
     private int boardSize;
+    private int boardWidth;
+    private int boardHeight;
     private int squareSize;
     private int spriteSize;
     private int boardYOffset;
@@ -51,10 +53,11 @@ public class BoardView extends Viewport implements Screen {
         font.setColor(Color.CYAN);
         font.getData().setScale(3);
 
-        boardSize = Gdx.graphics.getWidth();
-        squareSize = boardSize / gameBoard.getWidth();
+        boardWidth = Gdx.graphics.getWidth();
+        squareSize = boardWidth / gameBoard.getWidth();
         spriteSize = squareSize;
-        boardYOffset = (Gdx.graphics.getHeight() - boardSize) / 2;
+        boardHeight = squareSize * gameBoard.getHeight();
+        boardYOffset = (Gdx.graphics.getHeight() - boardHeight) / 2;
 
         makeBoardTexture();
     }
@@ -63,7 +66,7 @@ public class BoardView extends Viewport implements Screen {
      * Sets texture for the board using the Pixmap class
      * */
     private void makeBoardTexture() {
-        Pixmap pixmap = new Pixmap(boardSize, boardSize, Pixmap.Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(boardWidth, boardHeight, Pixmap.Format.RGBA8888);
 
         //Sets colors representing the black and white squares
         Color blackColor = new Color(0.176f, 0.235f, 0.330f, 1);
@@ -71,7 +74,7 @@ public class BoardView extends Viewport implements Screen {
 
         //Starts by coloring entire board with black/white
         pixmap.setColor(playerIsWhite ? blackColor : whiteColor);
-        pixmap.fillRectangle(0, 0, boardSize, boardSize);
+        pixmap.fillRectangle(0, 0, boardWidth, boardHeight);
 
         //Loops through the squares and colors squares with opposite color of initial color
         pixmap.setColor(playerIsWhite ? whiteColor : blackColor);
@@ -85,7 +88,7 @@ public class BoardView extends Viewport implements Screen {
 
         boardTexture = new Texture(pixmap);
         pixmap.dispose();
-        boardTextureRegion = new TextureRegion(boardTexture, 0, 0, boardSize, boardSize);
+        boardTextureRegion = new TextureRegion(boardTexture, 0, 0, boardWidth, boardHeight);
     }
 
     /**/
