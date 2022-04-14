@@ -52,6 +52,8 @@ public class BoardView extends Viewport implements Screen {
     private Texture legalMoveCircle;
     private int circleOffset;
 
+    private Texture strikeOptionTexture;
+
     //Selected piece by user, null if none selected
     private Piece selectedPiece;
 
@@ -86,7 +88,7 @@ public class BoardView extends Viewport implements Screen {
         }
 
         makeBoardTexture();
-        makeLegalMoveCircleTexture();
+        makeLegalMoveTextures();
     }
 
     /*
@@ -118,7 +120,8 @@ public class BoardView extends Viewport implements Screen {
         boardTextureRegion = new TextureRegion(boardTexture, 0, 0, boardWidth, boardHeight);
     }
 
-    private void makeLegalMoveCircleTexture() {
+    private void makeLegalMoveTextures() {
+        //Makes circle texture
         int radius = (int) (squareSize * 0.1);
         Pixmap pixmap = new Pixmap(2 * radius + 1, 2 * radius + 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.GRAY);
@@ -126,6 +129,15 @@ public class BoardView extends Viewport implements Screen {
         legalMoveCircle = new Texture(pixmap);
         pixmap.dispose();
         circleOffset = squareSize / 2 - radius;
+
+        //Makes strike rectangle (not filled)
+        pixmap = new Pixmap(squareSize, squareSize, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.FIREBRICK);
+        for (int i = 0; i < 10; i++) {
+            pixmap.drawRectangle(i, i, squareSize - i * 2, squareSize - i * 2);
+        }
+        strikeOptionTexture = new Texture(pixmap);
+        pixmap.dispose();
     }
 
 
@@ -157,6 +169,11 @@ public class BoardView extends Viewport implements Screen {
                             selectedPiece = null;
                         } else {
                             selectedPiece = pieceTemp;
+                            for (Turn turn : selectedPiece.getLegalTurns(game.getBoard())) {
+                                for (Turn.Action action : turn.actions) {
+                                    System.out.println(action);
+                                }
+                            }
                         }
                 } else if (selectedPiece != null) {
                     Turn.Action action = new Turn.Action(selectedPiece, Turn.ActionType.MOVEMENT,
@@ -180,9 +197,6 @@ public class BoardView extends Viewport implements Screen {
     /*Renders the board texture as well as all the pieces by calling the renderPiece method*/
     private void renderBoard() {
         batch.draw(boardTextureRegion, 0, boardYOffset);
-        for (Piece piece : gameBoard.getAllPieces()) {
-            renderPiece(piece.getTexture(), piece.getPosition().getX(), piece.getPosition().getY(), 1);
-        }
 
         if (selectedPiece != null) {
             for (Turn turn : selectedPiece.getLegalTurns(game.getBoard())) {
@@ -190,9 +204,15 @@ public class BoardView extends Viewport implements Screen {
                     if (action.actionType == Turn.ActionType.MOVEMENT) {
                         batch.draw(legalMoveCircle, action.actionPos.getX() * squareSize + circleOffset,
                                 action.actionPos.getY() * squareSize + boardYOffset + circleOffset);
+                    } else if (action.actionType == Turn.ActionType.STRIKE) {
+                        batch.draw(strikeOptionTexture, action.actionPos.getX() * squareSize,
+                                action.actionPos.getY() * squareSize + boardYOffset);
                     }
                 }
             }
+        }
+        for (Piece piece : gameBoard.getAllPieces()) {
+            renderPiece(piece.getTexture(), piece.getPosition().getX(), piece.getPosition().getY(), 1);
         }
     }
 
@@ -246,5 +266,6 @@ public class BoardView extends Viewport implements Screen {
         }
         boardTexture.dispose();
         legalMoveCircle.dispose();
+        strikeOptionTexture.dispose();
     }
 }
