@@ -101,12 +101,8 @@ public class ChessGameImpl implements ChessGame {
         calculateAllLegalTurns();
 
         // 3, a bit hacky, but I'm tired and it should work.
-        if (currentPlayerId.equals(player1Id)) {
-            currentPlayerId = player2Id;
-        } else {
-            currentPlayerId = player1Id;
-        }
-
+        currentPlayerId = currentPlayerId.equals(player1Id) ? player2Id : player1Id;
+        System.out.println(currentPlayerId);
     }
 
     /**
