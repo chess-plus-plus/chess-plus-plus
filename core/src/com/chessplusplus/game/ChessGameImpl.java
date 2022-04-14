@@ -18,6 +18,7 @@ public class ChessGameImpl implements ChessGame {
     private final String player1Id;
     private final String player2Id;
     private String currentPlayerId;
+
     private String playerID; //The player that this code will run on.
     private HashMap<String, PieceColor> playerIdToPieceColor = new HashMap<>();
 
@@ -133,15 +134,28 @@ public class ChessGameImpl implements ChessGame {
          */
     }
 
-    public PieceColor getPlayerColor(String playerId) {
+    /**
+     * Gets the color belonging to the player.
+     * @param playerId Id of player
+     * @throws IllegalArgumentException when playerId is not valid
+     * @return Color belonging to player*/
+    public PieceColor getPlayerColor(String playerId) throws IllegalArgumentException{
         if (playerIdToPieceColor.get(playerId) == null) {
             throw new IllegalArgumentException("No such player id");
         }
         return playerIdToPieceColor.get(playerId);
     }
 
+    /**
+     * Determines if a piece is friendly to the player running the code
+     * @param piece Piece to be evaluated
+     * @return the result as boolean*/
     public boolean isFriendlyPiece(Piece piece) {
         if (piece == null) return false;
         return piece.getPlayerId().equals(playerID);
+    }
+
+    public String getPlayerID() {
+        return playerID;
     }
 }

@@ -14,6 +14,7 @@ import com.chessplusplus.game.Board;
 import com.chessplusplus.game.BoardFactory;
 import com.chessplusplus.game.ChessGameImpl;
 import com.chessplusplus.game.Piece;
+import com.chessplusplus.game.PieceColor;
 import com.chessplusplus.game.Turn;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.utils.FontUtils;
@@ -35,7 +36,7 @@ public class BoardView extends Viewport implements Screen {
     private SpriteBatch batch;
     private BitmapFont font;
 
-    private boolean playerIsWhite = true;
+    private boolean playerIsWhite;
     private int boardWidth;
     private int boardHeight;
     private int squareSize;
@@ -54,13 +55,12 @@ public class BoardView extends Viewport implements Screen {
     //Selected piece by user, null if none selected
     private Piece selectedPiece;
 
-    private List<Position> legalMoves;
-
     public BoardView(SpriteBatch sb) {
         batch = sb;
-        legalMoves = new ArrayList<>();
         gameBoard = BoardFactory.standardBoardAndPieces("1", "2");
         game = new ChessGameImpl(gameBoard, "1", "2");
+
+        playerIsWhite = game.getPlayerColor(game.getPlayerID()) == PieceColor.WHITE;
     }
 
     /**
@@ -187,7 +187,6 @@ public class BoardView extends Viewport implements Screen {
         if (selectedPiece != null) {
             for (Turn turn : selectedPiece.getLegalTurns(game.getBoard())) {
                 for (Turn.Action action : turn.actions) {
-                    legalMoves.add(action.actionPos);
                     if (action.actionType == Turn.ActionType.MOVEMENT) {
                         batch.draw(legalMoveCircle, action.actionPos.getX() * squareSize + circleOffset,
                                 action.actionPos.getY() * squareSize + boardYOffset + circleOffset);
