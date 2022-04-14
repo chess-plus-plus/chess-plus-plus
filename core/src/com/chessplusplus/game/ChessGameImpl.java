@@ -18,6 +18,7 @@ public class ChessGameImpl implements ChessGame {
     private final String player1Id;
     private final String player2Id;
     private String currentPlayerId;
+    private String playerID; //The player that this code will run on.
     private HashMap<String, PieceColor> playerIdToPieceColor = new HashMap<>();
 
     private HashMap<Turn, Piece> legalTurnsToPieceMap = new HashMap<>();
@@ -27,9 +28,11 @@ public class ChessGameImpl implements ChessGame {
         this.player1Id = player1Id;
         this.player2Id = player2Id;
         currentPlayerId = player1Id;
+        this.playerID = player1Id;
 
         calculateAllLegalTurns();
 
+        //Randomly gives players a color and stores in hash map
         Random rand = new Random();
         int randomNum = rand.nextInt(2);
         if (randomNum == 0) {
@@ -135,5 +138,10 @@ public class ChessGameImpl implements ChessGame {
             throw new IllegalArgumentException("No such player id");
         }
         return playerIdToPieceColor.get(playerId);
+    }
+
+    public boolean isFriendlyPiece(Piece piece) {
+        if (piece == null) return false;
+        return piece.getPlayerId().equals(playerID);
     }
 }

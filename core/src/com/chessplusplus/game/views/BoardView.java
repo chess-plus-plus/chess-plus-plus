@@ -152,12 +152,12 @@ public class BoardView extends Viewport implements Screen {
                 Position actionPos = Position.pos(xTouch / squareSize, yTouch / squareSize);
                 if (!game.getBoard().squareIsEmpty(actionPos)) {
                     Piece pieceTemp = game.getBoard().getPiece(actionPos);
-                    //The selected piece equals previously selected piece
-                    if (selectedPiece != null && selectedPiece.equals(pieceTemp)) {
-                        selectedPiece = null;
-                    } else {
-                        selectedPiece = pieceTemp;
-                    }
+                        //The selected piece equals previously selected piece
+                        if (selectedPiece != null && selectedPiece.equals(pieceTemp)) {
+                            selectedPiece = null;
+                        } else {
+                            selectedPiece = pieceTemp;
+                        }
                 } else if (selectedPiece != null) {
                     Turn.Action action = new Turn.Action(selectedPiece, Turn.ActionType.MOVEMENT,
                             selectedPiece.getPosition(), actionPos);
@@ -169,6 +169,9 @@ public class BoardView extends Viewport implements Screen {
                     selectedPiece = null;
                 }
             } else {
+                selectedPiece = null;
+            }
+            if (!game.isFriendlyPiece(selectedPiece)) {
                 selectedPiece = null;
             }
         }
