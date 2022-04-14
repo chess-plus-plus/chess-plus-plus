@@ -24,6 +24,10 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
+/*TODO: Fix weird bug.
+   App crashes when left horse is moved to (0, 2) regardless of where it comes from
+* */
+
 public class BoardView extends Viewport implements Screen {
 
     private SpriteBatch batch;
@@ -107,7 +111,7 @@ public class BoardView extends Viewport implements Screen {
 
     private void makeLegalMoveCircleTexture() {
         int radius = (int) (squareSize * 0.1);
-        Pixmap pixmap = new Pixmap(2*radius+1, 2*radius+1, Pixmap.Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(2 * radius + 1, 2 * radius + 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.GRAY);
         pixmap.fillCircle(radius, radius, radius);
         legalMoveCircle = new Texture(pixmap);
@@ -136,15 +140,24 @@ public class BoardView extends Viewport implements Screen {
                 //yTouch relative to the board
                 yTouch -= boardYOffset;
                 //Convert from pixel coordinates to board coordinates
-                Position pos = Position.pos(xTouch / squareSize, yTouch / squareSize);
-                if (!game.getBoard().squareIsEmpty(pos)) {
-                    Piece pieceTemp = game.getBoard().getPiece(pos);
+                Position actionPos = Position.pos(xTouch / squareSize, yTouch / squareSize);
+                if (!game.getBoard().squareIsEmpty(actionPos)) {
+                    Piece pieceTemp = game.getBoard().getPiece(actionPos);
                     //The selected piece equals previously selected piece
                     if (selectedPiece != null && selectedPiece.equals(pieceTemp)) {
                         selectedPiece = null;
                     } else {
                         selectedPiece = pieceTemp;
                     }
+                } else if (selectedPiece != null) {
+                    Turn.Action action = new Turn.Action(selectedPiece, Turn.ActionType.MOVEMENT,
+                            selectedPiece.getPosition(), actionPos);
+                    System.out.println(action);
+                    List<Turn.Action> actions = new ArrayList<>();
+                    actions.add(action);
+                    Turn turn = new Turn("1", actions);
+                    game.submitTurn(turn);
+                    selectedPiece = null;
                 }
             } else {
                 selectedPiece = null;

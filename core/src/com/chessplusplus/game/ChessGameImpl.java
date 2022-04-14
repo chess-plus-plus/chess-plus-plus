@@ -1,5 +1,6 @@
 package com.chessplusplus.game;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public class ChessGameImpl implements ChessGame {
 
     private Board gameBoard;
-    private List<Turn> gameTurnHistory;
+    private List<Turn> gameTurnHistory = new ArrayList<>();
 
     private final String player1Id;
     private final String player2Id;
