@@ -162,32 +162,11 @@ public class BoardView extends Viewport implements Screen {
                 yTouch -= boardYOffset;
                 //Convert from pixel coordinates to board coordinates
                 Position actionPos = Position.pos(xTouch / squareSize, yTouch / squareSize);
-                if (!game.getBoard().squareIsEmpty(actionPos)) {
-                    Piece pieceTemp = game.getBoard().getPiece(actionPos);
-                        //The selected piece equals previously selected piece
-                        if (selectedPiece != null && selectedPiece.equals(pieceTemp)) {
-                            selectedPiece = null;
-                        } else {
-                            selectedPiece = pieceTemp;
-                            for (Turn turn : selectedPiece.getLegalTurns(game.getBoard())) {
-                                for (Turn.Action action : turn.actions) {
-                                    System.out.println(action);
-                                }
-                            }
-                        }
-                } else if (selectedPiece != null) {
-                    Turn.Action action = new Turn.Action(selectedPiece, Turn.ActionType.MOVEMENT,
-                            selectedPiece.getPosition(), actionPos);
-                    System.out.println(action);
-                    List<Turn.Action> actions = new ArrayList<>();
-                    actions.add(action);
-                    Turn turn = new Turn("1", actions);
-                    game.submitTurn(turn);
-                    selectedPiece = null;
-                }
+                game.processUserInput(this, actionPos);
             } else {
                 selectedPiece = null;
             }
+            //Prevents user from getting possible moves by clicking opponent pieces
             if (!game.isFriendlyPiece(selectedPiece)) {
                 selectedPiece = null;
             }
@@ -267,5 +246,13 @@ public class BoardView extends Viewport implements Screen {
         boardTexture.dispose();
         legalMoveCircle.dispose();
         strikeOptionTexture.dispose();
+    }
+
+    public Piece getSelectedPiece() {
+        return selectedPiece;
+    }
+
+    public void setSelectedPiece(Piece selectedPiece) {
+        this.selectedPiece = selectedPiece;
     }
 }

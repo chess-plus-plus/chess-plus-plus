@@ -1,5 +1,9 @@
 package com.chessplusplus.game;
 
+import com.chessplusplus.game.component.Position;
+import com.chessplusplus.game.views.BoardView;
+import com.chessplusplus.game.views.GameView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -157,5 +161,42 @@ public class ChessGameImpl implements ChessGame {
 
     public String getPlayerID() {
         return playerID;
+    }
+
+    /**
+     * @param  boardView BoardView-Screen that renders game to user
+     * @param actionPos Coordinates on the board to be processed
+     * */
+    public void processUserInput(BoardView boardView, Position actionPos) {
+        if (!this.getBoard().squareIsEmpty(actionPos) && boardView.getSelectedPiece() == null) {
+            Piece pieceTemp = this.getBoard().getPiece(actionPos);
+            //The selected piece equals previously selected piece
+            if (boardView.getSelectedPiece() != null && boardView.getSelectedPiece().equals(pieceTemp)) {
+                boardView.setSelectedPiece(null);
+            } else {
+                boardView.setSelectedPiece(pieceTemp);
+                for (Turn turn : boardView.getSelectedPiece().getLegalTurns(this.getBoard())) {
+                    for (Turn.Action action : turn.actions) {
+                        //System.out.println(action);
+                    }
+                }
+            }
+        } else if (boardView.getSelectedPiece() != null) {
+            Piece pieceTemp = this.getBoard().getPiece(actionPos);
+            Turn.ActionType actionType = Turn.ActionType.MOVEMENT;
+
+            if (!this.isFriendlyPiece(pieceTemp) && !this.getBoard().squareIsEmpty(actionPos)) {
+                actionType = Turn.ActionType.STRIKE;
+            }
+
+            Turn.Action action = new Turn.Action(boardView.getSelectedPiece(), actionType,
+                    boardView.getSelectedPiece().getPosition(), actionPos);
+            System.out.println(action);
+            List<Turn.Action> actions = new ArrayList<>();
+            actions.add(action);
+            Turn turn = new Turn("1", actions);
+            this.submitTurn(turn);
+            boardView.setSelectedPiece(null);
+        }
     }
 }
