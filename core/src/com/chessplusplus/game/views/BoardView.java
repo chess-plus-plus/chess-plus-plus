@@ -12,11 +12,17 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.chessplusplus.game.Board;
 import com.chessplusplus.game.BoardFactory;
+import com.chessplusplus.game.ChessGameImpl;
 import com.chessplusplus.game.Piece;
+import com.chessplusplus.game.Turn;
+import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.utils.FontUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
+
+import javax.swing.Action;
 
 public class BoardView extends Viewport implements Screen {
 
@@ -24,7 +30,6 @@ public class BoardView extends Viewport implements Screen {
     private BitmapFont font;
 
     private boolean playerIsWhite = true;
-    private int boardSize;
     private int boardWidth;
     private int boardHeight;
     private int squareSize;
@@ -32,21 +37,29 @@ public class BoardView extends Viewport implements Screen {
     private int boardYOffset;
 
     private Board gameBoard;
+    private ChessGameImpl game;
 
     private Texture boardTexture;
     private TextureRegion boardTextureRegion;
 
+    private Texture legalMoveCircle;
+    private int circleOffset;
+
+    //Selected piece by user, null if none selected
+    private Piece selectedPiece;
+
+    private List<Position> legalMoves;
+
     public BoardView(SpriteBatch sb) {
         batch = sb;
+        legalMoves = new ArrayList<>();
         gameBoard = BoardFactory.standardBoardAndPieces("1", "2");
-        for (Piece piece: gameBoard.getAllPieces()) {
-            System.out.println(piece);
-        }
+        game = new ChessGameImpl(gameBoard, "1", "2");
     }
 
     /**
-    * Sets up all relevant attributes and textures for the object.
-    * */
+     * Sets up all relevant attributes and textures for the object.
+     */
     @Override
     public void show() {
         font = new BitmapFont();
@@ -60,6 +73,7 @@ public class BoardView extends Viewport implements Screen {
         boardYOffset = (Gdx.graphics.getHeight() - boardHeight) / 2;
 
         makeBoardTexture();
+        makeLegalMoveCircleTexture();
     }
 
     /*
@@ -91,25 +105,78 @@ public class BoardView extends Viewport implements Screen {
         boardTextureRegion = new TextureRegion(boardTexture, 0, 0, boardWidth, boardHeight);
     }
 
+    private void makeLegalMoveCircleTexture() {
+        int radius = (int) (squareSize * 0.1);
+        Pixmap pixmap = new Pixmap(2*radius+1, 2*radius+1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.GRAY);
+        pixmap.fillCircle(radius, radius, radius);
+        legalMoveCircle = new Texture(pixmap);
+        pixmap.dispose();
+        circleOffset = squareSize / 2 - radius;
+    }
+
+
     /**/
     @Override
     public void render(float delta) {
+        processUserInput();
         renderBoard();
+    }
+
+    private void processUserInput() {
+        if (Gdx.input.justTouched()) {
+
+            //Inverts y touch coordinates since libgdx increases y from top to bottom for some cursed reason
+            int yTouch = Gdx.graphics.getHeight() - Gdx.input.getY();
+            int xTouch = Gdx.input.getX();
+
+            //User touch the board
+            if (yTouch > boardYOffset && yTouch < boardYOffset + boardHeight) {
+
+                //yTouch relative to the board
+                yTouch -= boardYOffset;
+                //Convert from pixel coordinates to board coordinates
+                Position pos = Position.pos(xTouch / squareSize, yTouch / squareSize);
+                if (!game.getBoard().squareIsEmpty(pos)) {
+                    Piece pieceTemp = game.getBoard().getPiece(pos);
+                    //The selected piece equals previously selected piece
+                    if (selectedPiece != null && selectedPiece.equals(pieceTemp)) {
+                        selectedPiece = null;
+                    } else {
+                        selectedPiece = pieceTemp;
+                    }
+                }
+            } else {
+                selectedPiece = null;
+            }
+        }
     }
 
     /*Renders the board texture as well as all the pieces by calling the renderPiece method*/
     private void renderBoard() {
         batch.draw(boardTextureRegion, 0, boardYOffset);
-
         for (Piece piece : gameBoard.getAllPieces()) {
             renderPiece(piece.getTexture(), piece.getPosition().getX(), piece.getPosition().getY(), 1);
+        }
+
+        if (selectedPiece != null) {
+            for (Turn turn : selectedPiece.getLegalTurns(game.getBoard())) {
+                for (Turn.Action action : turn.actions) {
+                    legalMoves.add(action.actionPos);
+                    if (action.actionType == Turn.ActionType.MOVEMENT) {
+                        batch.draw(legalMoveCircle, action.actionPos.getX() * squareSize + circleOffset,
+                                action.actionPos.getY() * squareSize + boardYOffset + circleOffset);
+                    }
+                }
+            }
         }
     }
 
     /**
      * Renders a single chess piece on the board.
-     * @param x and y params represents coordinates on the board, on which the piece will be rendered on, starting from index 0
-     * (0, 1, 2, ....)
+     *
+     * @param x     and y params represents coordinates on the board, on which the piece will be rendered on, starting from index 0
+     *              (0, 1, 2, ....)
      * @param level is the xp level of the piece. Accepted values are 0, 1, 2
      */
     private void renderPiece(Texture sprite, int x, int y, int level) {
@@ -150,9 +217,10 @@ public class BoardView extends Viewport implements Screen {
 
     @Override
     public void dispose() {
-        for (Piece piece:gameBoard.getAllPieces()) {
+        for (Piece piece : gameBoard.getAllPieces()) {
             piece.getTexture().dispose();
         }
         boardTexture.dispose();
+        legalMoveCircle.dispose();
     }
 }

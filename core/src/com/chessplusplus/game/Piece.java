@@ -28,6 +28,7 @@ public class Piece {
         this.position = position;
         this.movement = movement;
 
+        //Determines filepath to texture image to use for the piece.
         this.color = PieceColor.WHITE;
         String colorPath = "black";
         if (this.color == PieceColor.WHITE) {
@@ -144,6 +145,10 @@ public class Piece {
 
     public Texture getTexture() {
         return this.texture;
+    }
+
+    public boolean equals(Piece piece) {
+        return this.position.equals(piece.getPosition());
     }
 
     @Override
