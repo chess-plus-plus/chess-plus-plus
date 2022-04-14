@@ -25,7 +25,7 @@ import java.util.Vector;
 import javax.swing.Action;
 
 /*TODO: Fix weird bug.
-   App crashes when left horse is moved to (0, 2) regardless of where it comes from
+   App crashes when any piece is moved to (0, 2) regardless of where it comes from
 * */
 
 public class BoardView extends Viewport implements Screen {
