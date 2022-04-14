@@ -2,5 +2,10 @@ package com.chessplusplus.game;
 
 public enum PieceColor {
     BLACK,
-    WHITE
+    WHITE;
+
+    @Override
+    public String toString() {
+        return name().toLowerCase();
+    }
 }

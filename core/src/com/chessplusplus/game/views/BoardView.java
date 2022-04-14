@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Action;
+import javax.swing.plaf.synth.ColorType;
 
 /*TODO: Fix weird bug.
    App crashes when any piece is moved to (0, 2) regardless of where it comes from. If the pawn
@@ -76,6 +77,13 @@ public class BoardView extends Viewport implements Screen {
         spriteSize = squareSize;
         boardHeight = squareSize * gameBoard.getHeight();
         boardYOffset = (Gdx.graphics.getHeight() - boardHeight) / 2;
+
+        //Finds color of the piece based on player id and passes it to the pieces
+        for (Piece piece : game.getBoard().getAllPieces()) {
+            String playerId = piece.getPlayerId();
+            String filePath = String.format("pieces/%s/", game.getPlayerColor(playerId));
+            piece.setTexture(filePath);
+        }
 
         makeBoardTexture();
         makeLegalMoveCircleTexture();

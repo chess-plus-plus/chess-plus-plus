@@ -3,6 +3,8 @@ package com.chessplusplus.game;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 // Ad hoc class used purely to test out ECS
 // To "run" the demo, just click a button or on the application window,
@@ -16,6 +18,7 @@ public class ChessGameImpl implements ChessGame {
     private final String player1Id;
     private final String player2Id;
     private String currentPlayerId;
+    private HashMap<String, PieceColor> playerIdToPieceColor = new HashMap<>();
 
     private HashMap<Turn, Piece> legalTurnsToPieceMap = new HashMap<>();
 
@@ -26,6 +29,16 @@ public class ChessGameImpl implements ChessGame {
         currentPlayerId = player1Id;
 
         calculateAllLegalTurns();
+
+        Random rand = new Random();
+        int randomNum = rand.nextInt(2);
+        if (randomNum == 0) {
+            playerIdToPieceColor.put(player1Id, PieceColor.BLACK);
+            playerIdToPieceColor.put(player2Id, PieceColor.WHITE);
+        } else {
+            playerIdToPieceColor.put(player1Id, PieceColor.WHITE);
+            playerIdToPieceColor.put(player2Id, PieceColor.BLACK);
+        }
     }
 
     @Override
@@ -117,4 +130,10 @@ public class ChessGameImpl implements ChessGame {
          */
     }
 
+    public PieceColor getPlayerColor(String playerId) {
+        if (playerIdToPieceColor.get(playerId) == null) {
+            throw new IllegalArgumentException("No such player id");
+        }
+        return playerIdToPieceColor.get(playerId);
+    }
 }

@@ -18,6 +18,7 @@ public class Piece {
     private MovementRuleSet movement;
     private PieceColor color;
     private Texture texture;
+    private String textureFileName;
 
     private int xp = 0;
     private final List<Turn.Action> actions = new ArrayList<>(); // All actions the piece have made
@@ -28,12 +29,7 @@ public class Piece {
         this.position = position;
         this.movement = movement;
 
-        //Determines filepath to texture image to use for the piece.
-        this.color = PieceColor.WHITE;
-        String colorPath = "black";
-        if (this.color == PieceColor.WHITE) {
-            colorPath = "white";
-        }
+        //Determines filename to texture image to use for the piece.
         String typePath = "pawn";
         switch (pieceType) {
             case KING:
@@ -55,8 +51,7 @@ public class Piece {
                 typePath = "knight.png";
                 break;
         }
-        String textureLocation = String.format("pieces/%s/%s", colorPath, typePath);
-        this.texture = new Texture(textureLocation);
+        textureFileName = typePath;
     }
 
     /**
@@ -149,6 +144,18 @@ public class Piece {
 
     public boolean equals(Piece piece) {
         return this.position.equals(piece.getPosition());
+    }
+
+    /**Sets texture of Piece. Only call this once to setup texture based on what color the player and piece belong to
+     * @param filePath filepath to relevant directory. Currently either "pieces/black/" or "pieces/white/"
+     * */
+    public void setTexture(String filePath) {
+        //Safety dispose in case redundant calls to method
+        if (texture != null) {
+            texture.dispose();
+        }
+        filePath += textureFileName;
+        texture = new Texture(filePath);
     }
 
     @Override
