@@ -10,6 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
+import java.util.Random;
 
 public class FirebaseAndroidInterface implements FireBaseInterface{
     FirebaseDatabase database;
@@ -99,7 +100,8 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
         user = this.getCurrentUser();
         if (user == null)
             return null;
-        String key = dataRef.push().getKey();
+
+        String key = this.getRandomNumberString();
         dataRef.child(key).child("player1").setValue(user.getUid());
         this.getGameUpdates(key);
         return key;
@@ -137,4 +139,16 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
     public void goOnline() {
         database.goOnline();
     }
+
+    private String getRandomNumberString() {
+        // It will generate 6 digit random Number.
+        // from 0 to 999999
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+
+        // this will convert any number sequence into 6 character.
+        return String.format("%06d", number);
+    }
 }
+
+
