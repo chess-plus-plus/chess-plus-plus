@@ -3,6 +3,7 @@ package com.chessplusplus.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.component.movement.MovementRuleSet;
+import com.chessplusplus.game.system.LevelEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class Piece {
     private Texture texture;
     private String textureFileName;
 
-    private int level = 1;
+    private int level = 0;
     private int xp = 0;
     private int nextLevelXpThreshold;
     private final List<Turn.Action> actions = new ArrayList<>(); // All actions the piece have made
@@ -71,6 +72,7 @@ public class Piece {
 
     /**
      * Change the playerID of the piece.
+     *
      * @param playerId new playerID.
      */
     public void setPlayerId(String playerId) {
@@ -86,6 +88,7 @@ public class Piece {
 
     /**
      * Change the piece type of the piece.
+     *
      * @param pieceType new piece type.
      */
     public void setPieceType(PieceType pieceType) {
@@ -101,6 +104,7 @@ public class Piece {
 
     /**
      * Move the piece to a new position.
+     *
      * @param newPosition New position of the piece.
      */
     public void moveTo(Position newPosition) {
@@ -138,18 +142,21 @@ public class Piece {
      * Give the piece a certain amount of XP.
      * This may cause the piece to level up.
      *
-     * @param xp Amount of xp to give the piece.
+     * @param xp          Amount of xp to give the piece.
+     * @param levelEngine Used to upgrade the piece.
      */
-    public void giveXp(int xp) {
+    public void giveXp(int xp, LevelEngine levelEngine) {
         this.xp += xp;
         if (xp > nextLevelXpThreshold) {
             level++;
             nextLevelXpThreshold = Integer.MAX_VALUE;
+            levelEngine.levelUp(this);
         }
     }
 
     /**
      * Get the XP threshold for next level.
+     *
      * @return Next XP threshold.
      */
     public int getNextLevelXpThreshold() {
@@ -160,10 +167,18 @@ public class Piece {
      * Sets the XP threshold for the piece's next level.
      * Once this threshold is exceeded the piece levels up.
      *
-     * @param nextLevelXpThreshold  Next XP threshold.
+     * @param nextLevelXpThreshold Next XP threshold.
      */
     public void setNextLevelXpThreshold(int nextLevelXpThreshold) {
         this.nextLevelXpThreshold = nextLevelXpThreshold;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public List<Turn.Action> getActions() {
@@ -182,9 +197,11 @@ public class Piece {
         return this.position.equals(piece.getPosition());
     }
 
-    /**Sets texture of Piece. Only call this once to setup texture based on what color the player and piece belong to
+    /**
+     * Sets texture of Piece. Only call this once to setup texture based on what color the player and piece belong to
+     *
      * @param filePath filepath to relevant directory. Currently either "pieces/black/" or "pieces/white/"
-     * */
+     */
     public void setTexture(String filePath) {
         //Safety dispose in case redundant calls to method
         if (texture != null) {
