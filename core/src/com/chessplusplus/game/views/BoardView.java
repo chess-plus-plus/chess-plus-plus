@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.chessplusplus.game.Board;
 import com.chessplusplus.game.BoardFactory;
@@ -18,13 +17,6 @@ import com.chessplusplus.game.PieceColor;
 import com.chessplusplus.game.Turn;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.utils.FontUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-
-import javax.swing.Action;
-import javax.swing.plaf.synth.ColorType;
 
 /*TODO: Fix weird bug.
    App crashes when any piece is moved to (0, 2) regardless of where it comes from. If the pawn
@@ -61,8 +53,10 @@ public class BoardView extends Viewport implements Screen {
         batch = sb;
         gameBoard = BoardFactory.standardBoardAndPieces("1", "2");
         game = new ChessGameImpl(gameBoard, "1", "2");
+        game.setPlayer("2");
 
         playerIsWhite = game.getPlayerColor(game.getPlayerID()) == PieceColor.WHITE;
+        System.out.println("Is white: " + playerIsWhite);
     }
 
     /**
@@ -161,7 +155,7 @@ public class BoardView extends Viewport implements Screen {
                 //yTouch relative to the board
                 yTouch -= boardYOffset;
                 //Convert from pixel coordinates to board coordinates
-                Position actionPos = Position.pos(xTouch / squareSize, yTouch / squareSize);
+                Position actionPos = Position.pos(xTouch / squareSize, convertY(yTouch / squareSize));
                 game.processUserInput(this, actionPos);
             } else {
                 selectedPiece = null;
@@ -182,16 +176,16 @@ public class BoardView extends Viewport implements Screen {
                 for (Turn.Action action : turn.actions) {
                     if (action.actionType == Turn.ActionType.MOVEMENT) {
                         batch.draw(legalMoveCircle, action.actionPos.getX() * squareSize + circleOffset,
-                                action.actionPos.getY() * squareSize + boardYOffset + circleOffset);
+                                convertY(action.actionPos.getY()) * squareSize + boardYOffset + circleOffset);
                     } else if (action.actionType == Turn.ActionType.STRIKE) {
                         batch.draw(strikeOptionTexture, action.actionPos.getX() * squareSize,
-                                action.actionPos.getY() * squareSize + boardYOffset);
+                                convertY(action.actionPos.getY()) * squareSize + boardYOffset);
                     }
                 }
             }
         }
         for (Piece piece : gameBoard.getAllPieces()) {
-            renderPiece(piece.getTexture(), piece.getPosition().getX(), piece.getPosition().getY(), 1);
+            renderPiece(piece.getTexture(), piece.getPosition().getX(), convertY(piece.getPosition().getY()), 1);
         }
     }
 
@@ -254,5 +248,15 @@ public class BoardView extends Viewport implements Screen {
 
     public void setSelectedPiece(Piece selectedPiece) {
         this.selectedPiece = selectedPiece;
+    }
+
+    /**
+     * Returns y coordinate that is relative to the player or absolute to the game. Very important to
+     * convert y-coordinates when sending out y-coordinate and when receiving.
+     * @param y y-coordinate relative to the player
+     * @return correct y to use for visualization or correct y to send out to controller
+     * */
+    private int convertY(int y) {
+        return game.playerIsBottom() ? y : gameBoard.getHeight() - y - 1;
     }
 }

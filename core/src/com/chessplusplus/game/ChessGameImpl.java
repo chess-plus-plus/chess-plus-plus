@@ -195,4 +195,12 @@ public class ChessGameImpl implements ChessGame {
             boardView.setSelectedPiece(null);
         }
     }
+
+    public void setPlayer(String playerID) {
+        this.playerID = playerID;
+    }
+
+    public boolean playerIsBottom() {
+        return playerID.equals(player1Id);
+    }
 }
