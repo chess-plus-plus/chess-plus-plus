@@ -1,5 +1,6 @@
 package com.chessplusplus.game;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.component.movement.MovementRuleSet;
 
@@ -15,6 +16,9 @@ public class Piece {
     private PieceType pieceType;
     private Position position;
     private MovementRuleSet movement;
+    private PieceColor color;
+    private Texture texture;
+    private String textureFileName;
 
     private int xp = 0;
     private final List<Turn.Action> actions = new ArrayList<>(); // All actions the piece have made
@@ -24,6 +28,30 @@ public class Piece {
         this.pieceType = pieceType;
         this.position = position;
         this.movement = movement;
+
+        //Determines filename to texture image to use for the piece.
+        String typePath = "pawn";
+        switch (pieceType) {
+            case KING:
+                typePath = "king.png";
+                break;
+            case PAWN:
+                typePath = "pawn.png";
+                break;
+            case ROOK:
+                typePath = "rook.png";
+                break;
+            case QUEEN:
+                typePath = "queen.png";
+                break;
+            case BISHOP:
+                typePath = "bishop.png";
+                break;
+            case KNIGHT:
+                typePath = "knight.png";
+                break;
+        }
+        textureFileName = typePath;
     }
 
     /**
@@ -108,6 +136,31 @@ public class Piece {
 
     public void addAction(Turn.Action action) {
         actions.add(action);
+    }
+
+    public Texture getTexture() {
+        return this.texture;
+    }
+
+    public boolean equals(Piece piece) {
+        return this.position.equals(piece.getPosition());
+    }
+
+    /**Sets texture of Piece. Only call this once to setup texture based on what color the player and piece belong to
+     * @param filePath filepath to relevant directory. Currently either "pieces/black/" or "pieces/white/"
+     * */
+    public void setTexture(String filePath) {
+        //Safety dispose in case redundant calls to method
+        if (texture != null) {
+            texture.dispose();
+        }
+        filePath += textureFileName;
+        texture = new Texture(filePath);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Piece: %s\nPosition: %s", this.pieceType, this.position);
     }
 
 }

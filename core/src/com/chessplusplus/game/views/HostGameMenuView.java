@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.chessplusplus.ChessPlusPlus;
 
+/*TODO: We might need to explicitly dispose the Stage and SKin ogbjects by overriding dispose()
+*  in all applicationadapters*/
+
 public class HostGameMenuView extends ApplicationAdapter {
 
     private ChessPlusPlus chessPlusPlus;
