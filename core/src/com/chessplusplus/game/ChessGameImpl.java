@@ -160,6 +160,10 @@ public class ChessGameImpl implements ChessGame {
     }
 
     /**
+     * Note to FelixB: When we for example want to move a queen to an opponent the following actions will
+     * be sent: STRIKE, DESTRUCTION, MOVEMENT
+     *
+     * Processes the movement input from the boardview
      * @param  boardView BoardView-Screen that renders game to user
      * @param actionPos Coordinates on the board to be processed
      * */
@@ -172,8 +176,9 @@ public class ChessGameImpl implements ChessGame {
             } else {
                 boardView.setSelectedPiece(pieceTemp);
                 for (Turn turn : boardView.getSelectedPiece().getLegalTurns(this.getBoard())) {
+                    System.out.println("ACTIONS");
                     for (Turn.Action action : turn.actions) {
-                        //System.out.println(action);
+                        System.out.println(action);
                     }
                 }
             }
