@@ -19,7 +19,7 @@ public class FontUtils {
      * Calculates width (in pixels) of text in a chosen BitmapFont
      * @param text Text to evaluate height of
      * @param bitmapFont BitmapFont to consider in height calculation
-     * @return height in pixels of text in BitmapFont
+     * @return width in pixels of text in BitmapFont
      * */
     public static float getWidthOfFontText(String text, BitmapFont bitmapFont) {
         return getGlyph(text, bitmapFont).width;

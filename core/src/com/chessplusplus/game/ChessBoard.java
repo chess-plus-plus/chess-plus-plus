@@ -61,7 +61,8 @@ public class ChessBoard implements Board {
         board = new HashMap<>();
 
         for (Piece piece : pieces) {
-            board.put(piece.getPosition(), piece);
+            if (piece != null)
+                board.put(piece.getPosition(), piece);
         }
     }
 
