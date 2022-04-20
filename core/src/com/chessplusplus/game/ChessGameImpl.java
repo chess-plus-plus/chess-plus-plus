@@ -200,6 +200,9 @@ public class ChessGameImpl implements ChessGame {
         this.playerID = playerID;
     }
 
+    /**
+     * Determines if the player belongs to the bottom of the board (If the player belongs to y=0)
+     * */
     public boolean playerIsBottom() {
         return playerID.equals(player1Id);
     }
