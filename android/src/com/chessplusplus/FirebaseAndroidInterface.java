@@ -19,6 +19,7 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
     FirebaseUser user;
 
     boolean connected;
+    boolean gameExists;
 
     // Singleton?
     public FirebaseAndroidInterface(){
@@ -107,6 +108,22 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
     public boolean joinGame(String gameID) {
         user = this.getCurrentUser();
         if (user == null)
+            return false;
+        gameExists = false;
+        dataRef.child(gameID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    gameExists = true;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        if (!gameExists)
             return false;
         dataRef.child(gameID).child("player2").setValue(user.getUid());
         this.getGameUpdates(gameID);
