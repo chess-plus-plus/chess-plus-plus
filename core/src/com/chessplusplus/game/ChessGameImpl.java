@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-// Ad hoc class used purely to test out ECS
-// To "run" the demo, just click a button or on the application window,
-// and you should see the position of the piece update each time.
-//  TODO: Game needs a module restructuring
+/**
+ * A implementation of the ChessGame interface.
+ * Contains a game board, a list of turns, and player IDs.
+ */
 public class ChessGameImpl implements ChessGame {
 
     private Board gameBoard;
@@ -74,6 +74,7 @@ public class ChessGameImpl implements ChessGame {
      * 1: Add turn to turn history.
      * 2: Update board.
      * 3: Update currentPlayerId;
+     *
      * @param turn A valid turn.
      */
     private void updateGame(Turn turn) {
@@ -136,10 +137,12 @@ public class ChessGameImpl implements ChessGame {
 
     /**
      * Gets the color belonging to the player.
+     *
      * @param playerId Id of player
+     * @return Color belonging to player
      * @throws IllegalArgumentException when playerId is not valid
-     * @return Color belonging to player*/
-    public PieceColor getPlayerColor(String playerId) throws IllegalArgumentException{
+     */
+    public PieceColor getPlayerColor(String playerId) throws IllegalArgumentException {
         if (playerIdToPieceColor.get(playerId) == null) {
             throw new IllegalArgumentException("No such player id");
         }
@@ -148,8 +151,10 @@ public class ChessGameImpl implements ChessGame {
 
     /**
      * Determines if a piece is friendly to the player running the code
+     *
      * @param piece Piece to be evaluated
-     * @return the result as boolean*/
+     * @return the result as boolean
+     */
     public boolean isFriendlyPiece(Piece piece) {
         if (piece == null) return false;
         return piece.getPlayerId().equals(playerID);
@@ -162,11 +167,12 @@ public class ChessGameImpl implements ChessGame {
     /**
      * Note to FelixB: When we for example want to move a queen to an opponent the following actions will
      * be sent: STRIKE, DESTRUCTION, MOVEMENT
-     *
+     * <p>
      * Processes the movement input from the boardview
-     * @param  boardView BoardView-Screen that renders game to user
+     *
+     * @param boardView BoardView-Screen that renders game to user
      * @param actionPos Coordinates on the board to be processed
-     * */
+     */
     public void processUserInput(BoardView boardView, Position actionPos) {
         if (!this.getBoard().squareIsEmpty(actionPos) && boardView.getSelectedPiece() == null) {
             Piece pieceTemp = this.getBoard().getPiece(actionPos);
