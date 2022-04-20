@@ -10,18 +10,25 @@ import com.chessplusplus.ChessPlusPlus;
 public class GameView extends ApplicationAdapter {
 
     private ChessPlusPlus chessPlusPlus;
+    private BoardView boardView;
 
     public GameView(ChessPlusPlus c){
         chessPlusPlus = c;
+        boardView = new BoardView(c.getBatch());
     }
 
     @Override
     public void create() {
-
+        boardView.show();
     }
 
     @Override
     public void render() {
+        boardView.render(0);
+    }
 
+    @Override
+    public void dispose() {
+        boardView.dispose();
     }
 }
