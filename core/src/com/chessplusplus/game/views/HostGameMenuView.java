@@ -55,14 +55,14 @@ public class HostGameMenuView extends ApplicationAdapter {
         titleField.setDisabled(true);
         titleField.setAlignment(Align.center);
 
-        final TextField gamePinInput = new TextField("", skin, "default");
+        //final TextField gamePinInput = new TextField("", skin, "default");
 
         final TextButton startGameButton = new TextButton("Start Game", skin, "default");
         startGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
                 String gameID = chessPlusPlus.createGameID();
-                chessPlusPlus.setScreen(new BoardView());
+                chessPlusPlus.setScreen(new GameView(chessPlusPlus, gameID));
             }
         });
 
@@ -76,8 +76,8 @@ public class HostGameMenuView extends ApplicationAdapter {
 
         table.add(titleField).padBottom(50).width(stage.getWidth()/2);
         table.row();
-        table.add(gamePinInput).padBottom(30).width(stage.getWidth()/2);
-        table.row();
+        //table.add(gamePinInput).padBottom(30).width(stage.getWidth()/2);
+        //table.row();
         table.add(startGameButton).padBottom(30).width(stage.getWidth()/2);
         table.row();
         table.add(backButton).width(stage.getWidth()/2);

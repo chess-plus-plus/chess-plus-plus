@@ -130,4 +130,8 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 		return FBC.createNewGame();
 	}
 
+	public boolean joinGame(String id) {
+		return FBC.joinGame(id);
+	}
+
 }

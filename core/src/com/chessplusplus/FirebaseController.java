@@ -23,12 +23,13 @@ public class FirebaseController {
         // do smth in front end
     }
 
-    public void joinGame(String gameID) {
+    public boolean joinGame(String gameID) {
         // if joined is true, the ID exists and everything worked
         // otherwise, some kind of error occured
         boolean joined = this.FBIC.joinGame(gameID);
         if (joined)
             System.out.println("joined game " + gameID);
+        return(joined);
     }
 
     public void reconnect () {
