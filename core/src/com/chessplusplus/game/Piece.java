@@ -20,14 +20,18 @@ public class Piece {
     private Texture texture;
     private String textureFileName;
 
+    private int level = 1;
     private int xp = 0;
+    private int nextLevelXpThreshold;
     private final List<Turn.Action> actions = new ArrayList<>(); // All actions the piece have made
 
-    public Piece(String playerId, PieceType pieceType, Position position, MovementRuleSet movement) {
+    public Piece(String playerId, PieceType pieceType, Position position, MovementRuleSet movement,
+                 int nextLevelXpThreshold) {
         this.playerId = playerId;
         this.pieceType = pieceType;
         this.position = position;
         this.movement = movement;
+        this.nextLevelXpThreshold = nextLevelXpThreshold;
 
         //Determines filename to texture image to use for the piece.
         String typePath = "pawn";
@@ -52,6 +56,10 @@ public class Piece {
                 break;
         }
         textureFileName = typePath;
+    }
+
+    public Piece(String playerId, PieceType pieceType, Position position, MovementRuleSet movement) {
+        this(playerId, pieceType, position, movement, Integer.MAX_VALUE);
     }
 
     /**
@@ -126,8 +134,36 @@ public class Piece {
         return xp;
     }
 
+    /**
+     * Give the piece a certain amount of XP.
+     * This may cause the piece to level up.
+     *
+     * @param xp Amount of xp to give the piece.
+     */
     public void giveXp(int xp) {
         this.xp += xp;
+        if (xp > nextLevelXpThreshold) {
+            level++;
+            nextLevelXpThreshold = Integer.MAX_VALUE;
+        }
+    }
+
+    /**
+     * Get the XP threshold for next level.
+     * @return Next XP threshold.
+     */
+    public int getNextLevelXpThreshold() {
+        return nextLevelXpThreshold;
+    }
+
+    /**
+     * Sets the XP threshold for the piece's next level.
+     * Once this threshold is exceeded the piece levels up.
+     *
+     * @param nextLevelXpThreshold  Next XP threshold.
+     */
+    public void setNextLevelXpThreshold(int nextLevelXpThreshold) {
+        this.nextLevelXpThreshold = nextLevelXpThreshold;
     }
 
     public List<Turn.Action> getActions() {
