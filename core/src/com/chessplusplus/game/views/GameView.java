@@ -38,7 +38,8 @@ public class GameView extends ApplicationAdapter {
     @Override
     public void render() {
         boardView.render(0);
-        font.draw(batch, gameID, (Gdx.graphics.getWidth() / 2) - (FontUtils.getWidthOfFontText(gameID, font) / 2), Gdx.graphics.getHeight() - 50);
+        String toRender = "Game ID: " + gameID;
+        font.draw(batch, toRender, (Gdx.graphics.getWidth() / 2) - (FontUtils.getWidthOfFontText(toRender, font) / 2), Gdx.graphics.getHeight() - 50);
     }
 
     @Override
