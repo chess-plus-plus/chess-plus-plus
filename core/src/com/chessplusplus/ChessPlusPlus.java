@@ -122,4 +122,8 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 		return this.batch;
 	}
 
+	public String createGameID() {
+		return FBC.createNewGame();
+	}
+
 }

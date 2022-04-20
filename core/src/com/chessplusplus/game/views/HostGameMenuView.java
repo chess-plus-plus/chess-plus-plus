@@ -46,9 +46,9 @@ public class HostGameMenuView extends ApplicationAdapter {
         table.align(Align.center);
         table.setPosition(0, 0);
 
-        final Dialog wrongPinDialog = new Dialog("Game cannot be created", skin, "default");
+        //final Dialog wrongPinDialog = new Dialog("Game cannot be created", skin, "default");
 
-        final TextField titleField = new TextField("Input game pin:", skin, "default");
+        final TextField titleField = new TextField("Create Game", skin, "default");
         titleField.setDisabled(true);
         titleField.setAlignment(Align.center);
 
@@ -58,13 +58,8 @@ public class HostGameMenuView extends ApplicationAdapter {
         startGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                wrongPinDialog.show(stage);
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        wrongPinDialog.hide();
-                    }
-                }, 2);
+                String gameID = chessPlusPlus.createGameID();
+                chessPlusPlus.setScreen(new BoardView());
             }
         });
 
