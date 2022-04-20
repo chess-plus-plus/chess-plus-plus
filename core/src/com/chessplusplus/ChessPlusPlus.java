@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.chessplusplus.game.BoardFactory;
 import com.chessplusplus.game.ChessGame;
 import com.chessplusplus.game.ChessGameImpl;
@@ -17,7 +18,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	public static final int HEIGHT = 800;
 
 	SpriteBatch batch;
-	Texture img;
 
 	BoardView boardView;
 	ApplicationAdapter screen;
@@ -31,7 +31,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	public void create () {
 		//game = new Game();
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");;
 
 		String playerId1 = "1";
 		String playerId2 = "2";
@@ -47,29 +46,34 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	}
 
 	public void setScreen(ApplicationAdapter applicationAdapter){
+		if (screen != null) {
+			screen.dispose();
+		}
 		screen = applicationAdapter;
 		screen.create();
 	}
 
 	@Override
 	public void render () {
-		/*
+
 		ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
 		batch.begin();
-		boardView.render(Gdx.graphics.getDeltaTime());
-		batch.end();
-		*/
-
-
-		dispose();
+		//boardView.render(Gdx.graphics.getDeltaTime());
 		screen.render();
+		batch.end();
+
+
+		/*
+		dispose();
+		screen.render();*/
 	}
 	
 	@Override
 	public void dispose () {
 		screen.dispose();
-		/*
+
 		batch.dispose();
+		/*
 		img.dispose();
 		 */
 	}
@@ -120,6 +124,14 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	public SpriteBatch getBatch(){
 		return this.batch;
+	}
+
+	public String createGameID() {
+		return FBC.createNewGame();
+	}
+
+	public boolean joinGame(String id) {
+		return FBC.joinGame(id);
 	}
 
 }

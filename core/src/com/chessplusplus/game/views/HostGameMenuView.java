@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.chessplusplus.ChessPlusPlus;
 
+/*TODO: We might need to explicitly dispose the Stage and SKin ogbjects by overriding dispose()
+*  in all applicationadapters*/
+
 public class HostGameMenuView extends ApplicationAdapter {
 
     private ChessPlusPlus chessPlusPlus;
@@ -46,25 +49,20 @@ public class HostGameMenuView extends ApplicationAdapter {
         table.align(Align.center);
         table.setPosition(0, 0);
 
-        final Dialog wrongPinDialog = new Dialog("Game cannot be created", skin, "default");
+        //final Dialog wrongPinDialog = new Dialog("Game cannot be created", skin, "default");
 
-        final TextField titleField = new TextField("Input game pin:", skin, "default");
+        final TextField titleField = new TextField("Create Game", skin, "default");
         titleField.setDisabled(true);
         titleField.setAlignment(Align.center);
 
-        final TextField gamePinInput = new TextField("", skin, "default");
+        //final TextField gamePinInput = new TextField("", skin, "default");
 
         final TextButton startGameButton = new TextButton("Start Game", skin, "default");
         startGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                wrongPinDialog.show(stage);
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        wrongPinDialog.hide();
-                    }
-                }, 2);
+                String gameID = chessPlusPlus.createGameID();
+                chessPlusPlus.setScreen(new GameView(chessPlusPlus, gameID));
             }
         });
 
@@ -78,8 +76,8 @@ public class HostGameMenuView extends ApplicationAdapter {
 
         table.add(titleField).padBottom(50).width(stage.getWidth()/2);
         table.row();
-        table.add(gamePinInput).padBottom(30).width(stage.getWidth()/2);
-        table.row();
+        //table.add(gamePinInput).padBottom(30).width(stage.getWidth()/2);
+        //table.row();
         table.add(startGameButton).padBottom(30).width(stage.getWidth()/2);
         table.row();
         table.add(backButton).width(stage.getWidth()/2);

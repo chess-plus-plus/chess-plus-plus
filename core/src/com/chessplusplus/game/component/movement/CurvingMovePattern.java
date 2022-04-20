@@ -51,7 +51,6 @@ public class CurvingMovePattern implements MovePattern {
         possibleMoves.add(new Position(pieceX - ratioNum2, pieceY + ratioNum1));
         possibleMoves.add(new Position(pieceX - ratioNum1, pieceY + ratioNum2));
 
-        //TODO: Needs to be tested
         List<Position> legalPossibleMoves = new ArrayList<>();
         for (Position position : possibleMoves) {
             if (position.getX() >= 0 && position.getX() < boardWidth

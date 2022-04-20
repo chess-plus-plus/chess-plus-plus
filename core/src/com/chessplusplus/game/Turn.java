@@ -56,6 +56,15 @@ public class Turn {
             return Objects.hash(piece, actionType, startPos, actionPos);
         }
 
+        @Override
+        public String toString() {
+            return "Action{" +
+                    "piece=" + piece +
+                    ", actionType=" + actionType +
+                    ", startPos=" + startPos +
+                    ", actionPos=" + actionPos +
+                    '}';
+        }
     }
 
     public enum ActionType {
@@ -67,4 +76,11 @@ public class Turn {
 
     }
 
+    @Override
+    public String toString() {
+        return "Turn{" +
+                "actions=" + actions +
+                ", playerId='" + playerId + '\'' +
+                '}';
+    }
 }

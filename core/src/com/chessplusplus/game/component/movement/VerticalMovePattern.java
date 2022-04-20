@@ -4,6 +4,8 @@ import com.chessplusplus.game.component.Position;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * VerticalMovePattern is used to represent movement along the "y-axis"
@@ -42,36 +44,15 @@ public class VerticalMovePattern extends SimpleMovePattern {
     }
 
     @Override
-    public List<Position> getPossibleMoves(Position piecePosition, int boardWidth, int boardHeight) {
-        List<Position> possibleMoves = new ArrayList<>();
-
-        int rangeStart, rangeEnd; // Calculate range of possible y positions according to piece range
-        if (range == -1) { // Unlimited range just sets the range to equal the board size
-            rangeStart = 0;
-            rangeEnd = boardHeight;
-        } else { // Set range according to piece's position and range, then correct if range falls outside board
-            rangeStart = piecePosition.getY() - range;
-            if (rangeStart < 0) {
-                rangeStart = 0;
-            }
-
-            rangeEnd = piecePosition.getY() + range;
-            if (rangeEnd > boardHeight - 1) {
-                rangeStart = boardHeight - 1;
-            }
-        }
-
-        // Generate and add positions according to the range.
-        for (int i = rangeStart; i <= rangeEnd; i++) {
-            Position position = new Position(piecePosition.getX(), i);
-            // x is constant since this rule is for vertical movement
-
-            if (!position.equals(piecePosition)) { // Filter out the position the piece is already in
-                possibleMoves.add(position);
-            }
-        }
-
-        return possibleMoves;
+    public List<Position> getPossibleMoves(Position piece, int boardWidth, int boardHeight) {
+        int maxMoveDistance = (range==-1) ? boardWidth : range;
+        return IntStream
+                .range(0, boardWidth)
+                .filter(y -> y - piece.getY() <= maxMoveDistance) // is in range
+                .filter(y -> 0 <= y && y <= boardWidth)           // inside board
+                .filter(y -> piece.getX() != y)                   // not own position
+                .mapToObj(y -> new Position(piece.getX(), y))
+                .collect(Collectors.toList());
     }
 
 }

@@ -51,19 +51,27 @@ public class JoinGameMenuView extends ApplicationAdapter {
         final TextField titleField = new TextField("Input game pin:", skin, "default");
         titleField.setDisabled(true);
         titleField.setAlignment(Align.center);
+
         final TextField gamePinInput = new TextField("", skin, "default");
 
         final TextButton startGameButton = new TextButton("Start Game", skin, "default");
         startGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                wrongPinDialog.show(stage);
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        wrongPinDialog.hide();
-                    }
-                }, 2);
+                String id = gamePinInput.getText();
+                boolean joined = chessPlusPlus.joinGame(id);
+                if (joined) {
+                    chessPlusPlus.setScreen(new GameView(chessPlusPlus, id));
+                }
+                else {
+                    wrongPinDialog.show(stage);
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            wrongPinDialog.hide();
+                        }
+                    }, 2);
+                }
             }
         });
 

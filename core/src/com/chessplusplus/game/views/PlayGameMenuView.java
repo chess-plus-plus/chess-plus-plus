@@ -48,6 +48,15 @@ public class PlayGameMenuView extends ApplicationAdapter {
         titleField.setDisabled(true);
         titleField.setAlignment(Align.center);
 
+        final TextButton testField = new TextButton("Play Test", skin, "default");
+        testField.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                chessPlusPlus.setScreen(new GameView(chessPlusPlus, "0"));
+            }
+        });
+
+
         final TextButton joinGameButton = new TextButton("Join Game", skin, "default");
         joinGameButton.addListener(new ClickListener() {
             @Override
@@ -73,6 +82,8 @@ public class PlayGameMenuView extends ApplicationAdapter {
         });
 
         table.add(titleField).padBottom(50).width(stage.getWidth()/2);
+        table.row();
+        table.add(testField).padBottom(50).width(stage.getWidth()/2);
         table.row();
         table.add(joinGameButton).padBottom(30).width(stage.getWidth()/2);
         table.row();
@@ -100,5 +111,11 @@ public class PlayGameMenuView extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+    }
+
+    @Override
+    public void dispose() {
+        skin.dispose();
+        stage.dispose();
     }
 }
