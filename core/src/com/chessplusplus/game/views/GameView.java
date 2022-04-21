@@ -31,11 +31,11 @@ public class GameView extends ApplicationAdapter {
     private Skin skin;
     private TextButton conBut;
 
-    public GameView(ChessPlusPlus c, String id){
+    public GameView(ChessPlusPlus c, String id, String playerID){
         chessPlusPlus = c;
         gameID = id;
         batch = c.getBatch();
-        boardView = new BoardView(c, gameID);
+        boardView = new BoardView(c, gameID, playerID);
     }
 
     @Override

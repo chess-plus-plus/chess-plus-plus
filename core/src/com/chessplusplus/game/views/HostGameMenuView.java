@@ -62,7 +62,7 @@ public class HostGameMenuView extends ApplicationAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y){
                 String gameID = chessPlusPlus.createGameID();
-                chessPlusPlus.setScreen(new GameView(chessPlusPlus, gameID));
+                chessPlusPlus.setScreen(new GameView(chessPlusPlus, gameID, "1"));
             }
         });
 

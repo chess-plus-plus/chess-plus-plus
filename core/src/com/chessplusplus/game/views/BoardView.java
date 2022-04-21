@@ -58,11 +58,11 @@ public class BoardView extends Viewport implements Screen {
     //Selected piece by user, null if none selected
     private Piece selectedPiece;
 
-    public BoardView(ChessPlusPlus c, String gameID) {
+    public BoardView(ChessPlusPlus c, String gameID, String playerID) {
         batch = c.getBatch();
         gameBoard = BoardFactory.standardBoardAndPieces("1", "2");
         game = new ChessGameImpl(gameBoard, c.getFBC(), gameID, "1", "2");
-        game.setPlayer("2");
+        game.setPlayer(playerID);
         this.gameID = gameID;
         this.FBC = c.getFBC();
 
@@ -170,7 +170,8 @@ public class BoardView extends Viewport implements Screen {
     @Override
     public void render(float delta) {
         Turn newTurn = this.FBC.getNewTurnIfAvailable();
-        game.submitTurn(newTurn);
+        if (newTurn != null)
+            game.submitTurn(newTurn);
         processUserInput();
         renderBoard();
     }

@@ -61,7 +61,7 @@ public class JoinGameMenuView extends ApplicationAdapter {
                 String id = gamePinInput.getText();
                 boolean joined = chessPlusPlus.joinGame(id);
                 if (joined) {
-                    chessPlusPlus.setScreen(new GameView(chessPlusPlus, id));
+                    chessPlusPlus.setScreen(new GameView(chessPlusPlus, id, "2"));
                 }
                 else {
                     wrongPinDialog.show(stage);
