@@ -33,7 +33,7 @@ public class ChessGameImpl implements ChessGame {
         this.player1Id = player1Id;
         this.player2Id = player2Id;
         currentPlayerId = player1Id;
-        this.playerID = player1Id;
+        this.playerID = player2Id;
 
         calculateAllLegalTurns();
 
@@ -201,7 +201,8 @@ public class ChessGameImpl implements ChessGame {
     }
 
     /**
-     * Determines if the player belongs to the bottom of the board (If the player belongs to y=0)
+     * Determines if the player belongs to the bottom of the board (If the player belongs to y=0 in
+     * other words)
      * */
     public boolean playerIsBottom() {
         return playerID.equals(player1Id);
