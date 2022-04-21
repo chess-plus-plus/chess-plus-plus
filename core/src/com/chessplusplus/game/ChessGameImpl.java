@@ -92,10 +92,10 @@ public class ChessGameImpl implements ChessGame {
                     gameBoard.removePiece(gameBoard.getPiece(action.actionPos));
                     break;
                 case MOVEMENT:
-                    gameBoard.getPiece(action.piece.getPosition()).moveTo(action.actionPos);
+                    gameBoard.getPiece(action.startPos).moveTo(action.actionPos);
                     break;
                 case DESTRUCTION:
-                    gameBoard.removePiece(gameBoard.getPiece(action.piece.getPosition()));
+                    gameBoard.removePiece(gameBoard.getPiece(action.actionPos));
                     break;
                 case CREATION:
                     //TODO
