@@ -140,7 +140,7 @@ public class BoardView extends Viewport implements Screen {
         //Makes strike rectangle (not filled)
         pixmap = new Pixmap(squareSize, squareSize, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.FIREBRICK);
-        PixmapUtils.drawRectangle(squareSize, squareSize, 4, pixmap);
+        PixmapUtils.drawRectangle(squareSize, squareSize, 6, pixmap);
         strikeOptionTexture = new Texture(pixmap);
         pixmap.dispose();
     }
