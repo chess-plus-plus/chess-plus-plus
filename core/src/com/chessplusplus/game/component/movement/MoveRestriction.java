@@ -1,5 +1,6 @@
 package com.chessplusplus.game.component.movement;
 
+import com.chessplusplus.game.Board;
 import com.chessplusplus.game.component.Position;
 
 import java.util.List;
@@ -21,6 +22,6 @@ public interface MoveRestriction {
      * @param piecePosition The position of the piece.
      * @return All legal moves that are valid according to this restriction.
      */
-    List<Position> filterMoves(List<Position> possibleMoves, Position piecePosition);
+    List<Position> filterMoves(List<Position> possibleMoves, Position piecePosition, Board board);
 
 }

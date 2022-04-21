@@ -1,5 +1,6 @@
 package com.chessplusplus.game.component.movement;
 
+import com.chessplusplus.game.Board;
 import com.chessplusplus.game.component.Position;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class DirectionalMoveRestriction implements MoveRestriction {
     }
 
     @Override
-    public List<Position> filterMoves(List<Position> possibleMoves, Position piecePosition) {
+    public List<Position> filterMoves(List<Position> possibleMoves, Position piecePosition, Board board) {
         //System.out.println(possibleMoves);
         List<Position> legalMoves = new ArrayList<>();
 

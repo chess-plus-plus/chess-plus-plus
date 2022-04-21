@@ -2,6 +2,7 @@ package com.chessplusplus.game.entity;
 
 
 import com.chessplusplus.game.component.movement.CastlingMoveRule;
+import com.chessplusplus.game.component.movement.CollisionMoveRestriction;
 import com.chessplusplus.game.component.movement.SpecialMoveRule;
 import com.chessplusplus.game.component.movement.CurvingMovePattern;
 import com.chessplusplus.game.component.movement.DiagonalMovePattern;
@@ -58,7 +59,12 @@ public class MovementFactory {
         List<MovePattern> movePatterns = new ArrayList<>();
         movePatterns.add(DiagonalMovePattern.unlimitedDiagonalMovement());
 
-        return new MovementRuleSet.Builder(movePatterns).build();
+        List<MoveRestriction> restrictions = new ArrayList<>();
+        restrictions.add(new CollisionMoveRestriction());
+
+        return new MovementRuleSet.Builder(movePatterns)
+                .movementRestrictions(restrictions)
+                .build();
     }
 
     /**
@@ -83,7 +89,12 @@ public class MovementFactory {
         movePatterns.add(HorizontalMovePattern.unlimitedHorizontalMovement());
         movePatterns.add(VerticalMovePattern.unlimitedVerticalMovement());
 
-        return new MovementRuleSet.Builder(movePatterns).build();
+        List<MoveRestriction> restrictions = new ArrayList<>();
+        restrictions.add(new CollisionMoveRestriction());
+
+        return new MovementRuleSet.Builder(movePatterns)
+                .movementRestrictions(restrictions)
+                .build();
     }
 
     /**
@@ -97,7 +108,12 @@ public class MovementFactory {
         movePatterns.add(VerticalMovePattern.unlimitedVerticalMovement());
         movePatterns.add(DiagonalMovePattern.unlimitedDiagonalMovement());
 
-        return new MovementRuleSet.Builder(movePatterns).build();
+        List<MoveRestriction> restrictions = new ArrayList<>();
+        restrictions.add(new CollisionMoveRestriction());
+
+        return new MovementRuleSet.Builder(movePatterns)
+                .movementRestrictions(restrictions)
+                .build();
     }
 
     /**

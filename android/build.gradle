@@ -1,5 +1,5 @@
 android {
-    compileSdkVersion 30
+    compileSdk 31
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -19,8 +19,8 @@ android {
     }
     defaultConfig {
         applicationId "com.chessplusplus"
-        minSdk 24
-        targetSdk 24
+        minSdk 30
+        targetSdk 30
         versionCode 1
         versionName "1.0"
     }

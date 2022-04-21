@@ -1,10 +1,7 @@
 package com.chessplusplus.game.component.movement;
 
-import static com.chessplusplus.game.component.movement.MovementUtils.movesFromRays;
-
 import com.chessplusplus.game.component.Position;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -48,7 +45,7 @@ public class VerticalMovePattern extends SimpleMovePattern {
     @Override
     public List<Position> getPossibleMoves(Position piece, int boardWidth, int boardHeight) {
 
-        movesFromRays(piece,boardWidth,boardHeight);
+//        movesFromRays(piece,boardWidth,boardHeight);
 
         int maxMoveDistance = (range==-1) ? boardWidth : range;
         return IntStream

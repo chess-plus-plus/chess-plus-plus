@@ -106,7 +106,7 @@ public class MovementRuleSet {
 
         // Filter out candidates based on move restrictions
         for (MoveRestriction restriction : movementRestrictions) {
-            possibleMoves = restriction.filterMoves(possibleMoves, piecePosition);
+            possibleMoves = restriction.filterMoves(possibleMoves, piecePosition, board);
         }
 
         // Filter out candidates based on whether the square is empty or not
