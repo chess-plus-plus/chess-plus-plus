@@ -59,7 +59,7 @@ public class ChessGameImpl implements ChessGame {
 
     @Override
     public boolean submitTurn(Turn turn, boolean fromOnline) {
-        if (fromOnline && turn.playerId == this.playerID)
+        if (fromOnline && turn.playerId.equals(this.playerID))
             return false;
         if (!legalTurnsToPieceMap.containsKey(turn) && !fromOnline) {
             return false;
@@ -92,10 +92,10 @@ public class ChessGameImpl implements ChessGame {
                     gameBoard.removePiece(gameBoard.getPiece(action.actionPos));
                     break;
                 case MOVEMENT:
-                    action.piece.moveTo(action.actionPos);
+                    gameBoard.getPiece(action.piece.getPosition()).moveTo(action.actionPos);
                     break;
                 case DESTRUCTION:
-                    gameBoard.removePiece(action.piece);
+                    gameBoard.removePiece(gameBoard.getPiece(action.piece.getPosition()));
                     break;
                 case CREATION:
                     //TODO
