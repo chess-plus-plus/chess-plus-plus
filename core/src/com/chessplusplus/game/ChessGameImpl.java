@@ -58,8 +58,10 @@ public class ChessGameImpl implements ChessGame {
     }
 
     @Override
-    public boolean submitTurn(Turn turn) {
-        if (!legalTurnsToPieceMap.containsKey(turn)) {
+    public boolean submitTurn(Turn turn, boolean fromOnline) {
+        if (fromOnline && turn.playerId == this.playerID)
+            return false;
+        if (!legalTurnsToPieceMap.containsKey(turn) && !fromOnline) {
             return false;
         } else {
             updateGame(turn);
@@ -190,7 +192,7 @@ public class ChessGameImpl implements ChessGame {
             }
             if (turnToSubmit != null)
                 //Submits saved turn
-                submitTurn(turnToSubmit);
+                submitTurn(turnToSubmit, false);
             boardView.setSelectedPiece(null);
         }
     }

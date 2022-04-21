@@ -171,7 +171,7 @@ public class BoardView extends Viewport implements Screen {
     public void render(float delta) {
         Turn newTurn = this.FBC.getNewTurnIfAvailable();
         if (newTurn != null)
-            game.submitTurn(newTurn);
+            game.submitTurn(newTurn, true);
         processUserInput();
         renderBoard();
     }

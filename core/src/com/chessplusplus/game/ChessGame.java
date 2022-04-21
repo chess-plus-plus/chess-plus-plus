@@ -30,7 +30,7 @@ public interface ChessGame {
      * @param turn Proposed next turn.
      * @return true if turn is accepted, false if it is rejected
      */
-    boolean submitTurn(Turn turn);
+    boolean submitTurn(Turn turn, boolean fromOnline);
 
     /**
      * Get a list of turns that have happened so far.
