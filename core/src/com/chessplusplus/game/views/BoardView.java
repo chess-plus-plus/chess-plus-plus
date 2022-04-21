@@ -172,7 +172,8 @@ public class BoardView extends Viewport implements Screen {
         Turn newTurn = this.FBC.getNewTurnIfAvailable();
         if (newTurn != null)
             game.submitTurn(newTurn, true);
-        processUserInput();
+        if (game.isPlayerTurn())
+            processUserInput();
         renderBoard();
     }
 
@@ -203,6 +204,15 @@ public class BoardView extends Viewport implements Screen {
 
     /*Renders the board texture as well as all the pieces by calling the renderPiece method*/
     private void renderBoard() {
+        //Signals which players turn it is
+        String whichTurn = "Waiting for opponent...";
+        if (game.isPlayerTurn()) {
+            whichTurn = "Your turn";
+        }
+        font.setColor(Color.WHITE);
+        font.getData().setScale(6);
+        font.draw(batch, whichTurn, (float) Gdx.graphics.getWidth() / 2 - FontUtils.getWidthOfFontText(whichTurn, font) / 2,
+                Gdx.graphics.getHeight() - 200);
         //Draws the board
         batch.draw(boardTextureRegion, 0, boardYOffset);
 
@@ -220,6 +230,8 @@ public class BoardView extends Viewport implements Screen {
                 }
             }
         }
+        font.setColor(Color.CYAN);
+        font.getData().setScale(3);
         //Renders the pieces
         for (Piece piece : gameBoard.getAllPieces()) {
             renderPiece(piece.getTexture(), piece.getPosition().getX(), convertY(piece.getPosition().getY()), 1);

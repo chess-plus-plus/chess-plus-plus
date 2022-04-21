@@ -92,7 +92,7 @@ public class GameView extends ApplicationAdapter {
             conBut.setText("Not Connected");
             conBut.setColor(Color.RED);
         }
-        font.draw(batch, toRender, (Gdx.graphics.getWidth() / 2) - (FontUtils.getWidthOfFontText(toRender, font) / 2), Gdx.graphics.getHeight() - 50);
+        font.draw(batch, toRender, (float) Gdx.graphics.getWidth() / 2 - (FontUtils.getWidthOfFontText(toRender, font) / 2), Gdx.graphics.getHeight() - 50);
         stage.draw();
     }
 

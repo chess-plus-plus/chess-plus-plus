@@ -209,4 +209,11 @@ public class ChessGameImpl implements ChessGame {
     public boolean playerIsBottom() {
         return playerID.equals(player1Id);
     }
+
+    /**
+     * Is the players turn
+     * */
+    public boolean isPlayerTurn() {
+        return currentPlayerId.equals(playerID);
+    }
 }
