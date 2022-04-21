@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A chess piece.
@@ -131,6 +132,19 @@ public class Piece {
 
     public void giveXp(int xp) {
         this.xp += xp;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Piece piece = (Piece) o;
+        return pieceType == piece.pieceType && position.equals(piece.position);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pieceType, position);
     }
 
     public List<Turn.Action> getActions() {
