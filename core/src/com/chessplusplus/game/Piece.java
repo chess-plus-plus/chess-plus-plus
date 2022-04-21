@@ -16,10 +16,8 @@ public class Piece {
     private String playerId;
     @Expose
     private PieceType pieceType;
-    @Expose
     private Position position;
     private MovementRuleSet movement;
-    @Expose
     private PieceColor color;
     private Texture texture;
     private String textureFileName;

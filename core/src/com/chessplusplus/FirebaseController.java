@@ -2,13 +2,16 @@ package com.chessplusplus;
 
 import com.chessplusplus.game.Turn;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class FirebaseController {
     FireBaseInterface FBIC;
     Gson gson;
 
     public FirebaseController (FireBaseInterface FBIC) {
-        this.gson = new Gson();
+        this.gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
         this.FBIC = FBIC;
     }
 

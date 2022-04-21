@@ -34,9 +34,13 @@ public class Turn {
 
     public static class Action {
 
-        public final Piece piece;           // The piece being affected
+        @Expose
+        public final Piece piece;// The piece being affected
+        @Expose
         public final ActionType actionType; // The type of action
+        @Expose
         public final Position startPos;     // The position of the piece before action is taken
+        @Expose
         public final Position actionPos;    // The position where the piece strikes/moves to
 
         public Action(Piece piece, ActionType actionType, Position startPos, Position actionPos) {
