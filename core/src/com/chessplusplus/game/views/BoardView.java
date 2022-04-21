@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.chessplusplus.game.Board;
 import com.chessplusplus.game.BoardFactory;
@@ -18,13 +17,6 @@ import com.chessplusplus.game.PieceColor;
 import com.chessplusplus.game.Turn;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.utils.FontUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-
-import javax.swing.Action;
-import javax.swing.plaf.synth.ColorType;
 
 /*TODO: Fix weird bug.
    App crashes when any piece is moved to (0, 2) regardless of where it comes from. If the pawn
@@ -54,6 +46,11 @@ public class BoardView extends Viewport implements Screen {
 
     private Texture strikeOptionTexture;
 
+    private Texture xpBarOutlineTexture;
+    private Texture xpBarProgressTexture;
+    private int xpBarWidth;
+    private int xpBarXPos;
+
     //Selected piece by user, null if none selected
     private Piece selectedPiece;
 
@@ -61,8 +58,10 @@ public class BoardView extends Viewport implements Screen {
         batch = sb;
         gameBoard = BoardFactory.standardBoardAndPieces("1", "2");
         game = new ChessGameImpl(gameBoard, "1", "2");
+        game.setPlayer("2");
 
         playerIsWhite = game.getPlayerColor(game.getPlayerID()) == PieceColor.WHITE;
+        System.out.println("Is white: " + playerIsWhite);
     }
 
     /**
@@ -89,6 +88,7 @@ public class BoardView extends Viewport implements Screen {
 
         makeBoardTexture();
         makeLegalMoveTextures();
+        makeProgressBarTextures();
     }
 
     /*
@@ -140,6 +140,25 @@ public class BoardView extends Viewport implements Screen {
         pixmap.dispose();
     }
 
+    private void makeProgressBarTextures() {
+        xpBarWidth = (int) (Gdx.graphics.getWidth() * 0.4);
+        Pixmap pixmap = new Pixmap(xpBarWidth, 100, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.BLACK);
+        //Draws rectangle width 4 px line width
+        for (int i = 0; i < 4; i++) {
+            pixmap.drawRectangle(i, i, xpBarWidth - i * 2, 100 - i * 2);
+        }
+        xpBarOutlineTexture = new Texture(pixmap);
+        pixmap.dispose();
+        pixmap = new Pixmap(xpBarWidth, 100, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.CYAN);
+        pixmap.fillRectangle(0, 0, xpBarWidth, 100);
+        xpBarProgressTexture = new Texture(pixmap);
+        pixmap.dispose();
+
+        xpBarXPos = Gdx.graphics.getWidth() / 2 - xpBarWidth / 2;
+    }
+
 
     /**/
     @Override
@@ -161,7 +180,7 @@ public class BoardView extends Viewport implements Screen {
                 //yTouch relative to the board
                 yTouch -= boardYOffset;
                 //Convert from pixel coordinates to board coordinates
-                Position actionPos = Position.pos(xTouch / squareSize, yTouch / squareSize);
+                Position actionPos = Position.pos(xTouch / squareSize, convertY(yTouch / squareSize));
                 game.processUserInput(this, actionPos);
             } else {
                 selectedPiece = null;
@@ -175,23 +194,32 @@ public class BoardView extends Viewport implements Screen {
 
     /*Renders the board texture as well as all the pieces by calling the renderPiece method*/
     private void renderBoard() {
+        //Draws the board
         batch.draw(boardTextureRegion, 0, boardYOffset);
 
+        //Renders each valid move of selected piece
         if (selectedPiece != null) {
             for (Turn turn : selectedPiece.getLegalTurns(game.getBoard())) {
                 for (Turn.Action action : turn.actions) {
-                    if (action.actionType == Turn.ActionType.MOVEMENT) {
+                    if (action.actionType == Turn.ActionType.MOVEMENT || action.actionType == Turn.ActionType.DESTRUCTION) {
                         batch.draw(legalMoveCircle, action.actionPos.getX() * squareSize + circleOffset,
-                                action.actionPos.getY() * squareSize + boardYOffset + circleOffset);
+                                convertY(action.actionPos.getY()) * squareSize + boardYOffset + circleOffset);
                     } else if (action.actionType == Turn.ActionType.STRIKE) {
                         batch.draw(strikeOptionTexture, action.actionPos.getX() * squareSize,
-                                action.actionPos.getY() * squareSize + boardYOffset);
+                                convertY(action.actionPos.getY()) * squareSize + boardYOffset);
                     }
                 }
             }
         }
+        //Renders the pieces
         for (Piece piece : gameBoard.getAllPieces()) {
-            renderPiece(piece.getTexture(), piece.getPosition().getX(), piece.getPosition().getY(), 1);
+            renderPiece(piece.getTexture(), piece.getPosition().getX(), convertY(piece.getPosition().getY()), 1);
+        }
+
+        //The XP bar of the selected piece
+        if (selectedPiece != null) {
+            batch.draw(xpBarProgressTexture, xpBarXPos, 200, (int) (xpBarWidth * 0.5), 100);
+            batch.draw(xpBarOutlineTexture, xpBarXPos, 200, xpBarWidth, 100);
         }
     }
 
@@ -246,6 +274,8 @@ public class BoardView extends Viewport implements Screen {
         boardTexture.dispose();
         legalMoveCircle.dispose();
         strikeOptionTexture.dispose();
+        xpBarOutlineTexture.dispose();
+        xpBarProgressTexture.dispose();
     }
 
     public Piece getSelectedPiece() {
@@ -254,5 +284,16 @@ public class BoardView extends Viewport implements Screen {
 
     public void setSelectedPiece(Piece selectedPiece) {
         this.selectedPiece = selectedPiece;
+    }
+
+    /**
+     * Returns y coordinate that is relative to the player or absolute to the game. Very important to
+     * convert y-coordinates when sending out y-coordinate and when receiving.
+     *
+     * @param y y-coordinate relative to the player
+     * @return correct y to use for visualization or correct y to send out to controller
+     */
+    private int convertY(int y) {
+        return game.playerIsBottom() ? y : gameBoard.getHeight() - y - 1;
     }
 }

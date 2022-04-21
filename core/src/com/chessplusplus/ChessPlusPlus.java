@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.chessplusplus.game.BoardFactory;
 import com.chessplusplus.game.ChessGame;
 import com.chessplusplus.game.ChessGameImpl;
-import com.chessplusplus.game.views.BoardView;
 import com.chessplusplus.game.views.StartMenuView;
 
 public class ChessPlusPlus extends ApplicationAdapter implements ApplicationListener, InputProcessor {
@@ -19,7 +18,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	SpriteBatch batch;
 
-	BoardView boardView;
 	ApplicationAdapter screen;
 	FirebaseController FBC;
 
@@ -40,8 +38,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 		Gdx.input.setInputProcessor(this);
 
-		boardView = new BoardView(batch);
-
 		this.setScreen(new StartMenuView(this));
 	}
 
@@ -58,7 +54,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 		ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
 		batch.begin();
-		//boardView.render(Gdx.graphics.getDeltaTime());
 		screen.render();
 		batch.end();
 
