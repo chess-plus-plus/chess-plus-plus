@@ -29,6 +29,9 @@ public class LevelEngine {
         LevelUpEffect effect = upgradeScheme.get(piece.getPieceType()).get(piece.getLevel());
         piece.setMovement(effect.newMovementRuleSet);
         piece.setNextLevelXpThreshold(effect.nextXpThreshold);
+        if (effect.resetXpOnLevelUp) {
+            piece.setXp(0);
+        }
 
     }
 
@@ -44,7 +47,26 @@ public class LevelEngine {
 
         int nextXpThreshold;
         MovementRuleSet newMovementRuleSet;
+        boolean resetXpOnLevelUp;
 
+        public LevelUpEffect(int nextXpThreshold, MovementRuleSet newMovementRuleSet,
+                             boolean resetXpOnLevelUp) {
+            this.nextXpThreshold = nextXpThreshold;
+            this.newMovementRuleSet = newMovementRuleSet;
+            this.resetXpOnLevelUp = resetXpOnLevelUp;
+        }
+
+        public LevelUpEffect(int nextXpThreshold, MovementRuleSet newMovementRuleSet) {
+            this(nextXpThreshold, newMovementRuleSet, false);
+        }
+
+        public int getNextXpThreshold() {
+            return nextXpThreshold;
+        }
+
+        public MovementRuleSet getNewMovementRuleSet() {
+            return newMovementRuleSet;
+        }
     }
 
 }

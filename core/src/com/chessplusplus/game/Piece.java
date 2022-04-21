@@ -181,6 +181,10 @@ public class Piece {
         this.level = level;
     }
 
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
     public List<Turn.Action> getActions() {
         return actions;
     }
