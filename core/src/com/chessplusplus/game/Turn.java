@@ -1,6 +1,7 @@
 package com.chessplusplus.game;
 
 import com.chessplusplus.game.component.Position;
+import com.google.gson.Gson;
 
 import java.util.Collections;
 import java.util.List;
@@ -58,12 +59,7 @@ public class Turn {
 
         @Override
         public String toString() {
-            return "Action{" +
-                    "piece=" + piece +
-                    ", actionType=" + actionType +
-                    ", startPos=" + startPos +
-                    ", actionPos=" + actionPos +
-                    '}';
+            return new Gson().toJson(this);
         }
     }
 
@@ -78,9 +74,6 @@ public class Turn {
 
     @Override
     public String toString() {
-        return "Turn{" +
-                "actions=" + actions +
-                ", playerId='" + playerId + '\'' +
-                '}';
+        return new Gson().toJson(this);
     }
 }
