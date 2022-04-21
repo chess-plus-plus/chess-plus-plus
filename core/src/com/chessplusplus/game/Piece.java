@@ -14,6 +14,7 @@ import java.util.Objects;
  */
 public class Piece {
 
+    @Expose
     private String playerId;
     @Expose
     private PieceType pieceType;
