@@ -65,7 +65,8 @@ public class ChessGameImpl implements ChessGame {
             return false;
         } else {
             updateGame(turn);
-            FBC.sendTurn(gameID, turn);
+            if (!fromOnline)
+                FBC.sendTurn(gameID, turn);
             return true;
         }
     }
