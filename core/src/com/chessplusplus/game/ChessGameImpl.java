@@ -33,20 +33,13 @@ public class ChessGameImpl implements ChessGame {
         this.player1Id = player1Id;
         this.player2Id = player2Id;
         currentPlayerId = player1Id;
-        this.playerID = player2Id;
+        this.playerID = player1Id;
 
         calculateAllLegalTurns();
 
-        //Randomly gives players a color and stores in hash map
-        Random rand = new Random();
-        int randomNum = rand.nextInt(2);
-        if (randomNum == 0) {
-            playerIdToPieceColor.put(player1Id, PieceColor.BLACK);
-            playerIdToPieceColor.put(player2Id, PieceColor.WHITE);
-        } else {
-            playerIdToPieceColor.put(player1Id, PieceColor.WHITE);
-            playerIdToPieceColor.put(player2Id, PieceColor.BLACK);
-        }
+        playerIdToPieceColor.put(player1Id, PieceColor.WHITE);
+        playerIdToPieceColor.put(player2Id, PieceColor.BLACK);
+
     }
 
     @Override

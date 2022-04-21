@@ -59,7 +59,7 @@ public class BoardView extends Viewport implements Screen {
         batch = sb;
         gameBoard = BoardFactory.standardBoardAndPieces("1", "2");
         game = new ChessGameImpl(gameBoard, "1", "2");
-        game.setPlayer("2");
+        game.setPlayer("1");
 
         playerIsWhite = game.getPlayerColor(game.getPlayerID()) == PieceColor.WHITE;
         System.out.println("Is white: " + playerIsWhite);
