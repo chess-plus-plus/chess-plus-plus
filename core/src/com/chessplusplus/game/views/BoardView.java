@@ -17,6 +17,7 @@ import com.chessplusplus.game.PieceColor;
 import com.chessplusplus.game.Turn;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.utils.FontUtils;
+import com.chessplusplus.game.utils.PixmapUtils;
 
 /*TODO: Fix weird bug.
    App crashes when any piece is moved to (0, 2) regardless of where it comes from. If the pawn
@@ -133,9 +134,7 @@ public class BoardView extends Viewport implements Screen {
         //Makes strike rectangle (not filled)
         pixmap = new Pixmap(squareSize, squareSize, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.FIREBRICK);
-        for (int i = 0; i < 10; i++) {
-            pixmap.drawRectangle(i, i, squareSize - i * 2, squareSize - i * 2);
-        }
+        PixmapUtils.drawRectangle(squareSize, squareSize, 10, pixmap);
         strikeOptionTexture = new Texture(pixmap);
         pixmap.dispose();
     }
@@ -145,9 +144,7 @@ public class BoardView extends Viewport implements Screen {
         Pixmap pixmap = new Pixmap(xpBarWidth, 100, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.BLACK);
         //Draws rectangle width 4 px line width
-        for (int i = 0; i < 4; i++) {
-            pixmap.drawRectangle(i, i, xpBarWidth - i * 2, 100 - i * 2);
-        }
+        PixmapUtils.drawRectangle(xpBarWidth, 100, 4, pixmap);
         xpBarOutlineTexture = new Texture(pixmap);
         pixmap.dispose();
         pixmap = new Pixmap(xpBarWidth, 100, Pixmap.Format.RGBA8888);
