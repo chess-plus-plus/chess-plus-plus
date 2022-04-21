@@ -24,8 +24,18 @@ public class ManualView extends ApplicationAdapter {
     private Skin skin;
     private TextButton conBut;
 
+    private GameView gameView;
+    private boolean isFromGame;
+
     public ManualView(ChessPlusPlus c){
         chessPlusPlus = c;
+        isFromGame = false;
+    }
+
+    public ManualView(ChessPlusPlus c, GameView g){
+        chessPlusPlus = c;
+        gameView = g;
+        isFromGame = true;
     }
 
     public void create() {
@@ -124,12 +134,16 @@ public class ManualView extends ApplicationAdapter {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new StartMenuView(chessPlusPlus));
+                if (isFromGame) {
+                    chessPlusPlus.setScreen(gameView);
+                } else {
+                    chessPlusPlus.setScreen(new StartMenuView(chessPlusPlus));
+                }
             }
         });
 
 
-        table.add(titleField).width((float) (stage.getWidth()*0.8));
+        table.add(titleField).width((float) (stage.getWidth()*0.8)).padTop(50);
         table.row();
         table.add(descriptionLabel).padBottom(50).width((float) (stage.getWidth()*0.8));
         table.row();
@@ -164,7 +178,7 @@ public class ManualView extends ApplicationAdapter {
         table.add(kingLabel).padBottom(50).width((float) (stage.getWidth()*0.8));
         table.row();
 
-        table.add(backButton).width((float) (stage.getWidth()*0.8));
+        table.add(backButton).width((float) (stage.getWidth()*0.8)).padBottom(50);
 
         final ScrollPane scroller = new ScrollPane(table);
         final Table scrollTable = new Table();
