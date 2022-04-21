@@ -228,7 +228,7 @@ public class MovementComponentTest {
     public void testSimplePawnMove() {
         testValidMoves(
                 BoardFactory.createPawn("", new Position(1,1), 1),
-                "Possible Bishop moves should give expected result",
+                "Possible Pawn moves should give expected result",
                 ""+
                         //1  2  3  4  5  6  7  8
                         "-  -  -  -  -  -  -  -  \n" + //1
