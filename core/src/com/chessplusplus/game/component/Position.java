@@ -1,10 +1,13 @@
 package com.chessplusplus.game.component;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Objects;
 
 public class Position implements Comparable<Position>{
-
+    @Expose
     private final int x;
+    @Expose
     private final int y;
 
     public Position(int x, int y) {

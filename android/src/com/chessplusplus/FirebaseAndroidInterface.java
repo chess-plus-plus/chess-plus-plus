@@ -95,7 +95,9 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
     @Override
     public void sendMove(String id, String move) {
         // we need to figure out where to get IDs for moves
-        dataRef.child(id).child(move.substring(0,1)).setValue(move);
+        long moveCount = this.currentGame.getChildrenCount() - 2;
+
+        dataRef.child(id).child(String.valueOf(moveCount + 1)).setValue(move);
     }
 
     @Override

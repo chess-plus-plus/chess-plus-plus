@@ -2,14 +2,16 @@ package com.chessplusplus.game;
 
 import com.chessplusplus.game.component.Position;
 import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 public class Turn {
-
+    @Expose
     public final List<Action> actions;
+    @Expose
     public final String playerId;
 
     public Turn(String playerId, List<Action> actions) {

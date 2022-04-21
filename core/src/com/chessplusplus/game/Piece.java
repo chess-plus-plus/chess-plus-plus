@@ -3,6 +3,7 @@ package com.chessplusplus.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.component.movement.MovementRuleSet;
+import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +14,12 @@ import java.util.List;
 public class Piece {
 
     private String playerId;
+    @Expose
     private PieceType pieceType;
+    @Expose
     private Position position;
     private MovementRuleSet movement;
+    @Expose
     private PieceColor color;
     private Texture texture;
     private String textureFileName;
