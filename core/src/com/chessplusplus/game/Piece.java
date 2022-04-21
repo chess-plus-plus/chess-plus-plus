@@ -16,6 +16,7 @@ public class Piece {
     private String playerId;
     @Expose
     private PieceType pieceType;
+    @Expose
     private Position position;
     private MovementRuleSet movement;
     private PieceColor color;
