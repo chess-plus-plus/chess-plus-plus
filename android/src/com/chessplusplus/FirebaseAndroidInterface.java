@@ -9,15 +9,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class FirebaseAndroidInterface implements FireBaseInterface{
     FirebaseDatabase database;
     DatabaseReference dataRef;
     DatabaseReference pingRef;
+    DatabaseReference IDRef;
     AndroidFirebaseAuth mAuth;
     FirebaseUser user;
+    DataSnapshot gameIDs;
 
     boolean connected;
     boolean gameExists;
@@ -26,8 +30,10 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
     public FirebaseAndroidInterface(){
         database = FirebaseDatabase.getInstance("https://chessplusplus-815c2-default-rtdb.europe-west1.firebasedatabase.app");
         dataRef = database.getReference("games");
+        IDRef = database.getReference("ids");
         pingRef = database.getReference(".info/connected");
         mAuth = new AndroidFirebaseAuth();
+        getAllGameIDs();
         this.getStatus();
         this.loginAnonymously();
     }
@@ -42,6 +48,20 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
         if (this.user != null)
             return;
         user = mAuth.loginAnonymously();
+    }
+
+    public void getAllGameIDs() {
+        IDRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                gameIDs = snapshot;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println(error);
+            }
+        });
     }
 
     // ping-echo
@@ -102,6 +122,8 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
             return null;
 
         String key = this.getRandomNumberString();
+
+        IDRef.child(key).setValue(new Date());
         dataRef.child(key).child("player1").setValue(user.getUid());
         this.getGameUpdates(key);
         return key;
@@ -117,16 +139,25 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     gameExists = true;
+                } else {
+                    gameExists = false;
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                    System.out.println("smth wrong: " + error);
+                    gameExists = false;
             }
         });
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (!gameExists)
             return false;
+
         dataRef.child(gameID).child("player2").setValue(user.getUid());
         this.getGameUpdates(gameID);
         return true;
@@ -140,11 +171,14 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
         database.goOnline();
     }
 
+    // gameID generator
     private String getRandomNumberString() {
-        // It will generate 6 digit random Number.
-        // from 0 to 999999
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
+
+        // can lead to infinite loop if db is full
+        if (gameIDs.hasChild(String.valueOf(number)))
+            return getRandomNumberString();
 
         // this will convert any number sequence into 6 character.
         return String.format("%06d", number);
