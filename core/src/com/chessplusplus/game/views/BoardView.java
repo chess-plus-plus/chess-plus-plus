@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.chessplusplus.ChessPlusPlus;
+import com.chessplusplus.FirebaseController;
 import com.chessplusplus.game.Board;
 import com.chessplusplus.game.BoardFactory;
 import com.chessplusplus.game.ChessGameImpl;
