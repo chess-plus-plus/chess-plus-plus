@@ -22,9 +22,11 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
     AndroidFirebaseAuth mAuth;
     FirebaseUser user;
     DataSnapshot gameIDs;
+    DataSnapshot currentGame;
 
     boolean connected;
     boolean gameExists;
+    boolean hasUpdates;
 
     // Singleton?
     public FirebaseAndroidInterface(){
@@ -104,6 +106,8 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                currentGame = dataSnapshot;
+                hasUpdates = true;
                 System.out.println("###FIREBASE### value has changed to: " + map);
             }
 
@@ -165,6 +169,24 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
 
     public boolean isConnected() {
         return connected;
+    }
+
+    public boolean hasUpdates(){
+        if (hasUpdates) {
+            hasUpdates = false;
+            return true;
+        }
+        return false;
+    }
+
+    public String getLatestMove() {
+        if (this.currentGame == null)
+            return null;
+        long moveCount = this.currentGame.getChildrenCount() - 2;
+        Map<String, Object> map = (Map<String, Object>) this.currentGame.getValue();
+        if (map.get(String.valueOf(moveCount)) != null)
+            return String.valueOf(map.get(String.valueOf(moveCount)));
+        return null;
     }
 
     public void goOnline() {

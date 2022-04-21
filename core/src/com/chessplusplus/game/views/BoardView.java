@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.chessplusplus.ChessPlusPlus;
+import com.chessplusplus.FirebaseController;
 import com.chessplusplus.game.Board;
 import com.chessplusplus.game.BoardFactory;
 import com.chessplusplus.game.ChessGameImpl;
@@ -27,6 +29,7 @@ public class BoardView extends Viewport implements Screen {
 
     private SpriteBatch batch;
     private BitmapFont font;
+    private FirebaseController FBC;
 
     private boolean playerIsWhite;
     private int boardWidth;
@@ -37,6 +40,7 @@ public class BoardView extends Viewport implements Screen {
 
     private Board gameBoard;
     private ChessGameImpl game;
+    private String gameID;
 
     private Texture boardTexture;
     private TextureRegion boardTextureRegion;
@@ -54,11 +58,13 @@ public class BoardView extends Viewport implements Screen {
     //Selected piece by user, null if none selected
     private Piece selectedPiece;
 
-    public BoardView(SpriteBatch sb) {
-        batch = sb;
+    public BoardView(ChessPlusPlus c, String gameID) {
+        batch = c.getBatch();
         gameBoard = BoardFactory.standardBoardAndPieces("1", "2");
-        game = new ChessGameImpl(gameBoard, "1", "2");
+        game = new ChessGameImpl(gameBoard, c.getFBC(), gameID, "1", "2");
         game.setPlayer("2");
+        this.gameID = gameID;
+        this.FBC = c.getFBC();
 
         playerIsWhite = game.getPlayerColor(game.getPlayerID()) == PieceColor.WHITE;
         System.out.println("Is white: " + playerIsWhite);
@@ -163,6 +169,8 @@ public class BoardView extends Viewport implements Screen {
     /**/
     @Override
     public void render(float delta) {
+        Turn newTurn = this.FBC.getNewTurnIfAvailable();
+        game.submitTurn(newTurn);
         processUserInput();
         renderBoard();
     }

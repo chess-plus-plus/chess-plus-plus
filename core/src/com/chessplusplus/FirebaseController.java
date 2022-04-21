@@ -1,9 +1,14 @@
 package com.chessplusplus;
 
+import com.chessplusplus.game.Turn;
+import com.google.gson.Gson;
+
 public class FirebaseController {
     FireBaseInterface FBIC;
+    Gson gson;
 
     public FirebaseController (FireBaseInterface FBIC) {
+        this.gson = new Gson();
         this.FBIC = FBIC;
     }
 
@@ -34,5 +39,18 @@ public class FirebaseController {
 
     public void reconnect () {
         this.FBIC.goOnline();
+    }
+
+    public void sendTurn(String gameID, Turn turn) {
+        this.FBIC.sendMove(gameID, gson.toJson(turn));
+    }
+
+    public Turn getNewTurnIfAvailable () {
+        if (!this.FBIC.hasUpdates())
+            return null;
+        String lm = this.FBIC.getLatestMove();
+        if (lm == null)
+            return null;
+        return gson.fromJson(lm, Turn.class);
     }
 }

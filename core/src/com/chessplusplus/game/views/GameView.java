@@ -35,7 +35,7 @@ public class GameView extends ApplicationAdapter {
         chessPlusPlus = c;
         gameID = id;
         batch = c.getBatch();
-        boardView = new BoardView(batch);
+        boardView = new BoardView(c, gameID);
     }
 
     @Override
@@ -92,7 +92,6 @@ public class GameView extends ApplicationAdapter {
             conBut.setText("Not Connected");
             conBut.setColor(Color.RED);
         }
-
         font.draw(batch, toRender, (Gdx.graphics.getWidth() / 2) - (FontUtils.getWidthOfFontText(toRender, font) / 2), Gdx.graphics.getHeight() - 50);
         stage.draw();
     }

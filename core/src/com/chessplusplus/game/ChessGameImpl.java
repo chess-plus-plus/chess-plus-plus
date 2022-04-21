@@ -1,5 +1,6 @@
 package com.chessplusplus.game;
 
+import com.chessplusplus.FirebaseController;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.views.BoardView;
 import com.chessplusplus.game.views.GameView;
@@ -18,22 +19,26 @@ public class ChessGameImpl implements ChessGame {
 
     private Board gameBoard;
     private List<Turn> gameTurnHistory = new ArrayList<>();
+    private FirebaseController FBC;
 
     private final String player1Id;
     private final String player2Id;
     private String currentPlayerId;
 
     private String playerID; //The player that this code will run on.
+    private String gameID;
     private HashMap<String, PieceColor> playerIdToPieceColor = new HashMap<>();
 
     private HashMap<Turn, Piece> legalTurnsToPieceMap = new HashMap<>();
 
-    public ChessGameImpl(Board gameBoard, String player1Id, String player2Id) {
+    public ChessGameImpl(Board gameBoard, FirebaseController FBC, String gameID, String player1Id, String player2Id) {
         this.gameBoard = gameBoard;
         this.player1Id = player1Id;
         this.player2Id = player2Id;
         currentPlayerId = player1Id;
         this.playerID = player2Id;
+        this.gameID = gameID;
+        this.FBC = FBC;
 
         calculateAllLegalTurns();
 
@@ -65,6 +70,7 @@ public class ChessGameImpl implements ChessGame {
             return false;
         } else {
             updateGame(turn);
+            FBC.sendTurn(gameID, turn);
             return true;
         }
     }
