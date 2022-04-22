@@ -18,13 +18,15 @@ public class PawnDoubleFirstMoveRule implements SpecialMoveRule {
     public List<Turn> getLegalTurns(String playerId, Piece pawn, Board gameBoard) {
         ArrayList<Turn> legalTurns = new ArrayList<>();
 
+        // "Move squares" are the squares the pawn wants to move through
+        List<Position> moveSquares = getMoveSquares(pawn);
+
         // Check if the piece is actually a pawn and has yet to move
-        if (pawn.getPieceType() != PieceType.PAWN || pawn.getActions().size() > 0) {
+        if ((pawn.getPieceType() != PieceType.PAWN || pawn.getActions().size() > 0)
+                || (moveSquares.size() < 2)) {
             return legalTurns;
         }
 
-        // "Move squares" are the squares the pawn wants to move through
-        List<Position> moveSquares = getMoveSquares(pawn, gameBoard);
         Position firstSquare = moveSquares.get(0);
         Position secondSquare = moveSquares.get(1);
 
@@ -45,24 +47,28 @@ public class PawnDoubleFirstMoveRule implements SpecialMoveRule {
      * the second is the one the pawn wants to move into.
      *
      * @param pawn      Pawn piece.
-     * @param gameBoard Game board.
      * @return List of 1st and 2nd position.
      */
-    private List<Position> getMoveSquares(Piece pawn, Board gameBoard) {
+    private List<Position> getMoveSquares(Piece pawn) {
         List<Position> squares = new ArrayList<>();
-        MovementRuleSet pawnMoveset = pawn.getMovementRules();
+        MovementRuleSet pawnMoveSet = pawn.getMovementRules();
 
-        List<Position> possibleMoves = pawnMoveset.getLegalMoves(
-                pawn.getPosition(), gameBoard, false, pawnMoveset.getMovePatternsCopy(),
-                pawn.getPlayerId(), pawnMoveset.getMoveRestrictionsCopy());
-        Position firstSquare = possibleMoves.get(0);
+        DirectionalMoveRestriction dirRestriction = null;
+        for (MoveRestriction restriction : pawnMoveSet.getMoveRestrictionsCopy()) {
+            if (restriction.getClass() == DirectionalMoveRestriction.class) {
+                dirRestriction = (DirectionalMoveRestriction) restriction;
+            }
+        }
 
-        int moveDeltaY = pawn.getPosition().getY() - firstSquare.getY();
-        Position secondSquare = new Position(firstSquare.getY() + moveDeltaY,
-                pawn.getPosition().getX());
+        if (dirRestriction == null) {
+            return squares;
+        }
 
-        squares.add(firstSquare);
-        squares.add(secondSquare);
+        int xVal = pawn.getPosition().getX();
+        int yVal = pawn.getPosition().getY();
+        int dirDelta = dirRestriction.dirFilterY;
+        squares.add(new Position(xVal, yVal+dirDelta));
+        squares.add(new Position(xVal, yVal+dirDelta+dirDelta));
 
         return squares;
     }
