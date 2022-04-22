@@ -46,8 +46,9 @@ public class VerticalMovePattern extends SimpleMovePattern {
     @Override
     public List<Position> getPossibleMoves(Position piece, int boardWidth, int boardHeight) {
         int maxMoveDistance = (range==-1) ? boardWidth : range;
+        int minRangeValue = Math.max(0, piece.getY() - range);
         return IntStream
-                .range(0, boardWidth)
+                .range(minRangeValue, boardWidth)
                 .filter(y -> y - piece.getY() <= maxMoveDistance) // is in range
                 .filter(y -> 0 <= y && y <= boardWidth)           // inside board
                 .filter(y -> piece.getX() != y)                   // not own position
