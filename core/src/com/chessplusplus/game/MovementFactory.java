@@ -1,8 +1,10 @@
-package com.chessplusplus.game.entity;
+package com.chessplusplus.game;
 
 
 import com.chessplusplus.game.component.movement.CastlingMoveRule;
 import com.chessplusplus.game.component.movement.CollisionMoveRestriction;
+import com.chessplusplus.game.component.movement.PromotionMoveRule;
+import com.chessplusplus.game.component.movement.RowMoveRestriction;
 import com.chessplusplus.game.component.movement.SpecialMoveRule;
 import com.chessplusplus.game.component.movement.CurvingMovePattern;
 import com.chessplusplus.game.component.movement.DiagonalMovePattern;
@@ -29,7 +31,7 @@ public class MovementFactory {
      * @param moveDir Defines which way the pawn can move along the y axis, expressed as 1 or -1
      * @return Pawn movement rule-set.
      */
-    public static MovementRuleSet createPawn(int moveDir) {
+    public static MovementRuleSet createPawn(int moveDir, int maxRow) {
         List<MovePattern> movePatterns = new ArrayList<>();
         movePatterns.add(VerticalMovePattern.oneSquareVerticalMovement());
 
@@ -38,10 +40,16 @@ public class MovementFactory {
 
         List<MoveRestriction> restrictions = new ArrayList<>();
         restrictions.add(new DirectionalMoveRestriction(0, moveDir));
+        if (moveDir == 1) {
+            restrictions.add(new RowMoveRestriction(maxRow));
+        } else {
+            restrictions.add(new RowMoveRestriction(0));
+        }
 
         List<SpecialMoveRule> specialMoveRules = new ArrayList<>();
         specialMoveRules.add(new PawnDoubleFirstMoveRule());
         specialMoveRules.add(new EnPassantMoveRule());
+        specialMoveRules.add(new PromotionMoveRule());
 
         return new MovementRuleSet.Builder(movePatterns, strikeRules)
                 .specialMoveRules(specialMoveRules)

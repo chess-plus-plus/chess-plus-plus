@@ -10,4 +10,6 @@ public interface FireBaseInterface {
     boolean isConnected();
     boolean joinGame(String gameID);
     void goOnline();
+    boolean hasUpdates();
+    String getLatestMove();
 }

@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.chessplusplus.game.BoardFactory;
 import com.chessplusplus.game.ChessGame;
 import com.chessplusplus.game.ChessGameImpl;
-import com.chessplusplus.game.views.BoardView;
 import com.chessplusplus.game.views.StartMenuView;
 
 public class ChessPlusPlus extends ApplicationAdapter implements ApplicationListener, InputProcessor {
@@ -19,7 +18,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	SpriteBatch batch;
 
-	BoardView boardView;
 	ApplicationAdapter screen;
 	FirebaseController FBC;
 
@@ -34,13 +32,8 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 		String playerId1 = "1";
 		String playerId2 = "2";
-		game = new ChessGameImpl(
-				BoardFactory.standardBoardAndPieces(playerId1, playerId2),
-				playerId1, playerId2);
 
 		Gdx.input.setInputProcessor(this);
-
-		boardView = new BoardView(batch);
 
 		this.setScreen(new StartMenuView(this));
 	}
@@ -58,7 +51,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 		ScreenUtils.clear(0.5f, 0.5f, 0.5f, 1);
 		batch.begin();
-		//boardView.render(Gdx.graphics.getDeltaTime());
 		screen.render();
 		batch.end();
 
@@ -124,6 +116,18 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	public SpriteBatch getBatch(){
 		return this.batch;
+	}
+
+	public String createGameID() {
+		return FBC.createNewGame();
+	}
+
+	public boolean joinGame(String id) {
+		return FBC.joinGame(id);
+	}
+
+	public FirebaseController getFBC() {
+		return this.FBC;
 	}
 
 }

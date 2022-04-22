@@ -52,7 +52,7 @@ public class PlayGameMenuView extends ApplicationAdapter {
         testField.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new GameView(chessPlusPlus));
+                chessPlusPlus.setScreen(new GameView(chessPlusPlus, "0", "1", true));
             }
         });
 

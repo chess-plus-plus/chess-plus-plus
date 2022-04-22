@@ -48,8 +48,9 @@ public class HorizontalMovePattern extends SimpleMovePattern {
     @Override
     public List<Position> getPossibleMoves(Position piece, int boardWidth, int boardHeight) {
         int maxMoveDistance = (range==-1) ? boardWidth: range;
+        int minRangeValue = Math.max(0, piece.getX() - range);
         return IntStream
-                .range(0, boardWidth)
+                .range(minRangeValue, boardWidth)
                 .filter(x -> x - piece.getX() <= maxMoveDistance) // is in range
                 .filter(x -> 0 <= x && x <= boardWidth)           // inside board
                 .filter(x -> piece.getX() != x)                   // not own position
