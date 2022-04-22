@@ -3,18 +3,23 @@ package com.chessplusplus.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.component.movement.MovementRuleSet;
+import com.google.gson.annotations.Expose;
 import com.chessplusplus.game.system.LevelEngine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A chess piece.
  */
 public class Piece {
 
+    @Expose
     private String playerId;
+    @Expose
     private PieceType pieceType;
+    @Expose
     private Position position;
     private MovementRuleSet movement;
     private PieceColor color;
@@ -183,6 +188,19 @@ public class Piece {
 
     public void setXp(int xp) {
         this.xp = xp;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Piece piece = (Piece) o;
+        return pieceType == piece.pieceType && position.equals(piece.position);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pieceType, position);
     }
 
     public List<Turn.Action> getActions() {

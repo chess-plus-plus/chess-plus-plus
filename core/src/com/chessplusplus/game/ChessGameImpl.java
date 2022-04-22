@@ -1,5 +1,6 @@
 package com.chessplusplus.game;
 
+import com.chessplusplus.FirebaseController;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.views.BoardView;
 import com.chessplusplus.game.views.GameView;
@@ -18,35 +19,36 @@ public class ChessGameImpl implements ChessGame {
 
     private Board gameBoard;
     private List<Turn> gameTurnHistory = new ArrayList<>();
+    private FirebaseController FBC;
 
     private final String player1Id;
     private final String player2Id;
     private String currentPlayerId;
 
     private String playerID; //The player that this code will run on.
+    private String gameID;
     private HashMap<String, PieceColor> playerIdToPieceColor = new HashMap<>();
 
     private HashMap<Turn, Piece> legalTurnsToPieceMap = new HashMap<>();
 
-    public ChessGameImpl(Board gameBoard, String player1Id, String player2Id) {
+    private boolean offlineTesting;
+
+    public ChessGameImpl(Board gameBoard, FirebaseController FBC, String gameID, String player1Id,
+                         String player2Id, boolean offlineTesting) {
         this.gameBoard = gameBoard;
         this.player1Id = player1Id;
         this.player2Id = player2Id;
         currentPlayerId = player1Id;
-        this.playerID = player1Id;
+        this.playerID = player2Id;
+        this.gameID = gameID;
+        this.FBC = FBC;
+        this.offlineTesting = offlineTesting;
 
         calculateAllLegalTurns();
 
-        //Randomly gives players a color and stores in hash map
-        Random rand = new Random();
-        int randomNum = rand.nextInt(2);
-        if (randomNum == 0) {
-            playerIdToPieceColor.put(player1Id, PieceColor.BLACK);
-            playerIdToPieceColor.put(player2Id, PieceColor.WHITE);
-        } else {
-            playerIdToPieceColor.put(player1Id, PieceColor.WHITE);
-            playerIdToPieceColor.put(player2Id, PieceColor.BLACK);
-        }
+        playerIdToPieceColor.put(player1Id, PieceColor.WHITE);
+        playerIdToPieceColor.put(player2Id, PieceColor.BLACK);
+
     }
 
     @Override
@@ -60,11 +62,15 @@ public class ChessGameImpl implements ChessGame {
     }
 
     @Override
-    public boolean submitTurn(Turn turn) {
-        if (!legalTurnsToPieceMap.containsKey(turn)) {
+    public boolean submitTurn(Turn turn, boolean fromOnline) {
+        if (fromOnline && turn.playerId.equals(this.playerID))
+            return false;
+        if (!legalTurnsToPieceMap.containsKey(turn) && !fromOnline) {
             return false;
         } else {
             updateGame(turn);
+            if (!fromOnline && !offlineTesting)
+                FBC.sendTurn(gameID, turn);
             return true;
         }
     }
@@ -80,18 +86,21 @@ public class ChessGameImpl implements ChessGame {
     private void updateGame(Turn turn) {
         // 1
         gameTurnHistory.add(turn);
-
+        System.out.println("New turn");
         // 2
         for (Turn.Action action : turn.actions) {
+            System.out.println(action);
             switch (action.actionType) {
                 case STRIKE:
                     //TODO: Add XP to striker.
+                    //gameBoard.removePiece(action.piece);
+                    gameBoard.removePiece(gameBoard.getPiece(action.actionPos));
                     break;
                 case MOVEMENT:
-                    action.piece.moveTo(action.actionPos);
+                    gameBoard.getPiece(action.startPos).moveTo(action.actionPos);
                     break;
                 case DESTRUCTION:
-                    gameBoard.removePiece(action.piece);
+                    gameBoard.removePiece(gameBoard.getPiece(action.actionPos));
                     break;
                 case CREATION:
                     //TODO
@@ -103,7 +112,6 @@ public class ChessGameImpl implements ChessGame {
 
         // 3, a bit hacky, but I'm tired and it should work.
         currentPlayerId = currentPlayerId.equals(player1Id) ? player2Id : player1Id;
-        System.out.println(currentPlayerId);
     }
 
     /**
@@ -181,29 +189,45 @@ public class ChessGameImpl implements ChessGame {
                 boardView.setSelectedPiece(null);
             } else {
                 boardView.setSelectedPiece(pieceTemp);
-                for (Turn turn : boardView.getSelectedPiece().getLegalTurns(this.getBoard())) {
-                    System.out.println("ACTIONS");
-                    for (Turn.Action action : turn.actions) {
-                        System.out.println(action);
+            }
+        } else if (boardView.getSelectedPiece() != null) {
+            Turn turnToSubmit = null;
+            for (Turn turn : boardView.getSelectedPiece().getLegalTurns(this.getBoard())) {
+                for (Turn.Action action : turn.actions) {
+                    //Finds the legal turn corresponding to the action position and saves the turn
+                    if (action.actionPos.equals(actionPos)) {
+                        turnToSubmit = turn;
+                        break;
                     }
                 }
             }
-        } else if (boardView.getSelectedPiece() != null) {
-            Piece pieceTemp = this.getBoard().getPiece(actionPos);
-            Turn.ActionType actionType = Turn.ActionType.MOVEMENT;
-
-            if (!this.isFriendlyPiece(pieceTemp) && !this.getBoard().squareIsEmpty(actionPos)) {
-                actionType = Turn.ActionType.STRIKE;
-            }
-
-            Turn.Action action = new Turn.Action(boardView.getSelectedPiece(), actionType,
-                    boardView.getSelectedPiece().getPosition(), actionPos);
-            System.out.println(action);
-            List<Turn.Action> actions = new ArrayList<>();
-            actions.add(action);
-            Turn turn = new Turn("1", actions);
-            this.submitTurn(turn);
+            if (turnToSubmit != null)
+                //Submits saved turn
+                submitTurn(turnToSubmit, false);
             boardView.setSelectedPiece(null);
         }
+    }
+
+    public void setPlayer(String playerID) {
+        this.playerID = playerID;
+    }
+
+    /**
+     * Determines if the player belongs to the bottom of the board (If the player belongs to y=0 in
+     * other words)
+     */
+    public boolean playerIsBottom() {
+        return playerID.equals(player1Id);
+    }
+
+    /**
+     * Is the players turn
+     */
+    public boolean isPlayerTurn() {
+        return currentPlayerId.equals(playerID);
+    }
+
+    public boolean getOfflineTesting() {
+        return offlineTesting;
     }
 }

@@ -1,14 +1,17 @@
 package com.chessplusplus.game;
 
 import com.chessplusplus.game.component.Position;
+import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 public class Turn {
-
+    @Expose
     public final List<Action> actions;
+    @Expose
     public final String playerId;
 
     public Turn(String playerId, List<Action> actions) {
@@ -31,9 +34,13 @@ public class Turn {
 
     public static class Action {
 
-        public final Piece piece;           // The piece being affected
+        @Expose
+        public final Piece piece;// The piece being affected
+        @Expose
         public final ActionType actionType; // The type of action
+        @Expose
         public final Position startPos;     // The position of the piece before action is taken
+        @Expose
         public final Position actionPos;    // The position where the piece strikes/moves to
 
         public Action(Piece piece, ActionType actionType, Position startPos, Position actionPos) {
@@ -58,12 +65,7 @@ public class Turn {
 
         @Override
         public String toString() {
-            return "Action{" +
-                    "piece=" + piece +
-                    ", actionType=" + actionType +
-                    ", startPos=" + startPos +
-                    ", actionPos=" + actionPos +
-                    '}';
+            return new Gson().toJson(this);
         }
     }
 
@@ -79,9 +81,6 @@ public class Turn {
 
     @Override
     public String toString() {
-        return "Turn{" +
-                "actions=" + actions +
-                ", playerId='" + playerId + '\'' +
-                '}';
+        return new Gson().toJson(this);
     }
 }
