@@ -1,16 +1,18 @@
 package com.chessplusplus.game;
 
-import com.chessplusplus.game.component.Position;
-import com.chessplusplus.game.entity.MovementFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.chessplusplus.game.PieceFactory.createBishop;
+import static com.chessplusplus.game.PieceFactory.createKing;
+import static com.chessplusplus.game.PieceFactory.createKnight;
+import static com.chessplusplus.game.PieceFactory.createPawn;
+import static com.chessplusplus.game.PieceFactory.createQueen;
+import static com.chessplusplus.game.PieceFactory.createRook;
 import static com.chessplusplus.game.component.Position.pos;
 
 /**
  * Creates chess boards with pieces. Can also be used to create pieces.
- * TODO: Split out piece creation into different factory class?
  */
 public class BoardFactory {
 
@@ -65,82 +67,11 @@ public class BoardFactory {
         List<Piece> pieces = new ArrayList<>();
 
         for (int i = 0; i < rowWidth; i++) {
-            pieces.add(createPawn(playerId, pos(0, row), moveDir));
+            pieces.add(createPawn(playerId, pos(0, row), moveDir, rowWidth-1));
         }
 
         return pieces;
     }
 
-    /**
-     * Creates a pawn piece.
-     *
-     * @param playerId Player id.
-     * @param position Starting position of piece.
-     * @param moveDir  Which way along the y axis the pawn will move, 1 for up, -1 for down.
-     * @return New pawn piece object.
-     */
-    public static Piece createPawn(String playerId, Position position, int moveDir) {
-        return new Piece(playerId, PieceType.PAWN, position, MovementFactory.createPawn(moveDir),
-                RPGConfig.PAWN_LEVEL_1_THRESHOLD);
-    }
-
-    /**
-     * Creates a new bishop piece.
-     *
-     * @param playerId Player id.
-     * @param position Starting position of piece.
-     * @return New bishop piece object.
-     */
-    public static Piece createBishop(String playerId, Position position) {
-        return new Piece(playerId, PieceType.BISHOP, position, MovementFactory.createBishopMoveRules(),
-                RPGConfig.BISHOP_LEVEL_1_THRESHOLD);
-    }
-
-    /**
-     * Creates a new knight piece.
-     *
-     * @param playerId Player id.
-     * @param position Starting position of piece.
-     * @return New knight piece object.
-     */
-    public static Piece createKnight(String playerId, Position position) {
-        return new Piece(playerId, PieceType.KNIGHT, position, MovementFactory.createKnightMoveRules(),
-                RPGConfig.KNIGHT_LEVEL_1_THRESHOLD);
-    }
-
-    /**
-     * Creates a new rook piece.
-     *
-     * @param playerId Player id.
-     * @param position Starting position of piece.
-     * @return New rook piece object.
-     */
-    public static Piece createRook(String playerId, Position position) {
-        return new Piece(playerId, PieceType.ROOK, position, MovementFactory.createRookMoveRules(),
-                RPGConfig.ROOK_LEVEL_1_THRESHOLD);
-    }
-
-    /**
-     * Creates a new queen piece.
-     *
-     * @param playerId Player id.
-     * @param position Starting position of piece.
-     * @return New queen piece object.
-     */
-    public static Piece createQueen(String playerId, Position position) {
-        return new Piece(playerId, PieceType.QUEEN, position, MovementFactory.createQueenMoveRules(),
-                RPGConfig.QUEEN_LEVEL_UP_THRESHOLD);
-    }
-
-    /**
-     * Creates a new king piece.
-     *
-     * @param playerId Player id.
-     * @param position Starting position of piece.
-     * @return New king piece object.
-     */
-    public static Piece createKing(String playerId, Position position) {
-        return new Piece(playerId, PieceType.KING, position, MovementFactory.createKingMoveRules());
-    }
 
 }

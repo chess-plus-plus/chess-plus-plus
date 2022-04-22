@@ -18,7 +18,7 @@ public class ChessGameImpl implements ChessGame {
     private Board gameBoard;
     private List<Turn> gameTurnHistory = new ArrayList<>();
     private FirebaseController FBC;
-    private final LevelEngine levelEngine = LevelUpEffectFactory.createDefaultRPGRules();
+    private final LevelEngine levelEngine;
 
     private final int moveXP = 20;
     private final int strikeXP = 50;
@@ -45,6 +45,7 @@ public class ChessGameImpl implements ChessGame {
         this.gameID = gameID;
         this.FBC = FBC;
         this.offlineTesting = offlineTesting;
+        this.levelEngine = LevelUpEffectFactory.createDefaultRPGRules(gameBoard.getHeight()-1);
 
         calculateAllLegalTurns();
 

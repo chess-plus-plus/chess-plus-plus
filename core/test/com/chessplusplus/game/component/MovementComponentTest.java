@@ -1,9 +1,9 @@
 package com.chessplusplus.game.component;
 
 import com.chessplusplus.game.Board;
-import com.chessplusplus.game.BoardFactory;
 import com.chessplusplus.game.ChessBoard;
 import com.chessplusplus.game.Piece;
+import com.chessplusplus.game.PieceFactory;
 import com.chessplusplus.game.Turn;
 
 import org.junit.Assert;
@@ -13,8 +13,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class MovementComponentTest {
 
@@ -136,7 +134,7 @@ public class MovementComponentTest {
     @Test
     public void testSimpleKingMove() {
         testValidMoves(
-                        BoardFactory.createKing("", new Position(1,1)),
+                        PieceFactory.createKing("", new Position(1,1)),
                         "Possible king moves should give expected result",
                         ""+
                        //1  2  3  4  5  6  7  8
@@ -154,7 +152,7 @@ public class MovementComponentTest {
     @Test
     public void testSimpleRookMove() {
         testValidMoves(
-                BoardFactory.createRook("", new Position(2,2)),
+                PieceFactory.createRook("", new Position(2,2)),
                 "Possible rook moves should give expected result",
                 ""+
                         //1  2  3  4  5  6  7  8
@@ -172,7 +170,7 @@ public class MovementComponentTest {
     @Test
     public void testSimpleQueenMove() {
         testValidMoves(
-                BoardFactory.createQueen("", new Position(2,2)),
+                PieceFactory.createQueen("", new Position(2,2)),
                 "Possible Queen moves should give expected result",
                 ""+
                         //1  2  3  4  5  6  7  8
@@ -190,7 +188,7 @@ public class MovementComponentTest {
     @Test
     public void testSimpleKnightMove() {
         testValidMoves(
-                BoardFactory.createKnight("", new Position(2,2)),
+                PieceFactory.createKnight("", new Position(2,2)),
                 "Possible Knight moves should give expected result",
                 ""+
                         //1  2  3  4  5  6  7  8
@@ -208,7 +206,7 @@ public class MovementComponentTest {
     @Test
     public void testSimpleBishopMove() {
         testValidMoves(
-                BoardFactory.createBishop("", new Position(1,1)),
+                PieceFactory.createBishop("", new Position(1,1)),
                 "Possible Bishop moves should give expected result",
                 ""+
                         //1  2  3  4  5  6  7  8
@@ -227,7 +225,7 @@ public class MovementComponentTest {
     @Test
     public void testSimplePawnMove() {
         testValidMoves(
-                BoardFactory.createPawn("", new Position(1,1), 1),
+                PieceFactory.createPawn("", new Position(1,1), 1, 7),
                 "Possible Bishop moves should give expected result",
                 ""+
                         //1  2  3  4  5  6  7  8
@@ -249,10 +247,10 @@ public class MovementComponentTest {
 //    @Test
     public void testCastlingMove() {
         testValidMoves(
-                BoardFactory.createKing("", new Position(4,0)),
+                PieceFactory.createKing("", new Position(4,0)),
                 Arrays.asList(
-                        BoardFactory.createRook("", new Position(0,0)),
-                        BoardFactory.createRook("", new Position(7,0))
+                        PieceFactory.createRook("", new Position(0,0)),
+                        PieceFactory.createRook("", new Position(7,0))
                 ),
                 "should allow king to castle",
                 ""+
@@ -275,11 +273,11 @@ public class MovementComponentTest {
         //initialize other pawn that has made one move
         Position startPos = new Position(2,2);
         Position endPos =  new Position(2,1);
-        Piece otherPawn = BoardFactory.createPawn("", startPos, -1);
+        Piece otherPawn = PieceFactory.createPawn("", startPos, -1, 7);
         otherPawn.addAction(new Turn.Action(otherPawn, Turn.ActionType.MOVEMENT,startPos,endPos));
 
         testValidMoves(
-                BoardFactory.createPawn("", new Position(1,1), 1),
+                PieceFactory.createPawn("", new Position(1,1), 1, 7),
                 Arrays.asList(otherPawn),
                 "should allow pawn to en passant",
                 ""+

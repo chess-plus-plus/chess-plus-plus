@@ -124,6 +124,15 @@ public class MovementRuleSet {
         return validMoves;
     }
 
+    public List<Position> getMoveCandidates(Position piecePos, int boardWidth, int boardHeight,
+                                            boolean isStrike) {
+        if (isStrike) {
+            return getPossibleMoveCandidates(piecePos, boardWidth, boardHeight, strikePatterns);
+        } else {
+            return getPossibleMoveCandidates(piecePos, boardWidth, boardHeight, movePatterns);
+        }
+    }
+
     /**
      * Utility method that generates all possible moves arising from the movement patterns.
      * Can be used for both movement and strike patterns.
