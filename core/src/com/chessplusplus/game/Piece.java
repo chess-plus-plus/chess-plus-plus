@@ -29,6 +29,7 @@ public class Piece {
     private int level = 0;
     private int xp = 0;
     private int nextLevelXpThreshold;
+    private int prevNextLevelXpThreshold = 0; //The xp needed to be in the current level
     private final List<Turn.Action> actions = new ArrayList<>(); // All actions the piece have made
 
     public Piece(String playerId, PieceType pieceType, Position position, MovementRuleSet movement,
@@ -154,6 +155,7 @@ public class Piece {
         this.xp += xp;
         if (this.xp > nextLevelXpThreshold) {
             level++;
+            prevNextLevelXpThreshold = nextLevelXpThreshold;
             nextLevelXpThreshold = Integer.MAX_VALUE;
             levelEngine.levelUp(this);
         }
@@ -214,6 +216,8 @@ public class Piece {
     public Texture getTexture() {
         return this.texture;
     }
+
+    public int getPrevNextLevelXpThreshold() { return this.prevNextLevelXpThreshold; }
 
     public boolean equals(Piece piece) {
         return this.position.equals(piece.getPosition());

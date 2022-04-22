@@ -16,6 +16,7 @@ import com.chessplusplus.game.BoardFactory;
 import com.chessplusplus.game.ChessGameImpl;
 import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.PieceColor;
+import com.chessplusplus.game.PieceType;
 import com.chessplusplus.game.Turn;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.utils.FontUtils;
@@ -236,9 +237,40 @@ public class BoardView extends Viewport implements Screen {
 
         //The XP bar of the selected piece
         if (selectedPiece != null) {
-            batch.draw(xpBarProgressTexture, xpBarXPos, 200, (int) (xpBarWidth * 0.5), 100);
-            batch.draw(xpBarOutlineTexture, xpBarXPos, 200, xpBarWidth, 100);
+            if (selectedPiece.getLevel() < 2) {
+                font.getData().setScale(4);
+                renderXpBar();
+            } else {
+                font.getData().setScale(6);
+                String text = "MAX LEVEL";
+                font.draw(batch, text, (float) Gdx.graphics.getWidth() / 2 - FontUtils.getWidthOfFontText(text, font) / 2,
+                        350);
+            }
         }
+    }
+
+    private void renderXpBar() {
+        //Xp progress bar
+        float widthPercent = (float) selectedPiece.getPrevNextLevelXpThreshold() / selectedPiece.getNextLevelXpThreshold();
+        int y = 250;
+        int height = 100;
+        batch.draw(xpBarProgressTexture, xpBarXPos, y, (int) (xpBarWidth * widthPercent), height);
+        batch.draw(xpBarOutlineTexture, xpBarXPos, y, xpBarWidth, height);
+
+        //Text saying xp progression
+        String fontText = selectedPiece.getPrevNextLevelXpThreshold() + " / " +
+                selectedPiece.getNextLevelXpThreshold();
+        int fontX = xpBarXPos + (int) (xpBarWidth / 2 - FontUtils.getWidthOfFontText(fontText, font) / 2);
+        int fontY = y + (int) (FontUtils.getHeightOfFontText(fontText, font) / 2 + height / 2);
+        font.setColor(Color.BLACK);
+        font.draw(batch, fontText, fontX, fontY);
+        String fontLeft = String.valueOf(selectedPiece.getLevel() + 1);
+        String fontRight = String.valueOf(selectedPiece.getLevel() + 2);
+        font.setColor(Color.CYAN);
+        font.draw(batch, fontLeft, xpBarXPos - (int) FontUtils.getWidthOfFontText(fontLeft, font) - 15,
+                y + (int) (FontUtils.getHeightOfFontText(fontLeft, font) / 2 + height / 2));
+        font.draw(batch, fontRight, xpBarXPos + xpBarWidth + 15,
+                y + (int) (FontUtils.getHeightOfFontText(fontLeft, font) / 2 + height / 2));
     }
 
     /**
