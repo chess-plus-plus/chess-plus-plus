@@ -231,7 +231,7 @@ public class BoardView extends Viewport implements Screen {
         font.getData().setScale(3);
         //Renders the pieces
         for (Piece piece : gameBoard.getAllPieces()) {
-            renderPiece(piece.getTexture(), piece.getPosition().getX(), convertY(piece.getPosition().getY()), 1);
+            renderPiece(piece.getTexture(), piece.getPosition().getX(), convertY(piece.getPosition().getY()), piece.getLevel());
         }
 
         //The XP bar of the selected piece
