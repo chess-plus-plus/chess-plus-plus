@@ -5,7 +5,6 @@ import com.chessplusplus.game.component.movement.HorizontalMovePattern;
 import com.chessplusplus.game.component.movement.MovePattern;
 import com.chessplusplus.game.component.movement.MovementRuleSet;
 import com.chessplusplus.game.component.movement.VerticalMovePattern;
-import com.chessplusplus.game.entity.MovementFactory;
 import com.chessplusplus.game.system.LevelEngine;
 
 import static com.chessplusplus.game.system.LevelEngine.LevelUpEffect;
@@ -21,11 +20,11 @@ public class LevelUpEffectFactory {
     public static int level1Threshold = 100;
     public static int level2Threshold = 200;
 
-    public static LevelEngine createDefaultRPGRules() {
+    public static LevelEngine createDefaultRPGRules(int maxRow) {
         HashMap<PieceType, HashMap<Integer, LevelUpEffect>> upgradeScheme = new HashMap<>();
 
         HashMap<Integer, LevelUpEffect> pawnUpgrades = new HashMap<>();
-        pawnUpgrades.put(1, pawnLevel1Ability());
+        pawnUpgrades.put(1, pawnLevel1Ability(maxRow));
         pawnUpgrades.put(2, pawnLevel2Ability());
 
         HashMap<Integer, LevelUpEffect> rookUpgrades = new HashMap<>();
@@ -52,8 +51,8 @@ public class LevelUpEffectFactory {
         return new LevelEngine(upgradeScheme);
     }
 
-    public static LevelUpEffect pawnLevel1Ability() {
-        MovementRuleSet movementRuleSet = MovementFactory.createPawn(0);
+    public static LevelUpEffect pawnLevel1Ability(int maxRow) {
+        MovementRuleSet movementRuleSet = MovementFactory.createPawn(0, maxRow);
         movementRuleSet.setMoveRestrictions(new ArrayList<>());
 
         return new LevelUpEffect(PAWN_LEVEL_1_THRESHOLD, movementRuleSet);

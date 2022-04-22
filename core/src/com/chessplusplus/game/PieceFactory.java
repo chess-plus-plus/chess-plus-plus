@@ -1,7 +1,6 @@
 package com.chessplusplus.game;
 
 import com.chessplusplus.game.component.Position;
-import com.chessplusplus.game.entity.MovementFactory;
 
 public class PieceFactory {
 
@@ -39,9 +38,9 @@ public class PieceFactory {
      * @param moveDir  Which way along the y axis the pawn will move, 1 for up, -1 for down.
      * @return New pawn piece object.
      */
-    public static Piece createPawn(String playerId, Position position, int moveDir) {
-        return new Piece(playerId, PieceType.PAWN, position, MovementFactory.createPawn(moveDir),
-                RPGConfig.PAWN_LEVEL_1_THRESHOLD);
+    public static Piece createPawn(String playerId, Position position, int moveDir, int maxRow) {
+        return new Piece(playerId, PieceType.PAWN, position,
+                MovementFactory.createPawn(moveDir, maxRow), RPGConfig.PAWN_LEVEL_1_THRESHOLD);
     }
 
     /**

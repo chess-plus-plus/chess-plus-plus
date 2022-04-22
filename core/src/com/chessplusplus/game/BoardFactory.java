@@ -67,7 +67,7 @@ public class BoardFactory {
         List<Piece> pieces = new ArrayList<>();
 
         for (int i = 0; i < rowWidth; i++) {
-            pieces.add(createPawn(playerId, pos(0, row), moveDir));
+            pieces.add(createPawn(playerId, pos(0, row), moveDir, rowWidth-1));
         }
 
         return pieces;

@@ -225,7 +225,7 @@ public class MovementComponentTest {
     @Test
     public void testSimplePawnMove() {
         testValidMoves(
-                PieceFactory.createPawn("", new Position(1,1), 1),
+                PieceFactory.createPawn("", new Position(1,1), 1, 7),
                 "Possible Bishop moves should give expected result",
                 ""+
                         //1  2  3  4  5  6  7  8
@@ -273,11 +273,11 @@ public class MovementComponentTest {
         //initialize other pawn that has made one move
         Position startPos = new Position(2,2);
         Position endPos =  new Position(2,1);
-        Piece otherPawn = PieceFactory.createPawn("", startPos, -1);
+        Piece otherPawn = PieceFactory.createPawn("", startPos, -1, 7);
         otherPawn.addAction(new Turn.Action(otherPawn, Turn.ActionType.MOVEMENT,startPos,endPos));
 
         testValidMoves(
-                PieceFactory.createPawn("", new Position(1,1), 1),
+                PieceFactory.createPawn("", new Position(1,1), 1, 7),
                 Arrays.asList(otherPawn),
                 "should allow pawn to en passant",
                 ""+
