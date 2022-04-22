@@ -30,6 +30,13 @@ public class PromotionMoveRule implements SpecialMoveRule {
         List<Position> strikeCandidates = piece.getMovementRules().getMoveCandidates(
                 piece.getPosition(), gameBoard.getWidth(), gameBoard.getHeight(), true);
 
+        // Filter out positions the pawn cannot enter
+        moveCandidates = filterOutCandidates(moveCandidates,
+                piece.getMovementRules().getMoveRestrictionsCopy(), piece.getPosition());
+        strikeCandidates = filterOutCandidates(strikeCandidates,
+                piece.getMovementRules().getStrikeRestrictionsCopy(), piece.getPosition());
+
+
         int topRow = gameBoard.getHeight() - 1;
         int botRow = 0;
 
@@ -56,6 +63,22 @@ public class PromotionMoveRule implements SpecialMoveRule {
         }
 
         return legalTurns;
+    }
+
+    private List<Position> filterOutCandidates(List<Position> positions,
+                                               List<MoveRestriction> restrictions, Position pos) {
+        DirectionalMoveRestriction directionalMoveRestriction = null;
+        for (MoveRestriction restriction : restrictions) {
+            if (restriction.getClass() == DirectionalMoveRestriction.class) {
+                directionalMoveRestriction = (DirectionalMoveRestriction) restriction;
+            }
+        }
+
+        if (directionalMoveRestriction == null) {
+            return positions;
+        } else {
+            return directionalMoveRestriction.filterMoves(positions, pos);
+        }
     }
 
     /**
