@@ -239,4 +239,14 @@ public class MovementRuleSet {
 
     }
 
+    @Override
+    public String toString() {
+        return "MovementRuleSet{" +
+                "movePatterns=" + movePatterns +
+                ", moveRestrictions=" + moveRestrictions +
+                ", strikePatterns=" + strikePatterns +
+                ", strikeRestrictions=" + strikeRestrictions +
+                ", specialMoveRules=" + specialMoveRules +
+                '}';
+    }
 }

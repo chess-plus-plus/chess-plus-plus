@@ -2,14 +2,12 @@ package com.chessplusplus.game;
 
 import com.chessplusplus.FirebaseController;
 import com.chessplusplus.game.component.Position;
+import com.chessplusplus.game.system.LevelEngine;
 import com.chessplusplus.game.views.BoardView;
-import com.chessplusplus.game.views.GameView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * A implementation of the ChessGame interface.
@@ -20,6 +18,10 @@ public class ChessGameImpl implements ChessGame {
     private Board gameBoard;
     private List<Turn> gameTurnHistory = new ArrayList<>();
     private FirebaseController FBC;
+    private final LevelEngine levelEngine = LevelUpEffectFactory.createDefaultRPGRules();
+
+    private final int moveXP = 20;
+    private final int strikeXP = 50;
 
     private final String player1Id;
     private final String player2Id;
@@ -89,18 +91,19 @@ public class ChessGameImpl implements ChessGame {
         System.out.println("New turn");
         // 2
         for (Turn.Action action : turn.actions) {
-            System.out.println(action);
+            Piece startPiece = gameBoard.getPiece(action.startPos);
+            Piece actionPiece = gameBoard.getPiece(action.actionPos);
             switch (action.actionType) {
                 case STRIKE:
-                    //TODO: Add XP to striker.
-                    //gameBoard.removePiece(action.piece);
-                    gameBoard.removePiece(gameBoard.getPiece(action.actionPos));
+                    startPiece.giveXp(strikeXP, levelEngine);
+                    gameBoard.removePiece(actionPiece);
                     break;
                 case MOVEMENT:
-                    gameBoard.getPiece(action.startPos).moveTo(action.actionPos);
+                    startPiece.moveTo(action.actionPos);
+                    startPiece.giveXp(moveXP, levelEngine);
                     break;
                 case DESTRUCTION:
-                    gameBoard.removePiece(gameBoard.getPiece(action.actionPos));
+                    gameBoard.removePiece(actionPiece);
                     break;
                 case CREATION:
                     //TODO

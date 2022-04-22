@@ -80,7 +80,8 @@ public class BoardFactory {
      * @return New pawn piece object.
      */
     public static Piece createPawn(String playerId, Position position, int moveDir) {
-        return new Piece(playerId, PieceType.PAWN, position, MovementFactory.createPawn(moveDir));
+        return new Piece(playerId, PieceType.PAWN, position, MovementFactory.createPawn(moveDir),
+                RPGConfig.PAWN_LEVEL_1_THRESHOLD);
     }
 
     /**
@@ -91,7 +92,8 @@ public class BoardFactory {
      * @return New bishop piece object.
      */
     public static Piece createBishop(String playerId, Position position) {
-        return new Piece(playerId, PieceType.BISHOP, position, MovementFactory.createBishopMoveRules());
+        return new Piece(playerId, PieceType.BISHOP, position, MovementFactory.createBishopMoveRules(),
+                RPGConfig.BISHOP_LEVEL_1_THRESHOLD);
     }
 
     /**
@@ -102,7 +104,8 @@ public class BoardFactory {
      * @return New knight piece object.
      */
     public static Piece createKnight(String playerId, Position position) {
-        return new Piece(playerId, PieceType.KNIGHT, position, MovementFactory.createKnightMoveRules());
+        return new Piece(playerId, PieceType.KNIGHT, position, MovementFactory.createKnightMoveRules(),
+                RPGConfig.KNIGHT_LEVEL_1_THRESHOLD);
     }
 
     /**
@@ -113,7 +116,8 @@ public class BoardFactory {
      * @return New rook piece object.
      */
     public static Piece createRook(String playerId, Position position) {
-        return new Piece(playerId, PieceType.ROOK, position, MovementFactory.createRookMoveRules());
+        return new Piece(playerId, PieceType.ROOK, position, MovementFactory.createRookMoveRules(),
+                RPGConfig.ROOK_LEVEL_1_THRESHOLD);
     }
 
     /**
@@ -124,7 +128,8 @@ public class BoardFactory {
      * @return New queen piece object.
      */
     public static Piece createQueen(String playerId, Position position) {
-        return new Piece(playerId, PieceType.QUEEN, position, MovementFactory.createQueenMoveRules());
+        return new Piece(playerId, PieceType.QUEEN, position, MovementFactory.createQueenMoveRules(),
+                RPGConfig.QUEEN_LEVEL_UP_THRESHOLD);
     }
 
     /**
