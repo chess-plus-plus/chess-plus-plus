@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-// Ad hoc class used purely to test out ECS
-// To "run" the demo, just click a button or on the application window,
-// and you should see the position of the piece update each time.
-//  TODO: Game needs a module restructuring
+/**
+ * A implementation of the ChessGame interface.
+ * Contains a game board, a list of turns, and player IDs.
+ */
 public class ChessGameImpl implements ChessGame {
 
     private Board gameBoard;

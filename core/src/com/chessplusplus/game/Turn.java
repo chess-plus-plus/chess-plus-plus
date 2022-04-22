@@ -74,7 +74,8 @@ public class Turn {
         MOVEMENT,
         STRIKE,
         DESTRUCTION,
-        CREATION
+        CREATION,
+        UPGRADE
 
     }
 
