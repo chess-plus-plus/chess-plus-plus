@@ -31,6 +31,7 @@ public class LevelEngine {
         piece.setNextLevelXpThreshold(effect.nextXpThreshold);
         if (effect.resetXpOnLevelUp) {
             piece.setXp(0);
+            piece.setLevel(0);
         }
 
     }

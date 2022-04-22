@@ -86,6 +86,7 @@ public class LevelUpEffectFactory {
         movePatterns.add(HorizontalMovePattern.oneSquareHorizontalMovement());
         movePatterns.add(VerticalMovePattern.oneSquareVerticalMovement());
         movePatterns.add(DiagonalMovePattern.oneSquareDiagonalMovement());
+        knightMoveSet.setMovePatterns(movePatterns);
 
         return new LevelUpEffect(KNIGHT_LEVEL_1_THRESHOLD, knightMoveSet);
     }
@@ -100,6 +101,7 @@ public class LevelUpEffectFactory {
         List<MovePattern> movePatterns = bishopMoveSet.getMovePatternsCopy();
         movePatterns.add(HorizontalMovePattern.oneSquareHorizontalMovement());
         movePatterns.add(VerticalMovePattern.oneSquareVerticalMovement());
+        bishopMoveSet.setMovePatterns(movePatterns);
 
         return new LevelUpEffect(BISHOP_LEVEL_1_THRESHOLD, bishopMoveSet);
     }
