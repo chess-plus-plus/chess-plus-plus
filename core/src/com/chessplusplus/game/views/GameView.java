@@ -57,6 +57,24 @@ public class GameView extends ApplicationAdapter {
         table.align(Align.bottom);
         table.setPosition(0, 0);
 
+        final TextButton concedeButton = new TextButton("Concede", skin, "default");
+        concedeButton.align(Align.center);
+        concedeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+
+            }
+        });
+
+        final TextButton drawButton = new TextButton("Offer Draw", skin, "default");
+        drawButton.align(Align.center);
+        drawButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+
+            }
+        });
+
         final TextButton manualButton = new TextButton("Manual", skin, "default");
         manualButton.align(Align.center);
         GameView gW = this;
@@ -73,6 +91,10 @@ public class GameView extends ApplicationAdapter {
         connectedButton.setWidth(stage.getWidth());
         conBut = connectedButton;
 
+        table.add(concedeButton).padBottom(50);
+        table.row();
+        table.add(drawButton).padBottom(50);
+        table.row();
         table.add(manualButton).padBottom(50);
         table.row();
         table.add(connectedButton);
