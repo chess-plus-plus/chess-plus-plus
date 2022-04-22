@@ -14,13 +14,15 @@ public class CollisionMoveRestriction implements MoveRestriction{
 
     @Override
     public List<Position> filterMoves(List<Position> possibleMoves, Position piece, Board board) {
-        List<Stream<Position>> horizontal = MovementRayUtils.getHorizontalRays(piece, MAX);
-        List<Stream<Position>> vertical = MovementRayUtils.getVerticalRays(piece, MAX);
-        List<Stream<Position>> diagonal = MovementRayUtils.getDiagonalRays(piece, MAX, MAX);
+        List<List<Position>> horizontal = MovementRayUtils.getHorizontalRays(piece, MAX);
+        List<List<Position>> vertical = MovementRayUtils.getVerticalRays(piece, MAX);
+        List<List<Position>> diagonal = MovementRayUtils.getDiagonalRays(piece, MAX, MAX);
+
+        diagonal.forEach(System.out::println);
 
         return Stream.of(horizontal,vertical,diagonal)
                 .flatMap(Collection::stream)
-                .map(i -> MovementRayUtils.movesFromRay(i, piece, board))
+                .map(i -> MovementRayUtils.validMovesFromRayCollisionDetection(i, piece, board))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }

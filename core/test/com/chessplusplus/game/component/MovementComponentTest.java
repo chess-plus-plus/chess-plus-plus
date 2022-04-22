@@ -9,6 +9,7 @@ import com.chessplusplus.game.Turn;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +21,6 @@ public class MovementComponentTest {
 
 //    TODO: Create movement component with movementRules
 
-//    TODO: Test moves with different pieces
 
     public static int boardWidth = 8;
     public static int boardHeight = 8;
@@ -62,17 +62,17 @@ public class MovementComponentTest {
     }
 
     public void testValidMoves(Piece piece, String message, String allExpectedMovesString){
-        testValidMoves(piece, Collections.emptyList(), message, allExpectedMovesString);
+        testValidMoves(piece, Arrays.asList(), message, allExpectedMovesString);
     }
 
     public void testValidMoves(Piece piece, List<Piece> otherPieces, String message, String allExpectedMovesString){
 
+        // add test piece that the valid moves are being tested for
+        List<Piece> pieces = new ArrayList<>();
+        pieces.add(piece);
+        pieces.addAll(otherPieces);
+
         List<Position> expectedMoves = movesToPositions(allExpectedMovesString);
-
-        // generate real result using chessboard logic
-//        otherPieces.add(piece);
-
-        List<Piece> pieces = otherPieces;
         Board board = new ChessBoard(pieces, boardWidth, boardHeight);
         List<Turn> turns = piece.getMovementRules().getLegalTurns(piece, board);
 
@@ -292,6 +292,62 @@ public class MovementComponentTest {
                         "-  -  -  -  -  -  -  -  \n" + //5
                         "-  -  -  -  -  -  -  -  \n" + //6
                         "-  -  -  -  -  -  -  -"       //7
+        );
+    }
+
+    @Test
+    public void testCollisionDetectionWithAlly() {
+
+        //ally pieces surrounding queen in all directions
+        List<Piece> allyPieces = Arrays.asList(
+                BoardFactory.createRook("player", new Position(0,0)),
+                BoardFactory.createRook("player", new Position(2,0)),
+                BoardFactory.createRook("player", new Position(4,0)),
+                BoardFactory.createRook("player", new Position(4,2)),
+                BoardFactory.createRook("player", new Position(4,4)),
+                BoardFactory.createRook("player", new Position(2,4)),
+                BoardFactory.createRook("player", new Position(0,4)),
+                BoardFactory.createRook("player", new Position(0,2))
+        );
+
+
+        testValidMoves(
+                BoardFactory.createQueen("player", new Position(2,2)),
+                allyPieces,
+                "Ally rooks should block queen (2,2) in all directions",
+                ""+
+                        //0  1  2  3  4  5  6  7
+                        "-  -  -  -  -  -  -  -  \n" + //0
+                        "-  x  x  x  -  -  -  -  \n" + //1
+                        "-  x  -  x  -  -  -  -  \n" + //2
+                        "-  x  x  x  -  -  -  -  \n" + //3
+                        "-  -  -  -  -  -  -  -  \n" + //4
+                        "-  -  -  -  -  -  -  -  \n" + //5
+                        "-  -  -  -  -  -  -  -  \n" + //6
+                        "-  -  -  -  -  -  -  -"       //7
+        );
+    }
+
+    @Test
+    public void testCollisionDetectionWithEnemy() {
+        //initialize other pawn that has made one move
+        Position startPos = new Position(3,1);
+        Piece allyPawn = BoardFactory.createPawn("enemy", startPos, -1);
+
+        testValidMoves(
+                BoardFactory.createRook("player", new Position(1,1)),
+                Arrays.asList(allyPawn),
+                "Enemy pawn (3,1) should block rook (1,1) horizontally and be catchable",
+                ""+
+                        //0  1  2  3  4  5  6  7
+                        "-  x  -  -  -  -  -  -  \n" + //0
+                        "x  -  x  x  -  -  -  -  \n" + //1
+                        "-  x  -  -  -  -  -  -  \n" + //2
+                        "-  x  -  -  -  -  -  -  \n" + //3
+                        "-  x  -  -  -  -  -  -  \n" + //4
+                        "-  x  -  -  -  -  -  -  \n" + //5
+                        "-  x  -  -  -  -  -  -  \n" + //6
+                        "-  x  -  -  -  -  -  -"       //7
         );
     }
 

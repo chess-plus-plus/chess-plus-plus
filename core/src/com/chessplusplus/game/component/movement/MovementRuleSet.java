@@ -7,6 +7,7 @@ import com.chessplusplus.game.component.Position;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A Movement RuleSet is a collection of all of the relevant movement rules
@@ -106,7 +107,10 @@ public class MovementRuleSet {
 
         // Filter out candidates based on move restrictions
         for (MoveRestriction restriction : movementRestrictions) {
-            possibleMoves = restriction.filterMoves(possibleMoves, piecePosition, board);
+            List<Position> restrictedMoves = restriction.filterMoves(possibleMoves, piecePosition, board);
+            possibleMoves = possibleMoves.stream()
+                    .filter(restrictedMoves::contains)
+                    .collect(Collectors.toList());
         }
 
         // Filter out candidates based on whether the square is empty or not
