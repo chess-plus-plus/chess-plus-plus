@@ -22,10 +22,6 @@ import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.utils.FontUtils;
 import com.chessplusplus.game.utils.PixmapUtils;
 
-/*TODO: Fix weird bug.
-   App crashes when any piece is moved to (0, 2) regardless of where it comes from. If the pawn
-   in this very column has moved passed the coordinate, the bug doesnt occur anymore
-* */
 
 public class BoardView extends Viewport implements Screen {
 

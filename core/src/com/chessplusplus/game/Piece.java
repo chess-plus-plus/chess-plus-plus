@@ -153,7 +153,7 @@ public class Piece {
      */
     public void giveXp(int xp, LevelEngine levelEngine) {
         this.xp += xp;
-        if (this.xp > nextLevelXpThreshold) {
+        if (this.xp >= nextLevelXpThreshold) {
             level++;
             prevNextLevelXpThreshold = nextLevelXpThreshold;
             nextLevelXpThreshold = Integer.MAX_VALUE;
