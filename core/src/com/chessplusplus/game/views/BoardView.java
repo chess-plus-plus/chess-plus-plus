@@ -169,6 +169,9 @@ public class BoardView extends Viewport implements Screen {
         Turn newTurn = this.FBC.getNewTurnIfAvailable();
         if (newTurn != null)
             game.submitTurn(newTurn, true);
+        String playerForfeit = this.FBC.getForfeitPlayerID();
+        if (playerForfeit != null)
+            System.out.println("player forfeited: " + playerForfeit);
         if (game.isPlayerTurn() || game.getOfflineTesting())
             processUserInput();
         renderBoard();

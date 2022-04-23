@@ -56,4 +56,12 @@ public class FirebaseController {
             return null;
         return gson.fromJson(lm, Turn.class);
     }
+
+    public void sendForfeit(String gameID, String playerID) {
+        this.FBIC.sendForfeit(gameID, playerID);
+    }
+
+    public String getForfeitPlayerID() {
+        return this.FBIC.getForfeitPlayerID();
+    }
 }

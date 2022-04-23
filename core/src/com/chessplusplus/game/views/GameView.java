@@ -23,6 +23,7 @@ public class GameView extends ApplicationAdapter {
     private ChessPlusPlus chessPlusPlus;
     private BoardView boardView;
     private String gameID;
+    private String playerID;
 
     private BitmapFont font;
     private SpriteBatch batch;
@@ -34,6 +35,7 @@ public class GameView extends ApplicationAdapter {
     public GameView(ChessPlusPlus c, String id, String playerID, boolean offlineTesting){
         chessPlusPlus = c;
         gameID = id;
+        this.playerID = playerID;
         batch = c.getBatch();
         boardView = new BoardView(c, gameID, playerID, offlineTesting);
     }
@@ -62,7 +64,7 @@ public class GameView extends ApplicationAdapter {
         concedeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-
+                chessPlusPlus.getFBC().sendForfeit(gameID, playerID);
             }
         });
 
