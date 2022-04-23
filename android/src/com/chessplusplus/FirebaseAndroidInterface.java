@@ -27,6 +27,7 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
     boolean connected;
     boolean gameExists;
     boolean hasUpdates;
+    boolean allPlayersConnected;
 
     // Singleton?
     public FirebaseAndroidInterface(){
@@ -102,6 +103,7 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
 
     @Override
     public void getGameUpdates(String id) {
+        allPlayersConnected = false;
         dataRef.child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -110,6 +112,8 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                 currentGame = dataSnapshot;
                 hasUpdates = true;
+                if (dataSnapshot.child("player1").exists() && dataSnapshot.child("player2").exists())
+                        allPlayersConnected = true;
                 System.out.println("###FIREBASE### value has changed to: " + map);
             }
 
@@ -193,6 +197,10 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
 
     public void goOnline() {
         database.goOnline();
+    }
+
+    public boolean allPlayersConnected() {
+        return this.allPlayersConnected;
     }
 
     // gameID generator

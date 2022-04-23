@@ -56,4 +56,8 @@ public class FirebaseController {
             return null;
         return gson.fromJson(lm, Turn.class);
     }
+
+    public boolean allPlayersAreConnected() {
+        return this.FBIC.allPlayersConnected();
+    }
 }
