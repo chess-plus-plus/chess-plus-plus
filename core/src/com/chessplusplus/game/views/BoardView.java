@@ -251,14 +251,15 @@ public class BoardView extends Viewport implements Screen {
 
     private void renderXpBar() {
         //Xp progress bar
-        float widthPercent = (float) selectedPiece.getPrevNextLevelXpThreshold() / selectedPiece.getNextLevelXpThreshold();
+        float widthPercent = (float) (selectedPiece.getXp() - selectedPiece.getPrevNextLevelXpThreshold()) /
+                selectedPiece.getNextLevelXpThreshold();
         int y = 250;
         int height = 100;
         batch.draw(xpBarProgressTexture, xpBarXPos, y, (int) (xpBarWidth * widthPercent), height);
         batch.draw(xpBarOutlineTexture, xpBarXPos, y, xpBarWidth, height);
 
         //Text saying xp progression
-        String fontText = selectedPiece.getPrevNextLevelXpThreshold() + " / " +
+        String fontText = selectedPiece.getXp() - selectedPiece.getPrevNextLevelXpThreshold() + " / " +
                 selectedPiece.getNextLevelXpThreshold();
         int fontX = xpBarXPos + (int) (xpBarWidth / 2 - FontUtils.getWidthOfFontText(fontText, font) / 2);
         int fontY = y + (int) (FontUtils.getHeightOfFontText(fontText, font) / 2 + height / 2);
