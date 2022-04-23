@@ -6,7 +6,7 @@ package com.chessplusplus.game;
 public class RPGConfig {
 
     private static final int DEFAULT_LEVEL_1_THRESHOLD = 100;
-    private static final int DEFAULT_LEVEL_2_THRESHOLD = 500;
+    private static final int DEFAULT_LEVEL_2_THRESHOLD = 300;
 
     public static final int PAWN_LEVEL_1_THRESHOLD = DEFAULT_LEVEL_1_THRESHOLD;
     public static final int PAWN_LEVEL_2_THRESHOLD = DEFAULT_LEVEL_2_THRESHOLD;
@@ -21,8 +21,5 @@ public class RPGConfig {
     public static final int ROOK_LEVEL_2_THRESHOLD = DEFAULT_LEVEL_2_THRESHOLD;
 
     public static final int QUEEN_LEVEL_UP_THRESHOLD = DEFAULT_LEVEL_1_THRESHOLD;
-
-    public static final int KING_LEVEL_1_THRESHOLD = DEFAULT_LEVEL_1_THRESHOLD;
-    public static final int KING_LEVEL_2_THRESHOLD = DEFAULT_LEVEL_2_THRESHOLD;
 
 }

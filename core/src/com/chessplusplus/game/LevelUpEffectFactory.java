@@ -1,5 +1,6 @@
 package com.chessplusplus.game;
 
+import com.chessplusplus.game.component.movement.CurvingMovePattern;
 import com.chessplusplus.game.component.movement.DiagonalMovePattern;
 import com.chessplusplus.game.component.movement.HorizontalMovePattern;
 import com.chessplusplus.game.component.movement.MovePattern;
@@ -55,7 +56,7 @@ public class LevelUpEffectFactory {
         MovementRuleSet movementRuleSet = MovementFactory.createPawn(0, maxRow);
         movementRuleSet.setMoveRestrictions(new ArrayList<>());
 
-        return new LevelUpEffect(PAWN_LEVEL_1_THRESHOLD, movementRuleSet);
+        return new LevelUpEffect(PAWN_LEVEL_2_THRESHOLD, movementRuleSet);
     }
 
     public static LevelUpEffect pawnLevel2Ability() {
@@ -66,16 +67,16 @@ public class LevelUpEffectFactory {
 
         MovementRuleSet movementRuleSet = new MovementRuleSet.Builder(movePatterns).build();
 
-        return new LevelUpEffect(PAWN_LEVEL_2_THRESHOLD, movementRuleSet);
+        return new LevelUpEffect(Integer.MAX_VALUE, movementRuleSet);
     }
 
     public static LevelUpEffect rookLevel1Ability() {
-        return new LevelUpEffect(ROOK_LEVEL_1_THRESHOLD, MovementFactory.createRookMoveRules());
+        return new LevelUpEffect(ROOK_LEVEL_2_THRESHOLD, MovementFactory.createRookMoveRules());
         //TODO: change once blocking is supported.
     }
 
     public static LevelUpEffect rookLevel2Ability() {
-        return new LevelUpEffect(ROOK_LEVEL_2_THRESHOLD, MovementFactory.createRookMoveRules());
+        return new LevelUpEffect(Integer.MAX_VALUE, MovementFactory.createRookMoveRules());
         //TODO: change once blocking is supported. (Needs custom moveRule).
     }
 
@@ -87,7 +88,7 @@ public class LevelUpEffectFactory {
         movePatterns.add(DiagonalMovePattern.oneSquareDiagonalMovement());
         knightMoveSet.setMovePatterns(movePatterns);
 
-        return new LevelUpEffect(KNIGHT_LEVEL_1_THRESHOLD, knightMoveSet);
+        return new LevelUpEffect(KNIGHT_LEVEL_2_THRESHOLD, knightMoveSet);
     }
 
     public static LevelUpEffect knightLevel2Ability() {
@@ -102,11 +103,11 @@ public class LevelUpEffectFactory {
         movePatterns.add(VerticalMovePattern.oneSquareVerticalMovement());
         bishopMoveSet.setMovePatterns(movePatterns);
 
-        return new LevelUpEffect(BISHOP_LEVEL_1_THRESHOLD, bishopMoveSet);
+        return new LevelUpEffect(BISHOP_LEVEL_2_THRESHOLD, bishopMoveSet);
     }
 
     public static LevelUpEffect bishopLevel2Ability() {
-        return new LevelUpEffect(BISHOP_LEVEL_2_THRESHOLD, bishopLevel1Ability().getNewMovementRuleSet());
+        return new LevelUpEffect(Integer.MAX_VALUE, bishopLevel1Ability().getNewMovementRuleSet());
         //TODO: Remove blocking from this move set, once blocking is implemented
     }
 
