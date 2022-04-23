@@ -71,5 +71,9 @@ public class ChessBoard implements Board {
         board.put(piece.getPosition(), null);
     }
 
+    @Override
+    public void addPiece(Piece piece, Position position) {
+        board.put(position, piece);
+    }
 
 }

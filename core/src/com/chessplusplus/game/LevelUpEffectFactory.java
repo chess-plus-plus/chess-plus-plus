@@ -136,7 +136,7 @@ public class LevelUpEffectFactory {
     }
 
     public static LevelUpEffect queenLevelUpAbility() {
-        return new LevelUpEffect(QUEEN_LEVEL_UP_THRESHOLD, MovementFactory.createQueenMoveRules());
+        return new LevelUpEffect(QUEEN_LEVEL_UP_THRESHOLD, MovementFactory.createQueenMoveRules(), true);
         //TODO: Add custom move rule that spawns a pawn.
     }
 
