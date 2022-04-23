@@ -86,7 +86,8 @@ public class BoardView extends Viewport implements Screen {
         //Finds color of the piece based on player id and passes it to the pieces
         for (Piece piece : game.getBoard().getAllPieces()) {
             String playerId = piece.getPlayerId();
-            String filePath = String.format("pieces/%s/", game.getPlayerColor(playerId));
+            String filePath = String.format("texturepacks/genesis/pieces/%s/",
+                    game.getPlayerColor(playerId));
             piece.setTexture(filePath);
         }
 
@@ -282,7 +283,7 @@ public class BoardView extends Viewport implements Screen {
         xOffset /= 2;
         float xPos = x * squareSize + xOffset;
         float yPos = y * squareSize + boardYOffset;
-        batch.draw(sprite, x * squareSize + xOffset, y * squareSize + boardYOffset, spriteSize, spriteSize);
+        batch.draw(sprite, x * squareSize + xOffset, y * squareSize + boardYOffset, spriteSize, spriteSize - 10);
 
         String toBeWritten;
         if (level >= 2) {
