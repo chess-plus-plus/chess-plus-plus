@@ -63,8 +63,8 @@ public class BoardView extends Viewport implements Screen {
     public BoardView(ChessPlusPlus c, String gameID, String playerID, boolean testingOffline) {
         batch = c.getBatch();
         gameBoard = BoardFactory.standardBoardAndPieces("1", "2");
-        game = new ChessGameImpl(gameBoard, c.getFBC(), gameID, "1", "2", testingOffline);
-        game.setPlayer(playerID);
+        game = new ChessGameImpl(gameBoard, c.getFBC(), gameID, "1", "2",
+                playerID, testingOffline);
         this.gameID = gameID;
         this.FBC = c.getFBC();
 

@@ -36,12 +36,12 @@ public class ChessGameImpl implements ChessGame {
     private boolean offlineTesting;
 
     public ChessGameImpl(Board gameBoard, FirebaseController FBC, String gameID, String player1Id,
-                         String player2Id, boolean offlineTesting) {
+                         String player2Id, String playerID, boolean offlineTesting) {
         this.gameBoard = gameBoard;
         this.player1Id = player1Id;
         this.player2Id = player2Id;
         currentPlayerId = player1Id;
-        this.playerID = player2Id;
+        this.playerID = playerID;
         this.gameID = gameID;
         this.FBC = FBC;
         this.offlineTesting = offlineTesting;
