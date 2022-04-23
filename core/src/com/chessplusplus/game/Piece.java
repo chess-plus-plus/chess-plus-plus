@@ -151,13 +151,13 @@ public class Piece {
      * @param xp          Amount of xp to give the piece.
      * @param levelEngine Used to upgrade the piece.
      */
-    public void giveXp(int xp, LevelEngine levelEngine) {
+    public void giveXp(int xp, LevelEngine levelEngine, Board board) {
         this.xp += xp;
         if (this.xp >= nextLevelXpThreshold) {
             level++;
             prevNextLevelXpThreshold = nextLevelXpThreshold;
             nextLevelXpThreshold = Integer.MAX_VALUE;
-            levelEngine.levelUp(this);
+            levelEngine.levelUp(this, board);
         }
     }
 

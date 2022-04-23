@@ -69,4 +69,12 @@ public interface Board {
      */
     void removePiece(Piece piece);
 
+    /**
+     * Adds a piece to the board.
+     *
+     * @param piece    Piece to add to the board.
+     * @param position Position to add the piece.
+     */
+    void addPiece(Piece piece, Position position);
+
 }

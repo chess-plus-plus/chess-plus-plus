@@ -96,12 +96,12 @@ public class ChessGameImpl implements ChessGame {
             Piece actionPiece = gameBoard.getPiece(action.actionPos);
             switch (action.actionType) {
                 case STRIKE:
-                    startPiece.giveXp(strikeXP, levelEngine);
+                    startPiece.giveXp(strikeXP, levelEngine, gameBoard);
                     gameBoard.removePiece(actionPiece);
                     break;
                 case MOVEMENT:
                     startPiece.moveTo(action.actionPos);
-                    startPiece.giveXp(moveXP, levelEngine);
+                    startPiece.giveXp(moveXP, levelEngine, gameBoard);
                     startPiece.addAction(action);
                     break;
                 case DESTRUCTION:
