@@ -5,6 +5,8 @@ import com.chessplusplus.game.component.movement.DiagonalMovePattern;
 import com.chessplusplus.game.component.movement.HorizontalMovePattern;
 import com.chessplusplus.game.component.movement.MovePattern;
 import com.chessplusplus.game.component.movement.MovementRuleSet;
+import com.chessplusplus.game.component.movement.RookWrappingMoveRule;
+import com.chessplusplus.game.component.movement.SpecialMoveRule;
 import com.chessplusplus.game.component.movement.VerticalMovePattern;
 import com.chessplusplus.game.system.LevelEngine;
 
@@ -17,9 +19,6 @@ import java.util.List;
 
 //TODO: Comments
 public class LevelUpEffectFactory {
-
-    public static int level1Threshold = 100;
-    public static int level2Threshold = 200;
 
     public static LevelEngine createDefaultRPGRules(int maxRow) {
         HashMap<PieceType, HashMap<Integer, LevelUpEffect>> upgradeScheme = new HashMap<>();
@@ -71,13 +70,21 @@ public class LevelUpEffectFactory {
     }
 
     public static LevelUpEffect rookLevel1Ability() {
-        return new LevelUpEffect(ROOK_LEVEL_2_THRESHOLD, MovementFactory.createRookMoveRules());
-        //TODO: change once blocking is supported.
+        MovementRuleSet rookMoveSet = MovementFactory.createRookMoveRules();
+        List<MovePattern> movePatterns = rookMoveSet.getMovePatternsCopy();
+        movePatterns.add(new CurvingMovePattern(2, 2));
+        rookMoveSet.setMovePatterns(movePatterns);
+
+        return new LevelUpEffect(ROOK_LEVEL_2_THRESHOLD, rookMoveSet);
     }
 
     public static LevelUpEffect rookLevel2Ability() {
-        return new LevelUpEffect(Integer.MAX_VALUE, MovementFactory.createRookMoveRules());
-        //TODO: change once blocking is supported. (Needs custom moveRule).
+        MovementRuleSet rookMoveSet = MovementFactory.createRookMoveRules();
+        List<SpecialMoveRule> specialMoveRules = new ArrayList<>();
+        specialMoveRules.add(new RookWrappingMoveRule());
+        rookMoveSet.setSpecialMoveRules(specialMoveRules);
+
+        return new LevelUpEffect(Integer.MAX_VALUE, rookMoveSet);
     }
 
     public static LevelUpEffect knightLevel1Ability() {

@@ -106,6 +106,25 @@ public class MovementRayUtils {
         return result;
     }
 
+    // Utility function created for RookChainAttackMoveRule, it should work based on my testing.
+    public static List<Position> adjacentEnemyRayCalc(List<Position> ray, String playerId, Board board) {
+        List<Position> positions = new ArrayList<>();
+
+        boolean enemyPieceEncountered = false;
+        for (Position position : ray) {
+            Piece p = board.getPiece(position);
+
+            if (p != null && !p.getPlayerId().equals(playerId)) {
+                enemyPieceEncountered = true;
+                positions.add(position);
+            } else if (enemyPieceEncountered) {
+                break;
+            }
+        }
+
+        return positions;
+    }
+
     /**
      * Creates "wrapping rays", that wrap around the board.
      *
