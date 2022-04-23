@@ -56,13 +56,23 @@ public class HostGameMenuView extends ApplicationAdapter {
         titleField.setAlignment(Align.center);
 
         //final TextField gamePinInput = new TextField("", skin, "default");
-
+        final Dialog unableToCreate = new Dialog("Unable to reach server", skin, "default");
         final TextButton startGameButton = new TextButton("Start Game", skin, "default");
         startGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
                 String gameID = chessPlusPlus.createGameID();
-                chessPlusPlus.setScreen(new GameView(chessPlusPlus, gameID, "1", false));
+                if (gameID != null)
+                    chessPlusPlus.setScreen(new GameView(chessPlusPlus, gameID, "1", false));
+                else {
+                    unableToCreate.show(stage);
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            unableToCreate.hide();
+                        }
+                    }, 2);
+                }
             }
         });
 
