@@ -128,8 +128,11 @@ public class LevelUpEffectFactory {
     }
 
     public static LevelUpEffect bishopLevel2Ability() {
-        return new LevelUpEffect(Integer.MAX_VALUE, bishopLevel1Ability().getNewMovementRuleSet());
-        //TODO: Remove blocking from this move set, once blocking is implemented
+        LevelUpEffect bishopLvl1Effect = bishopLevel1Ability();
+        MovementRuleSet newBishopMoveSet = bishopLvl1Effect.getNewMovementRuleSet();
+        newBishopMoveSet.setMoveRestrictions(new ArrayList<>()); // Remove blocking movement restriction
+
+        return new LevelUpEffect(Integer.MAX_VALUE, newBishopMoveSet);
     }
 
     public static LevelUpEffect queenLevelUpAbility() {
