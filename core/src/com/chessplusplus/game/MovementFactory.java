@@ -40,6 +40,10 @@ public class MovementFactory {
 
         List<MoveRestriction> restrictions = new ArrayList<>();
         restrictions.add(new DirectionalMoveRestriction(0, moveDir));
+
+        // TODO: This may not be correct for pawns with en passant, should check
+        restrictions.add(new CollisionMoveRestriction());
+
         if (moveDir == 1) {
             restrictions.add(new RowMoveRestriction(maxRow));
         } else {
@@ -72,6 +76,7 @@ public class MovementFactory {
 
         return new MovementRuleSet.Builder(movePatterns)
                 .movementRestrictions(restrictions)
+                .strikeRestrictions(restrictions)
                 .build();
     }
 
@@ -102,6 +107,7 @@ public class MovementFactory {
 
         return new MovementRuleSet.Builder(movePatterns)
                 .movementRestrictions(restrictions)
+                .strikeRestrictions(restrictions)
                 .build();
     }
 
@@ -121,6 +127,7 @@ public class MovementFactory {
 
         return new MovementRuleSet.Builder(movePatterns)
                 .movementRestrictions(restrictions)
+                .strikeRestrictions(restrictions)
                 .build();
     }
 
@@ -138,7 +145,14 @@ public class MovementFactory {
         List<SpecialMoveRule> specialMoveRules = new ArrayList<>();
         specialMoveRules.add(new CastlingMoveRule());
 
-        return new MovementRuleSet.Builder(movePatterns).specialMoveRules(specialMoveRules).build();
+        List<MoveRestriction> restrictions = new ArrayList<>();
+        restrictions.add(new CollisionMoveRestriction());
+
+        return new MovementRuleSet.Builder(movePatterns)
+                .strikeRestrictions(restrictions)
+                .strikeRestrictions(restrictions)
+                .specialMoveRules(specialMoveRules)
+                .build();
     }
 
 }

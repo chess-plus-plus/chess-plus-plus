@@ -77,6 +77,7 @@ public class MovementComponentTest {
         // convert turns to moves
         List<Position> actualMoves = turns.stream()
                 .map(turn -> turn.actions.get(0).actionPos)
+                .distinct()
                 .collect(Collectors.toList());
 
         // create message strings for visualizing board and helper variables

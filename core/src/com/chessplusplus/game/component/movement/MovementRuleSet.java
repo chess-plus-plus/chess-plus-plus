@@ -104,28 +104,22 @@ public class MovementRuleSet {
         // Get all move candidates arising from move patterns
         List<Position> possibleMoves = getPossibleMoveCandidates(piecePosition, board.getWidth(),
                 board.getHeight(), movementPatterns);
-
         // Filter out candidates based on move restrictions
         for (MoveRestriction restriction : movementRestrictions) {
             List<Position> restrictedMoves = restriction.filterMoves(possibleMoves, piecePosition, board);
+
             possibleMoves = possibleMoves.stream()
                     .filter(restrictedMoves::contains)
                     .collect(Collectors.toList());
         }
 
-        // Filter out candidates based on whether the square is empty or not
-        // (depends on whether the action is a move or a strike).
-        List<Position> validMoves = new ArrayList<>();
-        for (Position position : possibleMoves) {
-            if (isStrike && !board.squareIsEmpty(position)
-                    && !board.getPiece(position).getPlayerId().equals(playerId)) {
-                validMoves.add(position);
-            } else if (!isStrike && board.squareIsEmpty(position)) {
-                validMoves.add(position);
-            }
-        }
+        if(isStrike)
+            possibleMoves = possibleMoves.stream()
+                    .filter(p -> !board.squareIsEmpty(p))
+                    .filter(p -> board.getPiece(p).getPlayerId().equals(playerId))
+                    .collect(Collectors.toList());
 
-        return validMoves;
+        return possibleMoves;
     }
 
     public List<Position> getMoveCandidates(Position piecePos, int boardWidth, int boardHeight,
@@ -150,6 +144,9 @@ public class MovementRuleSet {
 
         for (MovePattern movePattern : movementPatterns) {
             List<Position> ruleMoves = movePattern.getPossibleMoves(piecePosition, boardWidth, boardHeight);
+
+            System.out.println( movePattern.getClass().getName() + " Move pattern rulemoves ");
+            System.out.println(ruleMoves);
 
             // Make sure to only add positions that haven't already been added to the set.
             for (Position position : ruleMoves) {

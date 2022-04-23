@@ -10,20 +10,33 @@ import java.util.stream.Stream;
 
 public class CollisionMoveRestriction implements MoveRestriction{
 
-    static int MAX = 100;
+
 
     @Override
     public List<Position> filterMoves(List<Position> possibleMoves, Position piece, Board board) {
+
+        // max distance takes into account looping
+        int MAX = Math.max(board.getHeight(), board.getWidth()) * 2;
+
+        System.out.println("-------------------------\npossible moves");
+        System.out.println(possibleMoves);
+
         List<List<Position>> horizontal = MovementRayUtils.getHorizontalRays(piece, MAX);
         List<List<Position>> vertical = MovementRayUtils.getVerticalRays(piece, MAX);
         List<List<Position>> diagonal = MovementRayUtils.getDiagonalRays(piece, MAX, MAX);
 
-        diagonal.forEach(System.out::println);
+        System.out.println("Horizontal move restrictions for " + this.getClass().getName());
+        horizontal.forEach(System.out::println);
 
-        return Stream.of(horizontal,vertical,diagonal)
+        List<Position> result = Stream.of(horizontal, vertical, diagonal)
                 .flatMap(Collection::stream)
                 .map(i -> MovementRayUtils.validMovesFromRayCollisionDetection(i, piece, board))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
+
+        System.out.println("Results for collision " + this.getClass().getName());
+        System.out.println(result);
+
+        return result;
     }
 }
