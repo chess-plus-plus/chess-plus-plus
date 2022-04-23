@@ -145,9 +145,6 @@ public class MovementRuleSet {
         for (MovePattern movePattern : movementPatterns) {
             List<Position> ruleMoves = movePattern.getPossibleMoves(piecePosition, boardWidth, boardHeight);
 
-            System.out.println( movePattern.getClass().getName() + " Move pattern rulemoves ");
-            System.out.println(ruleMoves);
-
             // Make sure to only add positions that haven't already been added to the set.
             for (Position position : ruleMoves) {
                 if (!possiblePositions.contains(position)) {

@@ -29,7 +29,6 @@ public class DirectionalMoveRestriction implements MoveRestriction {
 
     @Override
     public List<Position> filterMoves(List<Position> possibleMoves, Position piecePosition, Board board) {
-        //System.out.println(possibleMoves);
         List<Position> legalMoves = new ArrayList<>();
 
         // 1: Calculate relative position of candidate to piece
