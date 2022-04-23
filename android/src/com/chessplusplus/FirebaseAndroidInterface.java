@@ -15,21 +15,28 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class FirebaseAndroidInterface implements FireBaseInterface{
-    FirebaseDatabase database;
-    DatabaseReference dataRef;
-    DatabaseReference pingRef;
-    DatabaseReference IDRef;
-    AndroidFirebaseAuth mAuth;
-    FirebaseUser user;
-    DataSnapshot gameIDs;
-    DataSnapshot currentGame;
+    private static FirebaseAndroidInterface instance;
+    private FirebaseDatabase database;
+    private DatabaseReference dataRef;
+    private DatabaseReference pingRef;
+    private DatabaseReference IDRef;
+    private AndroidFirebaseAuth mAuth;
+    private FirebaseUser user;
+    private DataSnapshot gameIDs;
+    private DataSnapshot currentGame;
 
-    boolean connected;
-    boolean gameExists;
-    boolean hasUpdates;
+    private boolean connected;
+    private boolean gameExists;
+    private boolean hasUpdates;
 
-    // Singleton?
-    public FirebaseAndroidInterface(){
+    public static FirebaseAndroidInterface getInstance() {
+        if (instance == null) {
+            instance = new FirebaseAndroidInterface();
+        }
+        return instance;
+    }
+
+    private FirebaseAndroidInterface(){
         database = FirebaseDatabase.getInstance("https://chessplusplus-815c2-default-rtdb.europe-west1.firebasedatabase.app");
         dataRef = database.getReference("games");
         IDRef = database.getReference("ids");
@@ -152,7 +159,7 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                    System.out.println("smth wrong: " + error);
+                    System.out.println("something went wrong: " + error);
                     gameExists = false;
             }
         });
