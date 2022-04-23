@@ -92,8 +92,22 @@ public class LevelUpEffectFactory {
     }
 
     public static LevelUpEffect knightLevel2Ability() {
-        return new LevelUpEffect(KNIGHT_LEVEL_2_THRESHOLD, MovementFactory.createKnightMoveRules());
-        //TODO: Implement custom moveRule for this (see docs for rules).
+
+        // Get the move-set from the lvl 1 ability.
+        LevelUpEffect knightLvl1 = knightLevel1Ability();
+        MovementRuleSet movementRuleSet = knightLvl1.getNewMovementRuleSet();
+        // Get copies of the move and strike patterns to modify
+        List<MovePattern> movePatternsCopy = movementRuleSet.getMovePatternsCopy();
+        List<MovePattern> strikePatternsCopy = movementRuleSet.getStrikePatternsCopy();
+
+        // The new ability is to expand the movement and strike with another curving move.
+        MovePattern newMovePattern = new CurvingMovePattern(2, 3);
+        movePatternsCopy.add(newMovePattern);
+        strikePatternsCopy.add(newMovePattern);
+        movementRuleSet.setMovePatterns(movePatternsCopy);
+        movementRuleSet.setStrikePatterns(strikePatternsCopy);
+
+        return new LevelUpEffect(Integer.MAX_VALUE, movementRuleSet);
     }
 
     public static LevelUpEffect bishopLevel1Ability() {
