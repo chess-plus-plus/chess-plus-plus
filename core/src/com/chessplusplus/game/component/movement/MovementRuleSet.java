@@ -7,6 +7,7 @@ import com.chessplusplus.game.component.Position;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -116,8 +117,12 @@ public class MovementRuleSet {
         if(isStrike)
             possibleMoves = possibleMoves.stream()
                     .filter(p -> !board.squareIsEmpty(p))
-                    .filter(p -> board.getPiece(p).getPlayerId().equals(playerId))
+                    .filter(p -> !board.getPiece(p).getPlayerId().equals(playerId))
                     .collect(Collectors.toList());
+
+        if(!isStrike) possibleMoves = possibleMoves.stream()
+                .filter(p -> board.squareIsEmpty(p)|| !board.getPiece(p).getPlayerId().equals(playerId))
+                .collect(Collectors.toList());
 
         return possibleMoves;
     }
