@@ -16,15 +16,12 @@ import com.chessplusplus.game.BoardFactory;
 import com.chessplusplus.game.ChessGameImpl;
 import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.PieceColor;
+import com.chessplusplus.game.PieceType;
 import com.chessplusplus.game.Turn;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.utils.FontUtils;
 import com.chessplusplus.game.utils.PixmapUtils;
 
-/*TODO: Fix weird bug.
-   App crashes when any piece is moved to (0, 2) regardless of where it comes from. If the pawn
-   in this very column has moved passed the coordinate, the bug doesnt occur anymore
-* */
 
 public class BoardView extends Viewport implements Screen {
 
@@ -62,8 +59,8 @@ public class BoardView extends Viewport implements Screen {
     public BoardView(ChessPlusPlus c, String gameID, String playerID, boolean testingOffline) {
         batch = c.getBatch();
         gameBoard = BoardFactory.standardBoardAndPieces("1", "2");
-        game = new ChessGameImpl(gameBoard, c.getFBC(), gameID, "1", "2", testingOffline);
-        game.setPlayer(playerID);
+        game = new ChessGameImpl(gameBoard, c.getFBC(), gameID, "1", "2",
+                playerID, testingOffline);
         this.gameID = gameID;
         this.FBC = c.getFBC();
 
@@ -231,14 +228,46 @@ public class BoardView extends Viewport implements Screen {
         font.getData().setScale(3);
         //Renders the pieces
         for (Piece piece : gameBoard.getAllPieces()) {
-            renderPiece(piece.getTexture(), piece.getPosition().getX(), convertY(piece.getPosition().getY()), 1);
+            renderPiece(piece.getTexture(), piece.getPosition().getX(), convertY(piece.getPosition().getY()), piece.getLevel());
         }
 
         //The XP bar of the selected piece
         if (selectedPiece != null) {
-            batch.draw(xpBarProgressTexture, xpBarXPos, 200, (int) (xpBarWidth * 0.5), 100);
-            batch.draw(xpBarOutlineTexture, xpBarXPos, 200, xpBarWidth, 100);
+            if (selectedPiece.getLevel() < 2) {
+                font.getData().setScale(4);
+                renderXpBar();
+            } else {
+                font.getData().setScale(6);
+                String text = "MAX LEVEL";
+                font.draw(batch, text, (float) Gdx.graphics.getWidth() / 2 - FontUtils.getWidthOfFontText(text, font) / 2,
+                        350);
+            }
         }
+    }
+
+    private void renderXpBar() {
+        //Xp progress bar
+        float widthPercent = (float) (selectedPiece.getXp() - selectedPiece.getPrevNextLevelXpThreshold()) /
+                selectedPiece.getNextLevelXpThreshold();
+        int y = 250;
+        int height = 100;
+        batch.draw(xpBarProgressTexture, xpBarXPos, y, (int) (xpBarWidth * widthPercent), height);
+        batch.draw(xpBarOutlineTexture, xpBarXPos, y, xpBarWidth, height);
+
+        //Text saying xp progression
+        String fontText = selectedPiece.getXp() - selectedPiece.getPrevNextLevelXpThreshold() + " / " +
+                selectedPiece.getNextLevelXpThreshold();
+        int fontX = xpBarXPos + (int) (xpBarWidth / 2 - FontUtils.getWidthOfFontText(fontText, font) / 2);
+        int fontY = y + (int) (FontUtils.getHeightOfFontText(fontText, font) / 2 + height / 2);
+        font.setColor(Color.BLACK);
+        font.draw(batch, fontText, fontX, fontY);
+        String fontLeft = String.valueOf(selectedPiece.getLevel() + 1);
+        String fontRight = String.valueOf(selectedPiece.getLevel() + 2);
+        font.setColor(Color.CYAN);
+        font.draw(batch, fontLeft, xpBarXPos - (int) FontUtils.getWidthOfFontText(fontLeft, font) - 15,
+                y + (int) (FontUtils.getHeightOfFontText(fontLeft, font) / 2 + height / 2));
+        font.draw(batch, fontRight, xpBarXPos + xpBarWidth + 15,
+                y + (int) (FontUtils.getHeightOfFontText(fontLeft, font) / 2 + height / 2));
     }
 
     /**
