@@ -4,13 +4,11 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.chessplusplus.game.BoardFactory;
-import com.chessplusplus.game.ChessGame;
-import com.chessplusplus.game.ChessGameImpl;
-import com.chessplusplus.game.views.StartMenuView;
+import com.chessplusplus.controller.FireBaseInterface;
+import com.chessplusplus.controller.FirebaseController;
+import com.chessplusplus.view.StartMenuView;
 
 public class ChessPlusPlus extends ApplicationAdapter implements ApplicationListener, InputProcessor {
 	public static final int WIDTH = 800;
@@ -20,8 +18,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 
 	ApplicationAdapter screen;
 	FirebaseController FBC;
-
-	ChessGame game;
 
 	public ChessPlusPlus(FireBaseInterface FBIC) {FBC = new FirebaseController(FBIC);}
 	

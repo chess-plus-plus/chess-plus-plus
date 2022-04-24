@@ -1,10 +1,11 @@
 package com.chessplusplus.game.component;
 
-import com.chessplusplus.game.Board;
-import com.chessplusplus.game.ChessBoard;
-import com.chessplusplus.game.Piece;
-import com.chessplusplus.game.PieceFactory;
-import com.chessplusplus.game.Turn;
+import com.chessplusplus.model.board.Board;
+import com.chessplusplus.model.board.ChessBoard;
+import com.chessplusplus.model.piece.Piece;
+import com.chessplusplus.model.piece.PieceFactory;
+import com.chessplusplus.model.ChessTurn;
+import com.chessplusplus.model.board.Position;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -72,7 +73,7 @@ public class MovementComponentTest {
 
         List<Position> expectedMoves = movesToPositions(allExpectedMovesString);
         Board board = new ChessBoard(pieces, boardWidth, boardHeight);
-        List<Turn> turns = piece.getMovementRules().getLegalTurns(piece, board);
+        List<ChessTurn> turns = piece.getMovementRules().getLegalTurns(piece, board);
 
         // convert turns to moves
         List<Position> actualMoves = turns.stream()
@@ -275,7 +276,7 @@ public class MovementComponentTest {
         Position startPos = new Position(2,2);
         Position endPos =  new Position(2,1);
         Piece otherPawn = PieceFactory.createPawn("", startPos, -1, 7);
-        otherPawn.addAction(new Turn.Action(otherPawn, Turn.ActionType.MOVEMENT,startPos,endPos));
+        otherPawn.addAction(new ChessTurn.Action(otherPawn, ChessTurn.ActionType.MOVEMENT,startPos,endPos));
 
         testValidMoves(
                 PieceFactory.createPawn("", new Position(1,1), 1, 7),
