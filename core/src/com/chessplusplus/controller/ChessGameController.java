@@ -67,9 +67,6 @@ public class ChessGameController {
     }
 
     /**
-     * Note to FelixB: When we for example want to move a queen to an opponent the following actions will
-     * be sent: STRIKE, DESTRUCTION, MOVEMENT
-     * <p>
      * Processes the movement input from the boardview
      *
      * @param boardView BoardView-Screen that renders game to user
