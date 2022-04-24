@@ -1,22 +1,6 @@
 package com.chessplusplus.model.piece.movement;
 
 
-import com.chessplusplus.model.piece.movement.CastlingMoveRule;
-import com.chessplusplus.model.piece.movement.CollisionMoveRestriction;
-import com.chessplusplus.model.piece.movement.PromotionMoveRule;
-import com.chessplusplus.model.piece.movement.RowMoveRestriction;
-import com.chessplusplus.model.piece.movement.SpecialMoveRule;
-import com.chessplusplus.model.piece.movement.CurvingMovePattern;
-import com.chessplusplus.model.piece.movement.DiagonalMovePattern;
-import com.chessplusplus.model.piece.movement.DirectionalMoveRestriction;
-import com.chessplusplus.model.piece.movement.EnPassantMoveRule;
-import com.chessplusplus.model.piece.movement.PawnDoubleFirstMoveRule;
-import com.chessplusplus.model.piece.movement.HorizontalMovePattern;
-import com.chessplusplus.model.piece.movement.MoveRestriction;
-import com.chessplusplus.model.piece.movement.MovePattern;
-import com.chessplusplus.model.piece.movement.MovementRuleSet;
-import com.chessplusplus.model.piece.movement.VerticalMovePattern;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +12,12 @@ public class MovementRuleSetFactory {
     /**
      * Creates movement rule-set for a standard chess pawn.
      *
-     * @param moveDir Defines which way the pawn can move along the y axis, expressed as 1 or -1
+     * @param moveDir          Defines which way the pawn can move along the y axis, expressed as 1 or -1.
+     * @param maxRow           The id of the top row.
+     * @param defaultPromotion Whether to default promotions to Queen pieces.
      * @return Pawn movement rule-set.
      */
-    public static MovementRuleSet createPawn(int moveDir, int maxRow) {
+    public static MovementRuleSet createPawn(int moveDir, int maxRow, boolean defaultPromotion) {
         List<MovePattern> movePatterns = new ArrayList<>();
         movePatterns.add(VerticalMovePattern.oneSquareVerticalMovement());
 
@@ -53,7 +39,7 @@ public class MovementRuleSetFactory {
         List<SpecialMoveRule> specialMoveRules = new ArrayList<>();
         specialMoveRules.add(new PawnDoubleFirstMoveRule());
         specialMoveRules.add(new EnPassantMoveRule());
-        specialMoveRules.add(new PromotionMoveRule());
+        specialMoveRules.add(new PromotionMoveRule(defaultPromotion));
 
         return new MovementRuleSet.Builder(movePatterns, strikeRules)
                 .specialMoveRules(specialMoveRules)

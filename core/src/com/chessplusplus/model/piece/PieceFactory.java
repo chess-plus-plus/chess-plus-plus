@@ -35,15 +35,17 @@ public class PieceFactory {
     /**
      * Creates a pawn piece.
      *
-     * @param playerId Player id.
-     * @param position Starting position of piece.
-     * @param moveDir  Which way along the y axis the pawn will move, 1 for up, -1 for down.
-     * @param maxRow   Row that pawn can not move into
+     * @param playerId         Player id.
+     * @param position         Starting position of piece.
+     * @param moveDir          Which way along the y axis the pawn will move, 1 for up, -1 for down.
+     * @param maxRow           Row that pawn can not move into
+     * @param defaultPromotion Whether to default promotions to Queen pieces.
      * @return New pawn piece object.
      */
-    public static Piece createPawn(String playerId, Position position, int moveDir, int maxRow) {
+    public static Piece createPawn(String playerId, Position position, int moveDir, int maxRow,
+                                   boolean defaultPromotion) {
         return new Piece(playerId, PieceType.PAWN, position,
-                MovementRuleSetFactory.createPawn(moveDir, maxRow), RPGConfig.PAWN_LEVEL_1_THRESHOLD);
+                MovementRuleSetFactory.createPawn(moveDir, maxRow, defaultPromotion), RPGConfig.PAWN_LEVEL_1_THRESHOLD);
     }
 
     /**

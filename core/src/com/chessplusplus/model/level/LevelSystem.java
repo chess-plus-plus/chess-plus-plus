@@ -18,9 +18,12 @@ import java.util.HashMap;
 public class LevelSystem {
 
     private HashMap<PieceType, HashMap<Integer, LevelUpEffect>> upgradeScheme;
+    private final boolean defaultPromotion;
 
-    public LevelSystem(HashMap<PieceType, HashMap<Integer, LevelUpEffect>> upgradeScheme) {
+    public LevelSystem(HashMap<PieceType, HashMap<Integer, LevelUpEffect>> upgradeScheme,
+                       boolean defaultPromotion) {
         this.upgradeScheme = upgradeScheme;
+        this.defaultPromotion = defaultPromotion;
     }
 
     /**
@@ -46,7 +49,8 @@ public class LevelSystem {
 
             Position lastPos = piece.getActions().get(piece.getActions().size() - 2).startPos;
             Piece newPawn = new Piece(piece.getPlayerId(), PieceType.PAWN, lastPos,
-                    MovementRuleSetFactory.createPawn(moveDir, board.getHeight() - 1));
+                    MovementRuleSetFactory.createPawn(moveDir, board.getHeight() - 1,
+                            defaultPromotion));
             board.addPiece(newPawn, lastPos);
             board.addPiece(piece, piece.getPosition());
         }

@@ -54,7 +54,8 @@ public class BoardView extends Viewport implements Screen {
 
     public BoardView(ApplicationController c, String gameID, String playerID, boolean testingOffline) {
         batch = c.getBatch();
-        chessGameController = new ChessGameController(c, gameID, playerID, testingOffline);
+        chessGameController = new ChessGameController(c, gameID, playerID, testingOffline, true);
+        //TODO: Let defaultPromotion be configured in settings.
         this.gameID = gameID;
         this.FBC = c.getFBC();
 

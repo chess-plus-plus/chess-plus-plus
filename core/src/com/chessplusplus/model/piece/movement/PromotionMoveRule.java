@@ -15,6 +15,13 @@ import java.util.List;
  */
 public class PromotionMoveRule implements SpecialMoveRule {
 
+    // Determines whether we automatically promote pawns to queen.
+    private final boolean defaultPromotion;
+
+    public PromotionMoveRule(boolean defaultPromotion) {
+        this.defaultPromotion = defaultPromotion;
+    }
+
     @Override
     public List<ChessTurn> getLegalTurns(String playerId, Piece piece, Board gameBoard) {
         ArrayList<ChessTurn> legalTurns = new ArrayList<>();
@@ -44,9 +51,11 @@ public class PromotionMoveRule implements SpecialMoveRule {
         for (Position moveCandidate : moveCandidates) {
             if (gameBoard.squareIsEmpty(moveCandidate) &&
                     (moveCandidate.getY() == topRow || moveCandidate.getY() == botRow)) {
-                legalTurns.add(createPromotionTurn(piece, moveCandidate, PieceType.BISHOP, false, gameBoard));
-                legalTurns.add(createPromotionTurn(piece, moveCandidate, PieceType.KNIGHT, false, gameBoard));
-                legalTurns.add(createPromotionTurn(piece, moveCandidate, PieceType.ROOK, false, gameBoard));
+                if (!defaultPromotion) {
+                    legalTurns.add(createPromotionTurn(piece, moveCandidate, PieceType.BISHOP, false, gameBoard));
+                    legalTurns.add(createPromotionTurn(piece, moveCandidate, PieceType.KNIGHT, false, gameBoard));
+                    legalTurns.add(createPromotionTurn(piece, moveCandidate, PieceType.ROOK, false, gameBoard));
+                }
                 legalTurns.add(createPromotionTurn(piece, moveCandidate, PieceType.QUEEN, false, gameBoard));
             }
         }
@@ -55,9 +64,11 @@ public class PromotionMoveRule implements SpecialMoveRule {
         for (Position strikeCandidate : strikeCandidates) {
             if (!gameBoard.squareIsEmpty(strikeCandidate) &&
                     (strikeCandidate.getY() == topRow || strikeCandidate.getY() == botRow)) {
-                legalTurns.add(createPromotionTurn(piece, strikeCandidate, PieceType.BISHOP, true, gameBoard));
-                legalTurns.add(createPromotionTurn(piece, strikeCandidate, PieceType.KNIGHT, true, gameBoard));
-                legalTurns.add(createPromotionTurn(piece, strikeCandidate, PieceType.ROOK, true, gameBoard));
+                if (!defaultPromotion) {
+                    legalTurns.add(createPromotionTurn(piece, strikeCandidate, PieceType.BISHOP, true, gameBoard));
+                    legalTurns.add(createPromotionTurn(piece, strikeCandidate, PieceType.KNIGHT, true, gameBoard));
+                    legalTurns.add(createPromotionTurn(piece, strikeCandidate, PieceType.ROOK, true, gameBoard));
+                }
                 legalTurns.add(createPromotionTurn(piece, strikeCandidate, PieceType.QUEEN, true, gameBoard));
             }
         }
@@ -95,7 +106,7 @@ public class PromotionMoveRule implements SpecialMoveRule {
             actionList.add(new ChessTurn.Action(board.getPiece(targetPos), ChessTurn.ActionType.DESTRUCTION,
                     targetPos, targetPos));
         }
-
+        actionList.add(new ChessTurn.Action(piece, ChessTurn.ActionType.MOVEMENT, piece.getPosition(), targetPos));
         actionList.add(new ChessTurn.Action(piece, ChessTurn.ActionType.DESTRUCTION, piece.getPosition(),
                 piece.getPosition()));
         actionList.add(new ChessTurn.Action(newPiece, ChessTurn.ActionType.CREATION, targetPos, targetPos));

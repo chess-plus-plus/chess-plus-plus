@@ -31,7 +31,8 @@ public class ChessGameController {
     private boolean offlineTesting;
     private FirebaseController FBC;
 
-    public ChessGameController(ApplicationController c, String gameID, String playerID, boolean offlineTesting) {
+    public ChessGameController(ApplicationController c, String gameID, String playerID,
+                               boolean offlineTesting, boolean defaultPromotion) {
         player1ID = "1";
         player2ID = "2";
         this.playerID = playerID;
@@ -40,10 +41,10 @@ public class ChessGameController {
 
         FBC = c.getFBC();
 
-        Board chessBoard = BoardFactory.standardBoardAndPieces(player1ID, player2ID);
+        Board chessBoard = BoardFactory.standardBoardAndPieces(player1ID, player2ID, defaultPromotion);
         chessGame = new ChessGameModel(chessBoard, player1ID, player2ID,
                 RPGConfig.DEFAULT_MOVEMENT_XP, RPGConfig.DEFAULT_STRIKE_XP,
-                LevelFactory.createDefaultRPGRules(chessBoard.getHeight() - 1));
+                LevelFactory.createDefaultRPGRules(chessBoard.getHeight() - 1, defaultPromotion));
 
         playerColorMap.put(player1ID, PieceColor.WHITE);
         playerColorMap.put(player2ID, PieceColor.BLACK);

@@ -21,11 +21,11 @@ import java.util.List;
 //TODO: Comments
 public class LevelFactory {
 
-    public static LevelSystem createDefaultRPGRules(int maxRow) {
+    public static LevelSystem createDefaultRPGRules(int maxRow, boolean defaultPromotion) {
         HashMap<PieceType, HashMap<Integer, LevelUpEffect>> upgradeScheme = new HashMap<>();
 
         HashMap<Integer, LevelUpEffect> pawnUpgrades = new HashMap<>();
-        pawnUpgrades.put(1, pawnLevel1Ability(maxRow));
+        pawnUpgrades.put(1, pawnLevel1Ability(maxRow, defaultPromotion));
         pawnUpgrades.put(2, pawnLevel2Ability());
 
         HashMap<Integer, LevelUpEffect> rookUpgrades = new HashMap<>();
@@ -49,11 +49,11 @@ public class LevelFactory {
         upgradeScheme.put(PieceType.BISHOP, bishopUpgrades);
         upgradeScheme.put(PieceType.QUEEN, queenUpgrades);
 
-        return new LevelSystem(upgradeScheme);
+        return new LevelSystem(upgradeScheme, defaultPromotion);
     }
 
-    public static LevelUpEffect pawnLevel1Ability(int maxRow) {
-        MovementRuleSet movementRuleSet = MovementRuleSetFactory.createPawn(0, maxRow);
+    public static LevelUpEffect pawnLevel1Ability(int maxRow, boolean defaultPromotion) {
+        MovementRuleSet movementRuleSet = MovementRuleSetFactory.createPawn(0, maxRow, defaultPromotion);
         movementRuleSet.setMoveRestrictions(new ArrayList<>());
 
         return new LevelUpEffect(PAWN_LEVEL_2_THRESHOLD, movementRuleSet);
