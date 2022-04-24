@@ -54,7 +54,8 @@ public class BoardView extends Viewport implements Screen {
 
     public BoardView(ApplicationController c, String gameID, String playerID, boolean testingOffline) {
         batch = c.getBatch();
-        chessGameController = new ChessGameController(c, gameID, playerID, testingOffline);
+        chessGameController = new ChessGameController(c, gameID, playerID, testingOffline, true);
+        //TODO: Let defaultPromotion be configured in settings.
         this.gameID = gameID;
         this.FBC = c.getFBC();
 
@@ -81,15 +82,18 @@ public class BoardView extends Viewport implements Screen {
 
         //Finds color of the piece based on player id and passes it to the pieces
         for (Piece piece : chessGameController.getChessGame().getBoard().getAllPieces()) {
-            String playerId = piece.getPlayerId();
-            String filePath = String.format("texturepacks/genesis/pieces/%s/",
-                    chessGameController.getPlayerColor(playerId));
-            piece.setTexture(filePath);
+            setPieceTexture(piece, piece.getPlayerId());
         }
 
         makeBoardTexture();
         makeLegalMoveTextures();
         makeProgressBarTextures();
+    }
+
+    private void setPieceTexture(Piece piece, String playerId) {
+        String filePath = String.format("texturepacks/genesis/pieces/%s/",
+                chessGameController.getPlayerColor(playerId));
+        piece.setTexture(filePath);
     }
 
     /*
@@ -230,6 +234,9 @@ public class BoardView extends Viewport implements Screen {
         font.getData().setScale(3);
         //Renders the pieces
         for (Piece piece : chessGameController.getChessGame().getBoard().getAllPieces()) {
+            if (piece.getTexture() == null) { // If a piece has no texture we fix that
+                setPieceTexture(piece, piece.getPlayerId());
+            }
             renderPiece(piece.getTexture(), piece.getPosition().getX(), convertY(piece.getPosition().getY()), piece.getLevel());
         }
 

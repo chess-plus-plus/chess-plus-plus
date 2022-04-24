@@ -27,8 +27,8 @@ public class ChessGameModel implements ChessGame {
 
     private final HashMap<ChessTurn, Piece> legalTurnsToPieceMap = new HashMap<>();
 
-    public ChessGameModel(Board gameBoard, String player1Id, String player2Id,
-                          int MOVE_XP, int STRIKE_XP, LevelSystem levelSystem) {
+    public ChessGameModel(Board gameBoard, String player1Id, String player2Id, int MOVE_XP,
+                          int STRIKE_XP, LevelSystem levelSystem) {
         this.gameBoard = gameBoard;
         this.player1Id = player1Id;
         this.player2Id = player2Id;
@@ -74,6 +74,7 @@ public class ChessGameModel implements ChessGame {
         System.out.println("New turn");
         // 2
         for (ChessTurn.Action action : turn.actions) {
+            System.out.println(action.actionType);
             Piece startPiece = gameBoard.getPiece(action.startPos);
             Piece actionPiece = gameBoard.getPiece(action.actionPos);
             switch (action.actionType) {
@@ -90,7 +91,8 @@ public class ChessGameModel implements ChessGame {
                     gameBoard.removePiece(actionPiece);
                     break;
                 case CREATION:
-                    //TODO
+                    Piece newPiece = action.piece;
+                    gameBoard.addPiece(newPiece, action.actionPos);
                     break;
             }
         }

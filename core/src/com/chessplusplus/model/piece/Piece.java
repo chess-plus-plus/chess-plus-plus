@@ -219,6 +219,10 @@ public class Piece {
         return this.texture;
     }
 
+    public PieceColor getColor() {
+        return color;
+    }
+
     public int getPrevNextLevelXpThreshold() { return this.prevNextLevelXpThreshold; }
 
     public boolean equals(Piece piece) {

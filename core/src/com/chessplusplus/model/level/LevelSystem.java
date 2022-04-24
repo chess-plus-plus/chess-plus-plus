@@ -18,9 +18,12 @@ import java.util.HashMap;
 public class LevelSystem {
 
     private HashMap<PieceType, HashMap<Integer, LevelUpEffect>> upgradeScheme;
+    private final boolean defaultPromotion;
 
-    public LevelSystem(HashMap<PieceType, HashMap<Integer, LevelUpEffect>> upgradeScheme) {
+    public LevelSystem(HashMap<PieceType, HashMap<Integer, LevelUpEffect>> upgradeScheme,
+                       boolean defaultPromotion) {
         this.upgradeScheme = upgradeScheme;
+        this.defaultPromotion = defaultPromotion;
     }
 
     /**
@@ -36,24 +39,20 @@ public class LevelSystem {
             piece.setXp(0);
             piece.setLevel(0);
 
-            // TODO: Refactor out creating a new Piece to somewhere else
             Position firstPos = piece.getActions().get(0).startPos;
             int moveDir;
-            String texturePath; // TODO: THIS IS VERY BAD AND HACK-Y
             if (firstPos.getY() == 1) {
                 moveDir = -1;
-                texturePath = "texturepacks/genesis/pieces/black/";
             } else {
                 moveDir = 1;
-                texturePath = "texturepacks/genesis/pieces/white/";
             }
 
             Position lastPos = piece.getActions().get(piece.getActions().size() - 2).startPos;
             Piece newPawn = new Piece(piece.getPlayerId(), PieceType.PAWN, lastPos,
-                    MovementRuleSetFactory.createPawn(moveDir, board.getHeight() - 1));
+                    MovementRuleSetFactory.createPawn(moveDir, board.getHeight() - 1,
+                            defaultPromotion));
             board.addPiece(newPawn, lastPos);
             board.addPiece(piece, piece.getPosition());
-            newPawn.setTexture(texturePath);
         }
 
     }
