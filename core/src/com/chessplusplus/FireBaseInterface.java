@@ -14,5 +14,6 @@ public interface FireBaseInterface {
     boolean joinGame(String gameID);
     void goOnline();
     boolean hasUpdates();
+    boolean allPlayersConnected();
     String getLatestMove();
 }

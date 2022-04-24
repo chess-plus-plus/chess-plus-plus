@@ -1,9 +1,12 @@
 package com.chessplusplus.game;
 
+import com.chessplusplus.game.component.movement.CurvingMovePattern;
 import com.chessplusplus.game.component.movement.DiagonalMovePattern;
 import com.chessplusplus.game.component.movement.HorizontalMovePattern;
 import com.chessplusplus.game.component.movement.MovePattern;
 import com.chessplusplus.game.component.movement.MovementRuleSet;
+import com.chessplusplus.game.component.movement.RookWrappingMoveRule;
+import com.chessplusplus.game.component.movement.SpecialMoveRule;
 import com.chessplusplus.game.component.movement.VerticalMovePattern;
 import com.chessplusplus.game.system.LevelEngine;
 
@@ -16,9 +19,6 @@ import java.util.List;
 
 //TODO: Comments
 public class LevelUpEffectFactory {
-
-    public static int level1Threshold = 100;
-    public static int level2Threshold = 200;
 
     public static LevelEngine createDefaultRPGRules(int maxRow) {
         HashMap<PieceType, HashMap<Integer, LevelUpEffect>> upgradeScheme = new HashMap<>();
@@ -55,7 +55,7 @@ public class LevelUpEffectFactory {
         MovementRuleSet movementRuleSet = MovementFactory.createPawn(0, maxRow);
         movementRuleSet.setMoveRestrictions(new ArrayList<>());
 
-        return new LevelUpEffect(PAWN_LEVEL_1_THRESHOLD, movementRuleSet);
+        return new LevelUpEffect(PAWN_LEVEL_2_THRESHOLD, movementRuleSet);
     }
 
     public static LevelUpEffect pawnLevel2Ability() {
@@ -66,17 +66,25 @@ public class LevelUpEffectFactory {
 
         MovementRuleSet movementRuleSet = new MovementRuleSet.Builder(movePatterns).build();
 
-        return new LevelUpEffect(PAWN_LEVEL_2_THRESHOLD, movementRuleSet);
+        return new LevelUpEffect(Integer.MAX_VALUE, movementRuleSet);
     }
 
     public static LevelUpEffect rookLevel1Ability() {
-        return new LevelUpEffect(ROOK_LEVEL_1_THRESHOLD, MovementFactory.createRookMoveRules());
-        //TODO: change once blocking is supported.
+        MovementRuleSet rookMoveSet = MovementFactory.createRookMoveRules();
+        List<MovePattern> movePatterns = rookMoveSet.getMovePatternsCopy();
+        movePatterns.add(new CurvingMovePattern(2, 2));
+        rookMoveSet.setMovePatterns(movePatterns);
+
+        return new LevelUpEffect(ROOK_LEVEL_2_THRESHOLD, rookMoveSet);
     }
 
     public static LevelUpEffect rookLevel2Ability() {
-        return new LevelUpEffect(ROOK_LEVEL_2_THRESHOLD, MovementFactory.createRookMoveRules());
-        //TODO: change once blocking is supported. (Needs custom moveRule).
+        MovementRuleSet rookMoveSet = MovementFactory.createRookMoveRules();
+        List<SpecialMoveRule> specialMoveRules = new ArrayList<>();
+        specialMoveRules.add(new RookWrappingMoveRule());
+        rookMoveSet.setSpecialMoveRules(specialMoveRules);
+
+        return new LevelUpEffect(Integer.MAX_VALUE, rookMoveSet);
     }
 
     public static LevelUpEffect knightLevel1Ability() {
@@ -87,12 +95,26 @@ public class LevelUpEffectFactory {
         movePatterns.add(DiagonalMovePattern.oneSquareDiagonalMovement());
         knightMoveSet.setMovePatterns(movePatterns);
 
-        return new LevelUpEffect(KNIGHT_LEVEL_1_THRESHOLD, knightMoveSet);
+        return new LevelUpEffect(KNIGHT_LEVEL_2_THRESHOLD, knightMoveSet);
     }
 
     public static LevelUpEffect knightLevel2Ability() {
-        return new LevelUpEffect(KNIGHT_LEVEL_2_THRESHOLD, MovementFactory.createKnightMoveRules());
-        //TODO: Implement custom moveRule for this (see docs for rules).
+
+        // Get the move-set from the lvl 1 ability.
+        LevelUpEffect knightLvl1 = knightLevel1Ability();
+        MovementRuleSet movementRuleSet = knightLvl1.getNewMovementRuleSet();
+        // Get copies of the move and strike patterns to modify
+        List<MovePattern> movePatternsCopy = movementRuleSet.getMovePatternsCopy();
+        List<MovePattern> strikePatternsCopy = movementRuleSet.getStrikePatternsCopy();
+
+        // The new ability is to expand the movement and strike with another curving move.
+        MovePattern newMovePattern = new CurvingMovePattern(2, 3);
+        movePatternsCopy.add(newMovePattern);
+        strikePatternsCopy.add(newMovePattern);
+        movementRuleSet.setMovePatterns(movePatternsCopy);
+        movementRuleSet.setStrikePatterns(strikePatternsCopy);
+
+        return new LevelUpEffect(Integer.MAX_VALUE, movementRuleSet);
     }
 
     public static LevelUpEffect bishopLevel1Ability() {
@@ -102,16 +124,19 @@ public class LevelUpEffectFactory {
         movePatterns.add(VerticalMovePattern.oneSquareVerticalMovement());
         bishopMoveSet.setMovePatterns(movePatterns);
 
-        return new LevelUpEffect(BISHOP_LEVEL_1_THRESHOLD, bishopMoveSet);
+        return new LevelUpEffect(BISHOP_LEVEL_2_THRESHOLD, bishopMoveSet);
     }
 
     public static LevelUpEffect bishopLevel2Ability() {
-        return new LevelUpEffect(BISHOP_LEVEL_2_THRESHOLD, bishopLevel1Ability().getNewMovementRuleSet());
-        //TODO: Remove blocking from this move set, once blocking is implemented
+        LevelUpEffect bishopLvl1Effect = bishopLevel1Ability();
+        MovementRuleSet newBishopMoveSet = bishopLvl1Effect.getNewMovementRuleSet();
+        newBishopMoveSet.setMoveRestrictions(new ArrayList<>()); // Remove blocking movement restriction
+
+        return new LevelUpEffect(Integer.MAX_VALUE, newBishopMoveSet);
     }
 
     public static LevelUpEffect queenLevelUpAbility() {
-        return new LevelUpEffect(QUEEN_LEVEL_UP_THRESHOLD, MovementFactory.createQueenMoveRules());
+        return new LevelUpEffect(QUEEN_LEVEL_UP_THRESHOLD, MovementFactory.createQueenMoveRules(), true);
         //TODO: Add custom move rule that spawns a pawn.
     }
 

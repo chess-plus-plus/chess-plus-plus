@@ -15,6 +15,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class FirebaseAndroidInterface implements FireBaseInterface{
+
     private static FirebaseAndroidInterface instance;
     private FirebaseDatabase database;
     private DatabaseReference dataRef;
@@ -109,6 +110,7 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
 
     @Override
     public void getGameUpdates(String id) {
+        allPlayersConnected = false;
         dataRef.child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -117,6 +119,8 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                 currentGame = dataSnapshot;
                 hasUpdates = true;
+                if (dataSnapshot.child("player1").exists() && dataSnapshot.child("player2").exists())
+                        allPlayersConnected = true;
                 System.out.println("###FIREBASE### value has changed to: " + map);
             }
 
@@ -131,7 +135,7 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
     @Override
     public String createGameID() {
         user = this.getCurrentUser();
-        if (user == null)
+        if (user == null || this.connected == false)
             return null;
 
         String key = this.getRandomNumberString();
@@ -200,6 +204,10 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
 
     public void goOnline() {
         database.goOnline();
+    }
+
+    public boolean allPlayersConnected() {
+        return this.allPlayersConnected;
     }
 
     // gameID generator

@@ -167,7 +167,7 @@ public class BoardView extends Viewport implements Screen {
         Turn newTurn = this.FBC.getNewTurnIfAvailable();
         if (newTurn != null)
             game.submitTurn(newTurn, true);
-        if (game.isPlayerTurn() || game.getOfflineTesting())
+        if ((game.isPlayerTurn() && this.FBC.allPlayersAreConnected()) || game.getOfflineTesting())
             processUserInput();
         renderBoard();
     }
@@ -200,9 +200,13 @@ public class BoardView extends Viewport implements Screen {
     /*Renders the board texture as well as all the pieces by calling the renderPiece method*/
     private void renderBoard() {
         //Signals which players turn it is
-        String whichTurn = "Waiting for opponent...";
-        if (game.isPlayerTurn() || game.getOfflineTesting()) {
-            whichTurn = "Your turn";
+        String whichTurn = "Your turn";
+        if (!game.getOfflineTesting()) {
+            if (!this.FBC.allPlayersAreConnected()) {
+                whichTurn = "Waiting for player to connect";
+            } else if (!game.isPlayerTurn()) {
+                whichTurn = "Waiting for opponent...";
+            }
         }
         font.setColor(Color.WHITE);
         font.getData().setScale(6);

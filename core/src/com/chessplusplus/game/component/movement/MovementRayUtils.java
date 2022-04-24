@@ -106,4 +106,63 @@ public class MovementRayUtils {
         return result;
     }
 
+    // Utility function created for RookChainAttackMoveRule, it should work based on my testing.
+    public static List<Position> adjacentEnemyRayCalc(List<Position> ray, String playerId, Board board) {
+        List<Position> positions = new ArrayList<>();
+
+        boolean enemyPieceEncountered = false;
+        for (Position position : ray) {
+            Piece p = board.getPiece(position);
+
+            if (p != null && !p.getPlayerId().equals(playerId)) {
+                enemyPieceEncountered = true;
+                positions.add(position);
+            } else if (enemyPieceEncountered) {
+                break;
+            }
+        }
+
+        return positions;
+    }
+
+    /**
+     * Creates "wrapping rays", that wrap around the board.
+     *
+     * @param startPos Position of piece, will not be included in the ray.
+     * @param xDelta   -1 for "west", 0 for neutral, 1 for "east".
+     * @param yDelta   -1 for "south", 0 for neutral, 1 for "north".
+     * @param board    Game board.
+     * @return Ray of positions.
+     */
+    public static List<Position> wrappingRays(Position startPos, int xDelta, int yDelta, Board board) {
+        List<Position> positions = new ArrayList<>();
+
+        int northEdge = board.getHeight() - 1;
+        int eastEdge = board.getWidth() - 1;
+        int southEdge = 0;
+        int westEdge = 0;
+
+        Position tmp = startPos;
+        do {
+            tmp = new Position(tmp.getX() + xDelta, tmp.getY() + yDelta);
+            if (tmp.getX() < westEdge) {
+                tmp = new Position(eastEdge, tmp.getY());
+            } else if (tmp.getX() > eastEdge) {
+                tmp = new Position(westEdge, tmp.getY());
+            }
+
+            if (tmp.getY() < southEdge) {
+                tmp = new Position(tmp.getX(), northEdge);
+            } else if (tmp.getY() > northEdge) {
+                tmp = new Position(tmp.getX(), southEdge);
+            }
+
+            positions.add(tmp);
+        } while (!tmp.equals(startPos));
+
+        positions.remove(startPos);
+
+        return positions;
+    }
+
 }
