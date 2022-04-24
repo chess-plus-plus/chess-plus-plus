@@ -6,7 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.chessplusplus.game.views.StartMenuView;
+import com.chessplusplus.controller.FireBaseInterface;
+import com.chessplusplus.controller.FirebaseController;
+import com.chessplusplus.view.StartMenuView;
 
 public class ChessPlusPlus extends ApplicationAdapter implements ApplicationListener, InputProcessor {
 	public static final int WIDTH = 800;

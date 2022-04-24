@@ -1,10 +1,11 @@
 package com.chessplusplus.game.component;
 
-import com.chessplusplus.game.Board;
-import com.chessplusplus.game.ChessBoard;
-import com.chessplusplus.game.Piece;
-import com.chessplusplus.game.PieceFactory;
-import com.chessplusplus.game.ChessTurn;
+import com.chessplusplus.model.board.Board;
+import com.chessplusplus.model.board.ChessBoard;
+import com.chessplusplus.model.piece.Piece;
+import com.chessplusplus.model.piece.PieceFactory;
+import com.chessplusplus.model.ChessTurn;
+import com.chessplusplus.model.board.Position;
 
 import org.junit.Assert;
 import org.junit.Test;

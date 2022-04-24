@@ -1,8 +1,9 @@
 package com.chessplusplus.game.component;
 
-import com.chessplusplus.game.Piece;
-import com.chessplusplus.game.PieceType;
-import com.chessplusplus.game.ChessTurn;
+import com.chessplusplus.model.piece.Piece;
+import com.chessplusplus.model.piece.PieceType;
+import com.chessplusplus.model.ChessTurn;
+import com.chessplusplus.model.board.Position;
 import com.google.gson.Gson;
 
 import org.junit.Test;
