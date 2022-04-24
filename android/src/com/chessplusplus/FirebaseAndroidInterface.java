@@ -128,7 +128,7 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
     @Override
     public String createGameID() {
         user = this.getCurrentUser();
-        if (user == null)
+        if (user == null || this.connected == false)
             return null;
 
         String key = this.getRandomNumberString();
