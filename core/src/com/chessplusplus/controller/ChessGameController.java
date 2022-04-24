@@ -1,6 +1,6 @@
 package com.chessplusplus.controller;
 
-import com.chessplusplus.ChessPlusPlus;
+import com.chessplusplus.ApplicationController;
 import com.chessplusplus.model.board.Board;
 import com.chessplusplus.model.board.BoardFactory;
 import com.chessplusplus.model.ChessGame;
@@ -31,7 +31,7 @@ public class ChessGameController {
     private boolean offlineTesting;
     private FirebaseController FBC;
 
-    public ChessGameController(ChessPlusPlus c, String gameID, String playerID, boolean offlineTesting) {
+    public ChessGameController(ApplicationController c, String gameID, String playerID, boolean offlineTesting) {
         player1ID = "1";
         player2ID = "2";
         this.playerID = playerID;

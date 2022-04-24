@@ -13,17 +13,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.chessplusplus.ChessPlusPlus;
+import com.chessplusplus.ApplicationController;
 
 public class SettingsView extends ApplicationAdapter {
 
-    private ChessPlusPlus chessPlusPlus;
+    private ApplicationController applicationController;
     private Stage stage;
     private Skin skin;
     private TextButton conBut;
 
-    public SettingsView(ChessPlusPlus c){
-        chessPlusPlus = c;
+    public SettingsView(ApplicationController c){
+        applicationController = c;
     }
 
     public void create() {
@@ -51,7 +51,7 @@ public class SettingsView extends ApplicationAdapter {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new StartMenuView(chessPlusPlus));
+                applicationController.setScreen(new StartMenuView(applicationController));
             }
         });
 
@@ -68,7 +68,7 @@ public class SettingsView extends ApplicationAdapter {
     @Override
     public void render() {
 
-        if (chessPlusPlus.isConnected()){
+        if (applicationController.isConnected()){
             conBut.setText("Connected");
             conBut.setColor(Color.GREEN);
         } else {

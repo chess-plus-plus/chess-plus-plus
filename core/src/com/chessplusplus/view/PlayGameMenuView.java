@@ -13,17 +13,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.chessplusplus.ChessPlusPlus;
+import com.chessplusplus.ApplicationController;
 
 public class PlayGameMenuView extends ApplicationAdapter {
 
-    private ChessPlusPlus chessPlusPlus;
+    private ApplicationController applicationController;
     private Stage stage;
     private Skin skin;
     private TextButton conBut;
 
-    public PlayGameMenuView(ChessPlusPlus c){
-        chessPlusPlus = c;
+    public PlayGameMenuView(ApplicationController c){
+        applicationController = c;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class PlayGameMenuView extends ApplicationAdapter {
         testField.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new GameView(chessPlusPlus, "0", "1", true));
+                applicationController.setScreen(new GameView(applicationController, "0", "1", true));
             }
         });
 
@@ -61,7 +61,7 @@ public class PlayGameMenuView extends ApplicationAdapter {
         joinGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new JoinGameMenuView(chessPlusPlus));
+                applicationController.setScreen(new JoinGameMenuView(applicationController));
             }
         });
 
@@ -69,7 +69,7 @@ public class PlayGameMenuView extends ApplicationAdapter {
         hostGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new HostGameMenuView(chessPlusPlus));
+                applicationController.setScreen(new HostGameMenuView(applicationController));
             }
         });
 
@@ -77,7 +77,7 @@ public class PlayGameMenuView extends ApplicationAdapter {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new StartMenuView(chessPlusPlus));
+                applicationController.setScreen(new StartMenuView(applicationController));
             }
         });
 
@@ -100,7 +100,7 @@ public class PlayGameMenuView extends ApplicationAdapter {
     @Override
     public void render() {
 
-        if (chessPlusPlus.isConnected()){
+        if (applicationController.isConnected()){
             conBut.setText("Connected");
             conBut.setColor(Color.GREEN);
         } else {

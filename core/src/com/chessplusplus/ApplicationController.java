@@ -10,7 +10,7 @@ import com.chessplusplus.controller.FireBaseInterface;
 import com.chessplusplus.controller.FirebaseController;
 import com.chessplusplus.view.StartMenuView;
 
-public class ChessPlusPlus extends ApplicationAdapter implements ApplicationListener, InputProcessor {
+public class ApplicationController extends ApplicationAdapter implements ApplicationListener, InputProcessor {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 800;
 
@@ -19,7 +19,7 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	ApplicationAdapter screen;
 	FirebaseController FBC;
 
-	public ChessPlusPlus(FireBaseInterface FBIC) {FBC = new FirebaseController(FBIC);}
+	public ApplicationController(FireBaseInterface FBIC) {FBC = new FirebaseController(FBIC);}
 	
 	@Override
 	public void create () {
