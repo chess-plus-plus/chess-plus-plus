@@ -11,12 +11,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.chessplusplus.ChessPlusPlus;
 import com.chessplusplus.FirebaseController;
-import com.chessplusplus.game.Board;
-import com.chessplusplus.game.BoardFactory;
-import com.chessplusplus.game.ChessGameImpl;
+import com.chessplusplus.game.ChessGameController;
 import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.PieceColor;
-import com.chessplusplus.game.PieceType;
 import com.chessplusplus.game.Turn;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.utils.FontUtils;
@@ -36,8 +33,7 @@ public class BoardView extends Viewport implements Screen {
     private int spriteSize;
     private int boardYOffset;
 
-    private Board gameBoard;
-    private ChessGameImpl game;
+    private ChessGameController chessGameController;
     private String gameID;
 
     private Texture boardTexture;
@@ -58,13 +54,13 @@ public class BoardView extends Viewport implements Screen {
 
     public BoardView(ChessPlusPlus c, String gameID, String playerID, boolean testingOffline) {
         batch = c.getBatch();
-        gameBoard = BoardFactory.standardBoardAndPieces("1", "2");
-        game = new ChessGameImpl(gameBoard, c.getFBC(), gameID, "1", "2",
-                playerID, testingOffline);
+        chessGameController = new ChessGameController(c, gameID, playerID, testingOffline);
         this.gameID = gameID;
         this.FBC = c.getFBC();
 
-        playerIsWhite = game.getPlayerColor(game.getPlayerID()) == PieceColor.WHITE;
+
+        playerIsWhite = chessGameController.getPlayerColor(chessGameController.getPlayerID())
+                == PieceColor.WHITE;
         System.out.println("Is white: " + playerIsWhite);
     }
 
@@ -78,16 +74,16 @@ public class BoardView extends Viewport implements Screen {
         font.getData().setScale(3);
 
         boardWidth = Gdx.graphics.getWidth();
-        squareSize = boardWidth / gameBoard.getWidth();
+        squareSize = boardWidth / chessGameController.getBoardWidth();
         spriteSize = squareSize;
-        boardHeight = squareSize * gameBoard.getHeight();
+        boardHeight = squareSize * chessGameController.getBoardHeight();
         boardYOffset = (Gdx.graphics.getHeight() - boardHeight) / 2;
 
         //Finds color of the piece based on player id and passes it to the pieces
-        for (Piece piece : game.getBoard().getAllPieces()) {
+        for (Piece piece : chessGameController.getChessGame().getBoard().getAllPieces()) {
             String playerId = piece.getPlayerId();
             String filePath = String.format("texturepacks/genesis/pieces/%s/",
-                    game.getPlayerColor(playerId));
+                    chessGameController.getPlayerColor(playerId));
             piece.setTexture(filePath);
         }
 
@@ -113,9 +109,9 @@ public class BoardView extends Viewport implements Screen {
         //Loops through the squares and colors squares with opposite color of initial color
         pixmap.setColor(playerIsWhite ? whiteColor : blackColor);
         int xStart;
-        for (int y = 0; y < gameBoard.getHeight(); y++) {
+        for (int y = 0; y < chessGameController.getBoardHeight(); y++) {
             xStart = (y % 2 == 0 ? 0 : 1);
-            for (int x = xStart; x < gameBoard.getWidth(); x += 2) {
+            for (int x = xStart; x < chessGameController.getBoardWidth(); x += 2) {
                 pixmap.fillRectangle(x * squareSize, y * squareSize, squareSize, squareSize);
             }
         }
@@ -166,8 +162,9 @@ public class BoardView extends Viewport implements Screen {
     public void render(float delta) {
         Turn newTurn = this.FBC.getNewTurnIfAvailable();
         if (newTurn != null)
-            game.submitTurn(newTurn, true);
-        if ((game.isPlayerTurn() && this.FBC.allPlayersAreConnected()) || game.getOfflineTesting())
+            chessGameController.submitTurn(newTurn, true);
+        if ((chessGameController.isPlayerTurn() && this.FBC.allPlayersAreConnected()) ||
+                chessGameController.getOfflineTesting())
             processUserInput();
         renderBoard();
     }
@@ -186,12 +183,12 @@ public class BoardView extends Viewport implements Screen {
                 yTouch -= boardYOffset;
                 //Convert from pixel coordinates to board coordinates
                 Position actionPos = Position.pos(xTouch / squareSize, convertY(yTouch / squareSize));
-                game.processUserInput(this, actionPos);
+                chessGameController.processUserInput(this, actionPos);
             } else {
                 selectedPiece = null;
             }
             //Prevents user from getting possible moves by clicking opponent pieces
-            if (!game.isFriendlyPiece(selectedPiece)) {
+            if (!chessGameController.isFriendlyPiece(selectedPiece)) {
                 selectedPiece = null;
             }
         }
@@ -201,10 +198,10 @@ public class BoardView extends Viewport implements Screen {
     private void renderBoard() {
         //Signals which players turn it is
         String whichTurn = "Your turn";
-        if (!game.getOfflineTesting()) {
+        if (!chessGameController.getOfflineTesting()) {
             if (!this.FBC.allPlayersAreConnected()) {
                 whichTurn = "Waiting for player to connect";
-            } else if (!game.isPlayerTurn()) {
+            } else if (!chessGameController.isPlayerTurn()) {
                 whichTurn = "Waiting for opponent...";
             }
         }
@@ -217,7 +214,7 @@ public class BoardView extends Viewport implements Screen {
 
         //Renders each valid move of selected piece
         if (selectedPiece != null) {
-            for (Turn turn : selectedPiece.getLegalTurns(game.getBoard())) {
+            for (Turn turn : selectedPiece.getLegalTurns(chessGameController.getChessGame().getBoard())) {
                 for (Turn.Action action : turn.actions) {
                     if (action.actionType == Turn.ActionType.MOVEMENT || action.actionType == Turn.ActionType.DESTRUCTION) {
                         batch.draw(legalMoveCircle, action.actionPos.getX() * squareSize + circleOffset,
@@ -232,7 +229,7 @@ public class BoardView extends Viewport implements Screen {
         font.setColor(Color.CYAN);
         font.getData().setScale(3);
         //Renders the pieces
-        for (Piece piece : gameBoard.getAllPieces()) {
+        for (Piece piece : chessGameController.getChessGame().getBoard().getAllPieces()) {
             renderPiece(piece.getTexture(), piece.getPosition().getX(), convertY(piece.getPosition().getY()), piece.getLevel());
         }
 
@@ -320,7 +317,7 @@ public class BoardView extends Viewport implements Screen {
 
     @Override
     public void dispose() {
-        for (Piece piece : gameBoard.getAllPieces()) {
+        for (Piece piece : chessGameController.getChessGame().getBoard().getAllPieces()) {
             piece.getTexture().dispose();
         }
         boardTexture.dispose();
@@ -346,6 +343,6 @@ public class BoardView extends Viewport implements Screen {
      * @return correct y to use for visualization or correct y to send out to controller
      */
     private int convertY(int y) {
-        return game.playerIsBottom() ? y : gameBoard.getHeight() - y - 1;
+        return chessGameController.playerIsBottom() ? y : chessGameController.getBoardHeight() - y - 1;
     }
 }

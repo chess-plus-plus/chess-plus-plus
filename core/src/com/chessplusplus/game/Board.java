@@ -5,7 +5,7 @@ import com.chessplusplus.game.component.Position;
 import java.util.List;
 
 /**
- * The board interface represents a stateless chess board.
+ * The board interface represents a stateless board.
  * It has dimensions, squares (which may or may not contain pieces),
  * and a few utility methods.
  */

@@ -22,13 +22,19 @@ public interface ChessGame {
     String getCurrentPlayer();
 
     /**
+     * Checks if a turn is legal according to the current game state.
+     *
+     * @param turn Proposed turn.
+     * @return true if the turn is legal, false otherwise.
+     */
+    boolean turnIsLegal(Turn turn);
+
+    /**
      * Submit a turn to the chess game engine.
-     * NB: This may be rejected if it is not legal.
      *
      * @param turn Proposed next turn.
-     * @return true if turn is accepted, false if it is rejected
      */
-    boolean submitTurn(Turn turn, boolean fromOnline);
+    void submitTurn(Turn turn, boolean fromOnline);
 
     /**
      * Get a list of turns that have happened so far.
@@ -43,5 +49,7 @@ public interface ChessGame {
      * @return true if the game is over.
      */
     boolean gameIsOver();
+
+
 
 }

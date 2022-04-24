@@ -21,8 +21,6 @@ public class ChessPlusPlus extends ApplicationAdapter implements ApplicationList
 	ApplicationAdapter screen;
 	FirebaseController FBC;
 
-	ChessGame game;
-
 	public ChessPlusPlus(FireBaseInterface FBIC) {FBC = new FirebaseController(FBIC);}
 	
 	@Override
