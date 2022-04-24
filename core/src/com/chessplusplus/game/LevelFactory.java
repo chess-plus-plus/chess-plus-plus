@@ -8,9 +8,9 @@ import com.chessplusplus.game.component.movement.MovementRuleSet;
 import com.chessplusplus.game.component.movement.RookWrappingMoveRule;
 import com.chessplusplus.game.component.movement.SpecialMoveRule;
 import com.chessplusplus.game.component.movement.VerticalMovePattern;
-import com.chessplusplus.game.system.LevelEngine;
+import com.chessplusplus.game.system.LevelSystem;
 
-import static com.chessplusplus.game.system.LevelEngine.LevelUpEffect;
+import static com.chessplusplus.game.system.LevelSystem.LevelUpEffect;
 import static com.chessplusplus.game.RPGConfig.*;
 
 import java.util.ArrayList;
@@ -18,9 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 
 //TODO: Comments
-public class LevelUpEffectFactory {
+public class LevelFactory {
 
-    public static LevelEngine createDefaultRPGRules(int maxRow) {
+    public static LevelSystem createDefaultRPGRules(int maxRow) {
         HashMap<PieceType, HashMap<Integer, LevelUpEffect>> upgradeScheme = new HashMap<>();
 
         HashMap<Integer, LevelUpEffect> pawnUpgrades = new HashMap<>();
@@ -48,11 +48,11 @@ public class LevelUpEffectFactory {
         upgradeScheme.put(PieceType.BISHOP, bishopUpgrades);
         upgradeScheme.put(PieceType.QUEEN, queenUpgrades);
 
-        return new LevelEngine(upgradeScheme);
+        return new LevelSystem(upgradeScheme);
     }
 
     public static LevelUpEffect pawnLevel1Ability(int maxRow) {
-        MovementRuleSet movementRuleSet = MovementFactory.createPawn(0, maxRow);
+        MovementRuleSet movementRuleSet = MovementRuleSetFactory.createPawn(0, maxRow);
         movementRuleSet.setMoveRestrictions(new ArrayList<>());
 
         return new LevelUpEffect(PAWN_LEVEL_2_THRESHOLD, movementRuleSet);
@@ -70,7 +70,7 @@ public class LevelUpEffectFactory {
     }
 
     public static LevelUpEffect rookLevel1Ability() {
-        MovementRuleSet rookMoveSet = MovementFactory.createRookMoveRules();
+        MovementRuleSet rookMoveSet = MovementRuleSetFactory.createRookMoveRules();
         List<MovePattern> movePatterns = rookMoveSet.getMovePatternsCopy();
         movePatterns.add(new CurvingMovePattern(2, 2));
         rookMoveSet.setMovePatterns(movePatterns);
@@ -79,7 +79,7 @@ public class LevelUpEffectFactory {
     }
 
     public static LevelUpEffect rookLevel2Ability() {
-        MovementRuleSet rookMoveSet = MovementFactory.createRookMoveRules();
+        MovementRuleSet rookMoveSet = MovementRuleSetFactory.createRookMoveRules();
         List<SpecialMoveRule> specialMoveRules = new ArrayList<>();
         specialMoveRules.add(new RookWrappingMoveRule());
         rookMoveSet.setSpecialMoveRules(specialMoveRules);
@@ -88,7 +88,7 @@ public class LevelUpEffectFactory {
     }
 
     public static LevelUpEffect knightLevel1Ability() {
-        MovementRuleSet knightMoveSet = MovementFactory.createKnightMoveRules();
+        MovementRuleSet knightMoveSet = MovementRuleSetFactory.createKnightMoveRules();
         List<MovePattern> movePatterns = knightMoveSet.getMovePatternsCopy();
         movePatterns.add(HorizontalMovePattern.oneSquareHorizontalMovement());
         movePatterns.add(VerticalMovePattern.oneSquareVerticalMovement());
@@ -118,7 +118,7 @@ public class LevelUpEffectFactory {
     }
 
     public static LevelUpEffect bishopLevel1Ability() {
-        MovementRuleSet bishopMoveSet = MovementFactory.createBishopMoveRules();
+        MovementRuleSet bishopMoveSet = MovementRuleSetFactory.createBishopMoveRules();
         List<MovePattern> movePatterns = bishopMoveSet.getMovePatternsCopy();
         movePatterns.add(HorizontalMovePattern.oneSquareHorizontalMovement());
         movePatterns.add(VerticalMovePattern.oneSquareVerticalMovement());
@@ -136,7 +136,7 @@ public class LevelUpEffectFactory {
     }
 
     public static LevelUpEffect queenLevelUpAbility() {
-        return new LevelUpEffect(QUEEN_LEVEL_UP_THRESHOLD, MovementFactory.createQueenMoveRules(), true);
+        return new LevelUpEffect(QUEEN_LEVEL_UP_THRESHOLD, MovementRuleSetFactory.createQueenMoveRules(), true);
         //TODO: Add custom move rule that spawns a pawn.
     }
 

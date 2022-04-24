@@ -41,7 +41,7 @@ public class PieceFactory {
      */
     public static Piece createPawn(String playerId, Position position, int moveDir, int maxRow) {
         return new Piece(playerId, PieceType.PAWN, position,
-                MovementFactory.createPawn(moveDir, maxRow), RPGConfig.PAWN_LEVEL_1_THRESHOLD);
+                MovementRuleSetFactory.createPawn(moveDir, maxRow), RPGConfig.PAWN_LEVEL_1_THRESHOLD);
     }
 
     /**
@@ -52,7 +52,7 @@ public class PieceFactory {
      * @return New bishop piece object.
      */
     public static Piece createBishop(String playerId, Position position) {
-        return new Piece(playerId, PieceType.BISHOP, position, MovementFactory.createBishopMoveRules(),
+        return new Piece(playerId, PieceType.BISHOP, position, MovementRuleSetFactory.createBishopMoveRules(),
                 RPGConfig.BISHOP_LEVEL_1_THRESHOLD);
     }
 
@@ -64,7 +64,7 @@ public class PieceFactory {
      * @return New knight piece object.
      */
     public static Piece createKnight(String playerId, Position position) {
-        return new Piece(playerId, PieceType.KNIGHT, position, MovementFactory.createKnightMoveRules(),
+        return new Piece(playerId, PieceType.KNIGHT, position, MovementRuleSetFactory.createKnightMoveRules(),
                 RPGConfig.KNIGHT_LEVEL_1_THRESHOLD);
     }
 
@@ -76,7 +76,7 @@ public class PieceFactory {
      * @return New rook piece object.
      */
     public static Piece createRook(String playerId, Position position) {
-        return new Piece(playerId, PieceType.ROOK, position, MovementFactory.createRookMoveRules(),
+        return new Piece(playerId, PieceType.ROOK, position, MovementRuleSetFactory.createRookMoveRules(),
                 RPGConfig.ROOK_LEVEL_1_THRESHOLD);
     }
 
@@ -88,7 +88,7 @@ public class PieceFactory {
      * @return New queen piece object.
      */
     public static Piece createQueen(String playerId, Position position) {
-        return new Piece(playerId, PieceType.QUEEN, position, MovementFactory.createQueenMoveRules(),
+        return new Piece(playerId, PieceType.QUEEN, position, MovementRuleSetFactory.createQueenMoveRules(),
                 RPGConfig.QUEEN_LEVEL_UP_THRESHOLD);
     }
 
@@ -100,7 +100,7 @@ public class PieceFactory {
      * @return New king piece object.
      */
     public static Piece createKing(String playerId, Position position) {
-        return new Piece(playerId, PieceType.KING, position, MovementFactory.createKingMoveRules());
+        return new Piece(playerId, PieceType.KING, position, MovementRuleSetFactory.createKingMoveRules());
     }
 
 }

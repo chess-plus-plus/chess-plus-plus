@@ -2,12 +2,11 @@ package com.chessplusplus.game.component.movement;
 
 import com.chessplusplus.game.Board;
 import com.chessplusplus.game.Piece;
-import com.chessplusplus.game.Turn;
+import com.chessplusplus.game.ChessTurn;
 import com.chessplusplus.game.component.Position;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -39,8 +38,8 @@ public class MovementRuleSet {
      * @param board Game board.
      * @return List of all turns the piece can take.
      */
-    public List<Turn> getLegalTurns(Piece piece, Board board) {
-        List<Turn> legalTurns = new ArrayList<>();
+    public List<ChessTurn> getLegalTurns(Piece piece, Board board) {
+        List<ChessTurn> legalTurns = new ArrayList<>();
 
         // Get legal positions the piece can move into
         List<Position> legalMoves = getLegalMoves(piece.getPosition(), board, false,
@@ -68,16 +67,16 @@ public class MovementRuleSet {
      * @param isStrike Whether the move is a strike.
      * @return List of turns mapped from moves.
      */
-    private List<Turn> mapMovesToTurns(Piece piece, List<Position> moves, boolean isStrike) {
-        List<Turn> turns = new ArrayList<>();
+    private List<ChessTurn> mapMovesToTurns(Piece piece, List<Position> moves, boolean isStrike) {
+        List<ChessTurn> turns = new ArrayList<>();
         for (Position move : moves) {
-            List<Turn.Action> actions = new ArrayList<>();
+            List<ChessTurn.Action> actions = new ArrayList<>();
             if (isStrike) {
-                actions.add(new Turn.Action(piece, Turn.ActionType.STRIKE, piece.getPosition(), move));
+                actions.add(new ChessTurn.Action(piece, ChessTurn.ActionType.STRIKE, piece.getPosition(), move));
             }
 
-            actions.add(new Turn.Action(piece, Turn.ActionType.MOVEMENT, piece.getPosition(), move));
-            turns.add(new Turn(piece.getPlayerId(), actions));
+            actions.add(new ChessTurn.Action(piece, ChessTurn.ActionType.MOVEMENT, piece.getPosition(), move));
+            turns.add(new ChessTurn(piece.getPlayerId(), actions));
         }
 
         return turns;

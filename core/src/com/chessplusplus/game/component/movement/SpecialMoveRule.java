@@ -2,10 +2,8 @@ package com.chessplusplus.game.component.movement;
 
 import com.chessplusplus.game.Board;
 import com.chessplusplus.game.Piece;
-import com.chessplusplus.game.Turn;
-import com.chessplusplus.game.component.Position;
+import com.chessplusplus.game.ChessTurn;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +23,6 @@ public interface SpecialMoveRule {
      * @param gameBoard Game board.
      * @return All legal turns that can be initiated from this piece.
      */
-    List<Turn> getLegalTurns(String playerId, Piece piece, Board gameBoard);
+    List<ChessTurn> getLegalTurns(String playerId, Piece piece, Board gameBoard);
 
 }

@@ -2,7 +2,7 @@ package com.chessplusplus.game.component.movement;
 
 import com.chessplusplus.game.Board;
 import com.chessplusplus.game.Piece;
-import com.chessplusplus.game.Turn;
+import com.chessplusplus.game.ChessTurn;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class KingSpecialMoveRule implements SpecialMoveRule {
 
     @Override
-    public List<Turn> getLegalTurns(String playerId, Piece piece, Board gameBoard) {
+    public List<ChessTurn> getLegalTurns(String playerId, Piece piece, Board gameBoard) {
         // TODO: Implement
         return null;
     }

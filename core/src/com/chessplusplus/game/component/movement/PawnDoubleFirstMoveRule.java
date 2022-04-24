@@ -3,7 +3,7 @@ package com.chessplusplus.game.component.movement;
 import com.chessplusplus.game.Board;
 import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.PieceType;
-import com.chessplusplus.game.Turn;
+import com.chessplusplus.game.ChessTurn;
 import com.chessplusplus.game.component.Position;
 
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ import java.util.List;
 public class PawnDoubleFirstMoveRule implements SpecialMoveRule {
 
     @Override
-    public List<Turn> getLegalTurns(String playerId, Piece pawn, Board gameBoard) {
-        ArrayList<Turn> legalTurns = new ArrayList<>();
+    public List<ChessTurn> getLegalTurns(String playerId, Piece pawn, Board gameBoard) {
+        ArrayList<ChessTurn> legalTurns = new ArrayList<>();
 
         // "Move squares" are the squares the pawn wants to move through
         List<Position> moveSquares = getMoveSquares(pawn);
@@ -32,11 +32,11 @@ public class PawnDoubleFirstMoveRule implements SpecialMoveRule {
 
         // Check if both move squares are empty.
         if (gameBoard.squareIsEmpty(firstSquare) && gameBoard.squareIsEmpty(secondSquare)) {
-            ArrayList<Turn.Action> actionList = new ArrayList<>();
-            actionList.add(new Turn.Action(pawn, Turn.ActionType.MOVEMENT, pawn.getPosition(),
+            ArrayList<ChessTurn.Action> actionList = new ArrayList<>();
+            actionList.add(new ChessTurn.Action(pawn, ChessTurn.ActionType.MOVEMENT, pawn.getPosition(),
                     secondSquare));
 
-            legalTurns.add(new Turn(playerId, actionList));
+            legalTurns.add(new ChessTurn(playerId, actionList));
         }
 
         return legalTurns;

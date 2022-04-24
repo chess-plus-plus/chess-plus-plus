@@ -4,12 +4,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.chessplusplus.game.BoardFactory;
-import com.chessplusplus.game.ChessGame;
-import com.chessplusplus.game.ChessGameImpl;
 import com.chessplusplus.game.views.StartMenuView;
 
 public class ChessPlusPlus extends ApplicationAdapter implements ApplicationListener, InputProcessor {

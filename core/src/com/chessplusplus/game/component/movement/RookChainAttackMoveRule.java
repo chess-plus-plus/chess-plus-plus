@@ -3,7 +3,7 @@ package com.chessplusplus.game.component.movement;
 import com.chessplusplus.game.Board;
 import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.PieceType;
-import com.chessplusplus.game.Turn;
+import com.chessplusplus.game.ChessTurn;
 import com.chessplusplus.game.component.Position;
 
 import java.util.ArrayList;
@@ -19,8 +19,8 @@ import static com.chessplusplus.game.component.movement.MovementRayUtils.wrappin
 public class RookChainAttackMoveRule implements SpecialMoveRule {
 
     @Override
-    public List<Turn> getLegalTurns(String playerId, Piece piece, Board gameBoard) {
-        List<Turn> legalTurns = new ArrayList<>();
+    public List<ChessTurn> getLegalTurns(String playerId, Piece piece, Board gameBoard) {
+        List<ChessTurn> legalTurns = new ArrayList<>();
 
         if (piece.getPieceType() != PieceType.ROOK) { // Only pawns can do en passant.
             return legalTurns;
@@ -46,19 +46,19 @@ public class RookChainAttackMoveRule implements SpecialMoveRule {
      * Utility method that takes an attack ray and generates a list of actions derived from
      * that ray.
      */
-    private List<Turn> convertValidStrikesToTurn(List<Position> ray, Piece piece, Board board) {
-        List<Turn> legalTurns = new ArrayList<>();
+    private List<ChessTurn> convertValidStrikesToTurn(List<Position> ray, Piece piece, Board board) {
+        List<ChessTurn> legalTurns = new ArrayList<>();
 
         // Get a (possibly empty) list of enemy pieces that can be struck using the given ray.
         List<Position> validStrikes = MovementRayUtils.adjacentEnemyRayCalc(ray, piece.getPlayerId(), board);
 
         // Only create a turn if any strikes are possible.
         if (validStrikes.size() != 0) {
-            List<Turn.Action> actions = new ArrayList<>();
+            List<ChessTurn.Action> actions = new ArrayList<>();
 
             // Add a strike and destruction action for each of the enemy pieces.
             for (Position validStrikePos : validStrikes) {
-                actions.add(new Turn.Action(piece, Turn.ActionType.STRIKE, piece.getPosition(),
+                actions.add(new ChessTurn.Action(piece, ChessTurn.ActionType.STRIKE, piece.getPosition(),
                         validStrikePos));
                 // actions.add(new Turn.Action(board.getPiece(validStrikePos), Turn.ActionType.DESTRUCTION,
                         //validStrikePos, validStrikePos));
@@ -66,8 +66,8 @@ public class RookChainAttackMoveRule implements SpecialMoveRule {
             }
 
             // Add a movement to the first enemyPiece the piece striked
-            actions.add(new Turn.Action(piece, Turn.ActionType.MOVEMENT, piece.getPosition(), validStrikes.get(0)));
-            legalTurns.add(new Turn(piece.getPlayerId(), actions));
+            actions.add(new ChessTurn.Action(piece, ChessTurn.ActionType.MOVEMENT, piece.getPosition(), validStrikes.get(0)));
+            legalTurns.add(new ChessTurn(piece.getPlayerId(), actions));
         }
 
         return legalTurns;

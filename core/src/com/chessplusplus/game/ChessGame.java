@@ -27,21 +27,21 @@ public interface ChessGame {
      * @param turn Proposed turn.
      * @return true if the turn is legal, false otherwise.
      */
-    boolean turnIsLegal(Turn turn);
+    boolean turnIsLegal(ChessTurn turn);
 
     /**
      * Submit a turn to the chess game engine.
      *
      * @param turn Proposed next turn.
      */
-    void submitTurn(Turn turn, boolean fromOnline);
+    void submitTurn(ChessTurn turn, boolean fromOnline);
 
     /**
      * Get a list of turns that have happened so far.
      *
      * @return List of previous turns.
      */
-    List<Turn> getTurns();
+    List<ChessTurn> getTurns();
 
     /**
      * Check if the game has ended (check mate).

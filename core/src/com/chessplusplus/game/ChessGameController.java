@@ -10,6 +10,7 @@ import java.util.Map;
 
 /**
  * Controller for the Chess Game.
+ * TODO: Clean up structure
  */
 public class ChessGameController {
 
@@ -32,12 +33,12 @@ public class ChessGameController {
         FBC = c.getFBC();
 
         Board chessBoard = BoardFactory.standardBoardAndPieces(player1ID, player2ID);
-        chessGame = new ChessGameImpl(chessBoard, player1ID, player2ID,
+        chessGame = new ChessGameModel(chessBoard, player1ID, player2ID,
                 RPGConfig.DEFAULT_MOVEMENT_XP, RPGConfig.DEFAULT_STRIKE_XP,
-                LevelUpEffectFactory.createDefaultRPGRules(chessBoard.getHeight() - 1));
+                LevelFactory.createDefaultRPGRules(chessBoard.getHeight() - 1));
 
         playerColorMap.put(player1ID, PieceColor.WHITE);
-        playerColorMap.put(player2ID, PieceColor.WHITE);
+        playerColorMap.put(player2ID, PieceColor.BLACK);
     }
 
     public ChessGame getChessGame() {
@@ -75,9 +76,9 @@ public class ChessGameController {
                 boardView.setSelectedPiece(pieceTemp);
             }
         } else if (boardView.getSelectedPiece() != null) {
-            Turn turnToSubmit = null;
-            for (Turn turn : boardView.getSelectedPiece().getLegalTurns(this.getBoard())) {
-                for (Turn.Action action : turn.actions) {
+            ChessTurn turnToSubmit = null;
+            for (ChessTurn turn : boardView.getSelectedPiece().getLegalTurns(this.getBoard())) {
+                for (ChessTurn.Action action : turn.actions) {
                     //Finds the legal turn corresponding to the action position and saves the turn
                     if (action.actionPos.equals(actionPos)) {
                         turnToSubmit = turn;
@@ -92,7 +93,7 @@ public class ChessGameController {
         }
     }
 
-    public void submitTurn(Turn turn, boolean fromOnline) {
+    public void submitTurn(ChessTurn turn, boolean fromOnline) {
         if (fromOnline && turn.playerId.equals(this.playerID)) {
             return;
         }

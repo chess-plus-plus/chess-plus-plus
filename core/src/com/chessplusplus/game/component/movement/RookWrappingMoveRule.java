@@ -3,7 +3,7 @@ package com.chessplusplus.game.component.movement;
 import com.chessplusplus.game.Board;
 import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.PieceType;
-import com.chessplusplus.game.Turn;
+import com.chessplusplus.game.ChessTurn;
 import com.chessplusplus.game.component.Position;
 
 import java.util.ArrayList;
@@ -18,8 +18,8 @@ import static com.chessplusplus.game.component.movement.MovementRayUtils.wrappin
 public class RookWrappingMoveRule implements SpecialMoveRule {
 
     @Override
-    public List<Turn> getLegalTurns(String playerId, Piece piece, Board gameBoard) {
-        List<Turn> legalTurns = new ArrayList<>();
+    public List<ChessTurn> getLegalTurns(String playerId, Piece piece, Board gameBoard) {
+        List<ChessTurn> legalTurns = new ArrayList<>();
 
         if (piece.getPieceType() != PieceType.ROOK) { // Only pawns can do en passant.
             return legalTurns;
@@ -40,26 +40,26 @@ public class RookWrappingMoveRule implements SpecialMoveRule {
         return legalTurns;
     }
 
-    private List<Turn> convertValidMovesToTurns(List<Position> ray, Piece piece, Board board) {
-        List<Turn> legalTurns = new ArrayList<>();
+    private List<ChessTurn> convertValidMovesToTurns(List<Position> ray, Piece piece, Board board) {
+        List<ChessTurn> legalTurns = new ArrayList<>();
 
         List<Position> validMoves = MovementRayUtils.validMovesFromRayCollisionDetection(ray,
                 piece.getPosition(), board);
         for (Position validMove : validMoves) {
-            List<Turn.Action> actions = new ArrayList<>();
+            List<ChessTurn.Action> actions = new ArrayList<>();
 
             // Check if the validMove position contains an enemy piece, which makes this a strike
             if (board.getPiece(validMove) != null
                     && !board.getPiece(validMove).getPlayerId().equals(piece.getPlayerId())) {
-                actions.add(new Turn.Action(piece, Turn.ActionType.STRIKE, piece.getPosition(), validMove));
+                actions.add(new ChessTurn.Action(piece, ChessTurn.ActionType.STRIKE, piece.getPosition(), validMove));
                 //actions.add(new Turn.Action(board.getPiece(validMove), Turn.ActionType.DESTRUCTION,
                         //validMove, validMove));
                 // TODO: Uncomment when destruction of pieces works properly (if that change is made).
             }
 
-            actions.add(new Turn.Action(piece, Turn.ActionType.MOVEMENT, piece.getPosition(), validMove));
+            actions.add(new ChessTurn.Action(piece, ChessTurn.ActionType.MOVEMENT, piece.getPosition(), validMove));
 
-            legalTurns.add(new Turn(piece.getPlayerId(), actions));
+            legalTurns.add(new ChessTurn(piece.getPlayerId(), actions));
         }
         return legalTurns;
     }

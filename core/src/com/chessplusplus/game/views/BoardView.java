@@ -14,7 +14,7 @@ import com.chessplusplus.FirebaseController;
 import com.chessplusplus.game.ChessGameController;
 import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.PieceColor;
-import com.chessplusplus.game.Turn;
+import com.chessplusplus.game.ChessTurn;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.utils.FontUtils;
 import com.chessplusplus.game.utils.PixmapUtils;
@@ -160,7 +160,7 @@ public class BoardView extends Viewport implements Screen {
     /**/
     @Override
     public void render(float delta) {
-        Turn newTurn = this.FBC.getNewTurnIfAvailable();
+        ChessTurn newTurn = this.FBC.getNewTurnIfAvailable();
         if (newTurn != null)
             chessGameController.submitTurn(newTurn, true);
         if ((chessGameController.isPlayerTurn() && this.FBC.allPlayersAreConnected()) ||
@@ -214,12 +214,12 @@ public class BoardView extends Viewport implements Screen {
 
         //Renders each valid move of selected piece
         if (selectedPiece != null) {
-            for (Turn turn : selectedPiece.getLegalTurns(chessGameController.getChessGame().getBoard())) {
-                for (Turn.Action action : turn.actions) {
-                    if (action.actionType == Turn.ActionType.MOVEMENT || action.actionType == Turn.ActionType.DESTRUCTION) {
+            for (ChessTurn turn : selectedPiece.getLegalTurns(chessGameController.getChessGame().getBoard())) {
+                for (ChessTurn.Action action : turn.actions) {
+                    if (action.actionType == ChessTurn.ActionType.MOVEMENT || action.actionType == ChessTurn.ActionType.DESTRUCTION) {
                         batch.draw(legalMoveCircle, action.actionPos.getX() * squareSize + circleOffset,
                                 convertY(action.actionPos.getY()) * squareSize + boardYOffset + circleOffset);
-                    } else if (action.actionType == Turn.ActionType.STRIKE) {
+                    } else if (action.actionType == ChessTurn.ActionType.STRIKE) {
                         batch.draw(strikeOptionTexture, action.actionPos.getX() * squareSize,
                                 convertY(action.actionPos.getY()) * squareSize + boardYOffset);
                     }

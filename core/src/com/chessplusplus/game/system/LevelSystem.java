@@ -1,7 +1,7 @@
 package com.chessplusplus.game.system;
 
 import com.chessplusplus.game.Board;
-import com.chessplusplus.game.MovementFactory;
+import com.chessplusplus.game.MovementRuleSetFactory;
 import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.PieceType;
 import com.chessplusplus.game.component.Position;
@@ -15,11 +15,11 @@ import java.util.HashMap;
  *
  * It can be customised during run-time if necessary, and is designed to be modifiable.
  */
-public class LevelEngine {
+public class LevelSystem {
 
     private HashMap<PieceType, HashMap<Integer, LevelUpEffect>> upgradeScheme;
 
-    public LevelEngine(HashMap<PieceType, HashMap<Integer, LevelUpEffect>> upgradeScheme) {
+    public LevelSystem(HashMap<PieceType, HashMap<Integer, LevelUpEffect>> upgradeScheme) {
         this.upgradeScheme = upgradeScheme;
     }
 
@@ -50,7 +50,7 @@ public class LevelEngine {
 
             Position lastPos = piece.getActions().get(piece.getActions().size() - 2).startPos;
             Piece newPawn = new Piece(piece.getPlayerId(), PieceType.PAWN, lastPos,
-                    MovementFactory.createPawn(moveDir, board.getHeight() - 1));
+                    MovementRuleSetFactory.createPawn(moveDir, board.getHeight() - 1));
             board.addPiece(newPawn, lastPos);
             board.addPiece(piece, piece.getPosition());
             newPawn.setTexture(texturePath);

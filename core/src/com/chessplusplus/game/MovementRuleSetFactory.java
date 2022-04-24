@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Creates movement rule-sets for pieces.
  */
-public class MovementFactory {
+public class MovementRuleSetFactory {
 
     /**
      * Creates movement rule-set for a standard chess pawn.

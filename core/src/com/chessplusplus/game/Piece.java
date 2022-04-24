@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.chessplusplus.game.component.Position;
 import com.chessplusplus.game.component.movement.MovementRuleSet;
 import com.google.gson.annotations.Expose;
-import com.chessplusplus.game.system.LevelEngine;
+import com.chessplusplus.game.system.LevelSystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class Piece {
     private int xp = 0;
     private int nextLevelXpThreshold;
     private int prevNextLevelXpThreshold = 0; //The xp needed to be in the current level
-    private final List<Turn.Action> actions = new ArrayList<>(); // All actions the piece have made
+    private final List<ChessTurn.Action> actions = new ArrayList<>(); // All actions the piece have made
 
     public Piece(String playerId, PieceType pieceType, Position position, MovementRuleSet movement,
                  int nextLevelXpThreshold) {
@@ -123,7 +123,7 @@ public class Piece {
      * @param gameBoard Game board.
      * @return Set of all legal turns.
      */
-    public List<Turn> getLegalTurns(Board gameBoard) {
+    public List<ChessTurn> getLegalTurns(Board gameBoard) {
         return movement.getLegalTurns(this, gameBoard);
     }
 
@@ -149,15 +149,15 @@ public class Piece {
      * This may cause the piece to level up.
      *
      * @param xp          Amount of xp to give the piece.
-     * @param levelEngine Used to upgrade the piece.
+     * @param levelSystem Used to upgrade the piece.
      */
-    public void giveXp(int xp, LevelEngine levelEngine, Board board) {
+    public void giveXp(int xp, LevelSystem levelSystem, Board board) {
         this.xp += xp;
         if (this.xp >= nextLevelXpThreshold) {
             level++;
             prevNextLevelXpThreshold = nextLevelXpThreshold;
             nextLevelXpThreshold = Integer.MAX_VALUE;
-            levelEngine.levelUp(this, board);
+            levelSystem.levelUp(this, board);
         }
     }
 
@@ -205,11 +205,11 @@ public class Piece {
         return Objects.hash(pieceType, position);
     }
 
-    public List<Turn.Action> getActions() {
+    public List<ChessTurn.Action> getActions() {
         return actions;
     }
 
-    public void addAction(Turn.Action action) {
+    public void addAction(ChessTurn.Action action) {
         actions.add(action);
     }
 

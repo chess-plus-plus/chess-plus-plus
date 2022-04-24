@@ -1,11 +1,10 @@
 package com.chessplusplus.game.component.movement;
 
 import com.chessplusplus.game.Board;
-import com.chessplusplus.game.ChessBoard;
 import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.PieceFactory;
 import com.chessplusplus.game.PieceType;
-import com.chessplusplus.game.Turn;
+import com.chessplusplus.game.ChessTurn;
 import com.chessplusplus.game.component.Position;
 
 import java.util.ArrayList;
@@ -17,8 +16,8 @@ import java.util.List;
 public class PromotionMoveRule implements SpecialMoveRule {
 
     @Override
-    public List<Turn> getLegalTurns(String playerId, Piece piece, Board gameBoard) {
-        ArrayList<Turn> legalTurns = new ArrayList<>();
+    public List<ChessTurn> getLegalTurns(String playerId, Piece piece, Board gameBoard) {
+        ArrayList<ChessTurn> legalTurns = new ArrayList<>();
 
         // Check if the piece is actually a pawn
         if (piece.getPieceType() != PieceType.PAWN) { // Only pawns can promote.
@@ -87,21 +86,21 @@ public class PromotionMoveRule implements SpecialMoveRule {
     /**
      * Utility method that creates a Promotion turn according to given parameters.
      */
-    private Turn createPromotionTurn(Piece piece, Position targetPos, PieceType newPieceType,
-                                     boolean isStrike, Board board) {
+    private ChessTurn createPromotionTurn(Piece piece, Position targetPos, PieceType newPieceType,
+                                          boolean isStrike, Board board) {
         Piece newPiece = PieceFactory.createPowerPiece(piece.getPlayerId(), targetPos, newPieceType);
 
-        ArrayList<Turn.Action> actionList = new ArrayList<>();
+        ArrayList<ChessTurn.Action> actionList = new ArrayList<>();
         if (isStrike) {
-            actionList.add(new Turn.Action(board.getPiece(targetPos), Turn.ActionType.DESTRUCTION,
+            actionList.add(new ChessTurn.Action(board.getPiece(targetPos), ChessTurn.ActionType.DESTRUCTION,
                     targetPos, targetPos));
         }
 
-        actionList.add(new Turn.Action(piece, Turn.ActionType.DESTRUCTION, piece.getPosition(),
+        actionList.add(new ChessTurn.Action(piece, ChessTurn.ActionType.DESTRUCTION, piece.getPosition(),
                 piece.getPosition()));
-        actionList.add(new Turn.Action(newPiece, Turn.ActionType.CREATION, targetPos, targetPos));
+        actionList.add(new ChessTurn.Action(newPiece, ChessTurn.ActionType.CREATION, targetPos, targetPos));
 
-        return new Turn(piece.getPlayerId(), actionList);
+        return new ChessTurn(piece.getPlayerId(), actionList);
     }
 
 }

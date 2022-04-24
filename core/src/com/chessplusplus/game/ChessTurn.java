@@ -8,13 +8,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Turn {
+public class ChessTurn {
     @Expose
     public final List<Action> actions;
     @Expose
     public final String playerId;
 
-    public Turn(String playerId, List<Action> actions) {
+    public ChessTurn(String playerId, List<Action> actions) {
         this.actions = Collections.unmodifiableList(actions);
         this.playerId = playerId;
     }
@@ -23,7 +23,7 @@ public class Turn {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Turn turn = (Turn) o;
+        ChessTurn turn = (ChessTurn) o;
         return actions.equals(turn.actions) && playerId.equals(turn.playerId);
     }
 

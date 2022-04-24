@@ -3,7 +3,7 @@ package com.chessplusplus.game.component.movement;
 import com.chessplusplus.game.Board;
 import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.PieceType;
-import com.chessplusplus.game.Turn;
+import com.chessplusplus.game.ChessTurn;
 import com.chessplusplus.game.component.Position;
 
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ import java.util.List;
 public class EnPassantMoveRule implements SpecialMoveRule {
 
     @Override
-    public List<Turn> getLegalTurns(String playerId, Piece pawn, Board gameBoard) {
-        ArrayList<Turn> legalTurns = new ArrayList<>();
+    public List<ChessTurn> getLegalTurns(String playerId, Piece pawn, Board gameBoard) {
+        ArrayList<ChessTurn> legalTurns = new ArrayList<>();
 
         // Check if the piece is actually a pawn
         if (pawn.getPieceType() != PieceType.PAWN) { // Only pawns can do en passant.
@@ -31,26 +31,26 @@ public class EnPassantMoveRule implements SpecialMoveRule {
 
         if (checkPiece(playerId, leftPiece)) {
             Position otherPiecePos = leftPiece.getPosition();
-            ArrayList<Turn.Action> actionList = new ArrayList<>();
-            actionList.add(new Turn.Action(pawn, Turn.ActionType.STRIKE, pawnPos,
+            ArrayList<ChessTurn.Action> actionList = new ArrayList<>();
+            actionList.add(new ChessTurn.Action(pawn, ChessTurn.ActionType.STRIKE, pawnPos,
                     otherPiecePos));
-            actionList.add(new Turn.Action(leftPiece, Turn.ActionType.DESTRUCTION, otherPiecePos,
+            actionList.add(new ChessTurn.Action(leftPiece, ChessTurn.ActionType.DESTRUCTION, otherPiecePos,
                     otherPiecePos));
-            actionList.add(new Turn.Action(pawn, Turn.ActionType.MOVEMENT, pawnPos, otherPiecePos));
+            actionList.add(new ChessTurn.Action(pawn, ChessTurn.ActionType.MOVEMENT, pawnPos, otherPiecePos));
 
-            legalTurns.add(new Turn(playerId, actionList));
+            legalTurns.add(new ChessTurn(playerId, actionList));
         }
 
         if (checkPiece(playerId, rightPiece)) {
             Position otherPiecePos = rightPiece.getPosition();
-            ArrayList<Turn.Action> actionList = new ArrayList<>();
-            actionList.add(new Turn.Action(pawn, Turn.ActionType.STRIKE, pawnPos,
+            ArrayList<ChessTurn.Action> actionList = new ArrayList<>();
+            actionList.add(new ChessTurn.Action(pawn, ChessTurn.ActionType.STRIKE, pawnPos,
                     otherPiecePos));
-            actionList.add(new Turn.Action(rightPiece, Turn.ActionType.DESTRUCTION, otherPiecePos,
+            actionList.add(new ChessTurn.Action(rightPiece, ChessTurn.ActionType.DESTRUCTION, otherPiecePos,
                     otherPiecePos));
-            actionList.add(new Turn.Action(pawn, Turn.ActionType.MOVEMENT, pawnPos, otherPiecePos));
+            actionList.add(new ChessTurn.Action(pawn, ChessTurn.ActionType.MOVEMENT, pawnPos, otherPiecePos));
 
-            legalTurns.add(new Turn(playerId, actionList));
+            legalTurns.add(new ChessTurn(playerId, actionList));
         }
 
         return legalTurns;
@@ -81,7 +81,7 @@ public class EnPassantMoveRule implements SpecialMoveRule {
             return false;
         }
 
-        Turn.Action moveAction = pawn.getActions().get(0);
+        ChessTurn.Action moveAction = pawn.getActions().get(0);
         Position startPos = moveAction.startPos;
         Position endPos = moveAction.actionPos;
 

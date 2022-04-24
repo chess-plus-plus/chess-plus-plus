@@ -3,7 +3,7 @@ package com.chessplusplus.game.component.movement;
 import com.chessplusplus.game.Board;
 import com.chessplusplus.game.Piece;
 import com.chessplusplus.game.PieceType;
-import com.chessplusplus.game.Turn;
+import com.chessplusplus.game.ChessTurn;
 import com.chessplusplus.game.component.Position;
 
 import java.util.ArrayList;
@@ -16,8 +16,8 @@ import java.util.List;
 public class CastlingMoveRule implements SpecialMoveRule {
 
     @Override
-    public List<Turn> getLegalTurns(String playerId, Piece king, Board gameBoard) {
-        ArrayList<Turn> legalTurns = new ArrayList<>();
+    public List<ChessTurn> getLegalTurns(String playerId, Piece king, Board gameBoard) {
+        ArrayList<ChessTurn> legalTurns = new ArrayList<>();
 
         // Check if the piece is a king, and if it has moved.
         if (king.getPieceType() != PieceType.KING || king.getActions().size() > 0) {
@@ -35,23 +35,23 @@ public class CastlingMoveRule implements SpecialMoveRule {
                 .adjacentLeftPosition().adjacentLeftPosition().adjacentLeftPosition());
 
         if (checkRookAndVerifyPath(kingPos, kingsideRook, gameBoard, 1)) {
-            ArrayList<Turn.Action> actionList = new ArrayList<>();
-            actionList.add(new Turn.Action(king, Turn.ActionType.MOVEMENT, kingPos,
+            ArrayList<ChessTurn.Action> actionList = new ArrayList<>();
+            actionList.add(new ChessTurn.Action(king, ChessTurn.ActionType.MOVEMENT, kingPos,
                     kingPos.adjacentRightPosition().adjacentRightPosition()));
-            actionList.add(new Turn.Action(kingsideRook, Turn.ActionType.MOVEMENT,
+            actionList.add(new ChessTurn.Action(kingsideRook, ChessTurn.ActionType.MOVEMENT,
                     kingsideRook.getPosition(), kingPos.adjacentRightPosition()));
 
-            legalTurns.add(new Turn(playerId, actionList));
+            legalTurns.add(new ChessTurn(playerId, actionList));
         }
 
         if (checkRookAndVerifyPath(kingPos, queensideRook, gameBoard, -1)) {
-            ArrayList<Turn.Action> actionList = new ArrayList<>();
-            actionList.add(new Turn.Action(king, Turn.ActionType.MOVEMENT, kingPos,
+            ArrayList<ChessTurn.Action> actionList = new ArrayList<>();
+            actionList.add(new ChessTurn.Action(king, ChessTurn.ActionType.MOVEMENT, kingPos,
                     kingPos.adjacentLeftPosition().adjacentLeftPosition()));
-            actionList.add(new Turn.Action(queensideRook, Turn.ActionType.MOVEMENT,
+            actionList.add(new ChessTurn.Action(queensideRook, ChessTurn.ActionType.MOVEMENT,
                     queensideRook.getPosition(), kingPos.adjacentLeftPosition()));
 
-            legalTurns.add(new Turn(playerId, actionList));
+            legalTurns.add(new ChessTurn(playerId, actionList));
         }
 
         return legalTurns;
