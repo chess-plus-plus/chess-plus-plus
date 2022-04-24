@@ -29,6 +29,7 @@ public class FirebaseAndroidInterface implements FireBaseInterface{
     private boolean connected;
     private boolean gameExists;
     private boolean hasUpdates;
+    private boolean allPlayersConnected;
 
     public static FirebaseAndroidInterface getInstance() {
         if (instance == null) {
