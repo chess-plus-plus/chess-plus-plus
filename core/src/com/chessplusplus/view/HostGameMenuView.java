@@ -15,20 +15,20 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.chessplusplus.ChessPlusPlus;
+import com.chessplusplus.ApplicationController;
 
 /*TODO: We might need to explicitly dispose the Stage and SKin ogbjects by overriding dispose()
 *  in all applicationadapters*/
 
 public class HostGameMenuView extends ApplicationAdapter {
 
-    private ChessPlusPlus chessPlusPlus;
+    private ApplicationController applicationController;
     private Stage stage;
     private Skin skin;
     private TextButton conBut;
 
-    public HostGameMenuView(ChessPlusPlus c){
-        chessPlusPlus = c;
+    public HostGameMenuView(ApplicationController c){
+        applicationController = c;
     }
 
     @Override
@@ -61,9 +61,9 @@ public class HostGameMenuView extends ApplicationAdapter {
         startGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                String gameID = chessPlusPlus.createGameID();
+                String gameID = applicationController.createGameID();
                 if (gameID != null)
-                    chessPlusPlus.setScreen(new GameView(chessPlusPlus, gameID, "1", false));
+                    applicationController.setScreen(new GameView(applicationController, gameID, "1", false));
                 else {
                     unableToCreate.show(stage);
                     Timer.schedule(new Timer.Task() {
@@ -80,7 +80,7 @@ public class HostGameMenuView extends ApplicationAdapter {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new PlayGameMenuView(chessPlusPlus));
+                applicationController.setScreen(new PlayGameMenuView(applicationController));
             }
         });
 
@@ -101,7 +101,7 @@ public class HostGameMenuView extends ApplicationAdapter {
     @Override
     public void render() {
 
-        if (chessPlusPlus.isConnected()){
+        if (applicationController.isConnected()){
             conBut.setText("Connected");
             conBut.setColor(Color.GREEN);
         } else {

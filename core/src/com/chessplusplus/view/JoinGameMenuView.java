@@ -15,17 +15,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.chessplusplus.ChessPlusPlus;
+import com.chessplusplus.ApplicationController;
 
 public class JoinGameMenuView extends ApplicationAdapter {
 
-    private ChessPlusPlus chessPlusPlus;
+    private ApplicationController applicationController;
     private Stage stage;
     private Skin skin;
     private TextButton conBut;
 
-    public JoinGameMenuView(ChessPlusPlus c){
-        chessPlusPlus = c;
+    public JoinGameMenuView(ApplicationController c){
+        applicationController = c;
     }
 
     @Override
@@ -59,9 +59,9 @@ public class JoinGameMenuView extends ApplicationAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y){
                 String id = gamePinInput.getText();
-                boolean joined = chessPlusPlus.joinGame(id);
+                boolean joined = applicationController.joinGame(id);
                 if (joined) {
-                    chessPlusPlus.setScreen(new GameView(chessPlusPlus, id, "2", false));
+                    applicationController.setScreen(new GameView(applicationController, id, "2", false));
                 }
                 else {
                     wrongPinDialog.show(stage);
@@ -79,7 +79,7 @@ public class JoinGameMenuView extends ApplicationAdapter {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new PlayGameMenuView(chessPlusPlus));
+                applicationController.setScreen(new PlayGameMenuView(applicationController));
             }
         });
 
@@ -100,7 +100,7 @@ public class JoinGameMenuView extends ApplicationAdapter {
     @Override
     public void render() {
 
-        if (chessPlusPlus.isConnected()){
+        if (applicationController.isConnected()){
             conBut.setText("Connected");
             conBut.setColor(Color.GREEN);
         } else {

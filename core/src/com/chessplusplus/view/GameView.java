@@ -13,12 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.chessplusplus.ChessPlusPlus;
+import com.chessplusplus.ApplicationController;
 import com.chessplusplus.view.utils.FontUtils;
 
 public class GameView extends ApplicationAdapter {
 
-    private ChessPlusPlus chessPlusPlus;
+    private ApplicationController applicationController;
     private BoardView boardView;
     private String gameID;
 
@@ -29,8 +29,8 @@ public class GameView extends ApplicationAdapter {
     private Skin skin;
     private TextButton conBut;
 
-    public GameView(ChessPlusPlus c, String id, String playerID, boolean offlineTesting){
-        chessPlusPlus = c;
+    public GameView(ApplicationController c, String id, String playerID, boolean offlineTesting){
+        applicationController = c;
         gameID = id;
         batch = c.getBatch();
         boardView = new BoardView(c, gameID, playerID, offlineTesting);
@@ -61,7 +61,7 @@ public class GameView extends ApplicationAdapter {
         manualButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y){
-                chessPlusPlus.setScreen(new ManualView(chessPlusPlus, gW));
+                applicationController.setScreen(new ManualView(applicationController, gW));
             }
         });
 
@@ -83,7 +83,7 @@ public class GameView extends ApplicationAdapter {
         boardView.render(0);
         String toRender = "Game ID: " + gameID;
 
-        if (chessPlusPlus.isConnected()){
+        if (applicationController.isConnected()){
             conBut.setText("Connected");
             conBut.setColor(Color.GREEN);
         } else {

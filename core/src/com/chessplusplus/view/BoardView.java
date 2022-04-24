@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.chessplusplus.ChessPlusPlus;
+import com.chessplusplus.ApplicationController;
 import com.chessplusplus.controller.FirebaseController;
 import com.chessplusplus.controller.ChessGameController;
 import com.chessplusplus.model.piece.Piece;
@@ -52,7 +52,7 @@ public class BoardView extends Viewport implements Screen {
     //Selected piece by user, null if none selected
     private Piece selectedPiece;
 
-    public BoardView(ChessPlusPlus c, String gameID, String playerID, boolean testingOffline) {
+    public BoardView(ApplicationController c, String gameID, String playerID, boolean testingOffline) {
         batch = c.getBatch();
         chessGameController = new ChessGameController(c, gameID, playerID, testingOffline);
         this.gameID = gameID;
