@@ -60,4 +60,12 @@ public class FirebaseController {
     public boolean allPlayersAreConnected() {
         return this.FBIC.allPlayersConnected();
     }
+
+    public void sendForfeit(String gameID, String playerID) {
+        this.FBIC.sendForfeit(gameID, playerID);
+    }
+
+    public String getForfeitPlayerID() {
+        return this.FBIC.getForfeitPlayerID();
+    }
 }

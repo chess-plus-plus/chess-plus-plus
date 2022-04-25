@@ -16,4 +16,6 @@ public interface FireBaseInterface {
     boolean hasUpdates();
     boolean allPlayersConnected();
     String getLatestMove();
+    void sendForfeit(String gameID, String playerID);
+    String getForfeitPlayerID();
 }
