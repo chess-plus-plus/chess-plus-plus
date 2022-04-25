@@ -4,8 +4,13 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -43,6 +48,13 @@ public class StartMenuView extends ApplicationAdapter {
         table.align(Align.center);
         table.setPosition(0, 0);
 
+
+        final Image titleLogo = new Image(new Texture(Gdx.files.internal("title.png")));
+        final float titleScale = 0.6f;
+        final float titleWidth = 1600 * titleScale;
+        final float titleHeight = 500 * titleScale;
+
+
         final TextField titleField = new TextField("Start Menu", skin, "default");
         titleField.setDisabled(true);
         titleField.setAlignment(Align.center);
@@ -79,7 +91,9 @@ public class StartMenuView extends ApplicationAdapter {
             }
         });
 
-        table.add(titleField).padBottom(50).width(stage.getWidth()/2);
+
+
+        table.add(titleLogo).padBottom(100).width(titleWidth).height(titleHeight);
         table.row();
         table.add(playGameButton).padBottom(30).width(stage.getWidth()/2);
         table.row();
@@ -108,6 +122,11 @@ public class StartMenuView extends ApplicationAdapter {
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
+
+        stage.getBatch().begin();
+        stage.getBatch().draw(new Texture(Gdx.files.internal("background.png")), 0, 0, stage.getWidth(), stage.getHeight());
+        stage.getBatch().end();
+
         stage.draw();
     }
 }

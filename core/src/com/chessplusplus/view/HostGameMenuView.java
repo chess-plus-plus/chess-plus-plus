@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -84,7 +85,7 @@ public class HostGameMenuView extends ApplicationAdapter {
             }
         });
 
-        table.add(titleField).padBottom(50).width(stage.getWidth()/2);
+        table.add(titleField).padBottom(50).width((float) (stage.getWidth()/1.7));
         table.row();
         //table.add(gamePinInput).padBottom(30).width(stage.getWidth()/2);
         //table.row();
@@ -111,6 +112,11 @@ public class HostGameMenuView extends ApplicationAdapter {
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
+
+        stage.getBatch().begin();
+        stage.getBatch().draw(new Texture(Gdx.files.internal("background.png")), 0, 0, stage.getWidth(), stage.getHeight());
+        stage.getBatch().end();
+
         stage.draw();
     }
 

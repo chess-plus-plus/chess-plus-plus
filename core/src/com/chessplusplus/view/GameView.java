@@ -3,6 +3,7 @@ package com.chessplusplus.view;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -80,8 +81,16 @@ public class GameView extends ApplicationAdapter {
 
     @Override
     public void render() {
+
+        // Draw background
+        stage.getBatch().begin();
+        stage.getBatch().draw(new Texture(Gdx.files.internal("background.png")), 0, 0, stage.getWidth(), stage.getHeight());
+        stage.getBatch().end();
+
+
         boardView.render(0);
         String toRender = "Game ID: " + gameID;
+
 
         if (applicationController.isConnected()){
             conBut.setText("Connected");
@@ -90,7 +99,13 @@ public class GameView extends ApplicationAdapter {
             conBut.setText("Not Connected");
             conBut.setColor(Color.RED);
         }
+
+        conBut.setColor(Color.WHITE);
+
         font.draw(batch, toRender, (float) Gdx.graphics.getWidth() / 2 - (FontUtils.getWidthOfFontText(toRender, font) / 2), Gdx.graphics.getHeight() - 50);
+
+
+
         stage.draw();
     }
 
