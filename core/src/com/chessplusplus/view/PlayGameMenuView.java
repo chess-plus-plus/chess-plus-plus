@@ -51,15 +51,6 @@ public class PlayGameMenuView extends ApplicationAdapter {
         titleField.setDisabled(true);
         titleField.setAlignment(Align.center);
 
-        final TextButton testField = new TextButton("Play Test", skin, "default");
-        testField.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                applicationController.setScreen(new GameView(applicationController, "0", "1", true));
-            }
-        });
-
-
         final TextButton joinGameButton = new TextButton("Join Game", skin, "default");
         joinGameButton.addListener(new ClickListener() {
             @Override
@@ -85,8 +76,6 @@ public class PlayGameMenuView extends ApplicationAdapter {
         });
 
         table.add(titleField).padBottom(50).width((float) (stage.getWidth()/1.7));
-        table.row();
-        table.add(testField).padBottom(50).width(stage.getWidth()/2);
         table.row();
         table.add(joinGameButton).padBottom(30).width(stage.getWidth()/2);
         table.row();
