@@ -157,7 +157,9 @@ public class Piece {
         this.xp += xp;
         if (this.xp >= nextLevelXpThreshold) {
             level++;
-            prevNextLevelXpThreshold = nextLevelXpThreshold;
+            if (pieceType != PieceType.QUEEN) {
+                prevNextLevelXpThreshold = nextLevelXpThreshold;
+            }
             nextLevelXpThreshold = Integer.MAX_VALUE;
             levelSystem.levelUp(this, board);
         }
