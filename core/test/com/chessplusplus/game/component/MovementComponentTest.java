@@ -1,26 +1,25 @@
 package com.chessplusplus.game.component;
 
-import com.chessplusplus.game.Board;
-import com.chessplusplus.game.BoardFactory;
-import com.chessplusplus.game.ChessBoard;
-import com.chessplusplus.game.Piece;
-import com.chessplusplus.game.Turn;
+import com.chessplusplus.model.board.Board;
+import com.chessplusplus.model.board.ChessBoard;
+import com.chessplusplus.model.piece.Piece;
+import com.chessplusplus.model.piece.PieceFactory;
+import com.chessplusplus.model.ChessTurn;
+import com.chessplusplus.model.board.Position;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class MovementComponentTest {
 
 //    TODO: Create movement component with movementRules
 
-//    TODO: Test moves with different pieces
 
     public static int boardWidth = 8;
     public static int boardHeight = 8;
@@ -62,23 +61,24 @@ public class MovementComponentTest {
     }
 
     public void testValidMoves(Piece piece, String message, String allExpectedMovesString){
-        testValidMoves(piece, Collections.emptyList(), message, allExpectedMovesString);
+        testValidMoves(piece, Arrays.asList(), message, allExpectedMovesString);
     }
 
     public void testValidMoves(Piece piece, List<Piece> otherPieces, String message, String allExpectedMovesString){
 
+        // add test piece that the valid moves are being tested for
+        List<Piece> pieces = new ArrayList<>();
+        pieces.add(piece);
+        pieces.addAll(otherPieces);
+
         List<Position> expectedMoves = movesToPositions(allExpectedMovesString);
-
-        // generate real result using chessboard logic
-//        otherPieces.add(piece);
-
-        List<Piece> pieces = otherPieces;
         Board board = new ChessBoard(pieces, boardWidth, boardHeight);
-        List<Turn> turns = piece.getMovementRules().getLegalTurns(piece, board);
+        List<ChessTurn> turns = piece.getMovementRules().getLegalTurns(piece, board);
 
         // convert turns to moves
         List<Position> actualMoves = turns.stream()
                 .map(turn -> turn.actions.get(0).actionPos)
+                .distinct()
                 .collect(Collectors.toList());
 
         // create message strings for visualizing board and helper variables
@@ -136,7 +136,7 @@ public class MovementComponentTest {
     @Test
     public void testSimpleKingMove() {
         testValidMoves(
-                        BoardFactory.createKing("", new Position(1,1)),
+                        PieceFactory.createKing("", new Position(1,1)),
                         "Possible king moves should give expected result",
                         ""+
                        //1  2  3  4  5  6  7  8
@@ -154,7 +154,7 @@ public class MovementComponentTest {
     @Test
     public void testSimpleRookMove() {
         testValidMoves(
-                BoardFactory.createRook("", new Position(2,2)),
+                PieceFactory.createRook("", new Position(2,2)),
                 "Possible rook moves should give expected result",
                 ""+
                         //1  2  3  4  5  6  7  8
@@ -172,7 +172,7 @@ public class MovementComponentTest {
     @Test
     public void testSimpleQueenMove() {
         testValidMoves(
-                BoardFactory.createQueen("", new Position(2,2)),
+                PieceFactory.createQueen("", new Position(2,2)),
                 "Possible Queen moves should give expected result",
                 ""+
                         //1  2  3  4  5  6  7  8
@@ -190,7 +190,7 @@ public class MovementComponentTest {
     @Test
     public void testSimpleKnightMove() {
         testValidMoves(
-                BoardFactory.createKnight("", new Position(2,2)),
+                PieceFactory.createKnight("", new Position(2,2)),
                 "Possible Knight moves should give expected result",
                 ""+
                         //1  2  3  4  5  6  7  8
@@ -208,7 +208,7 @@ public class MovementComponentTest {
     @Test
     public void testSimpleBishopMove() {
         testValidMoves(
-                BoardFactory.createBishop("", new Position(1,1)),
+                PieceFactory.createBishop("", new Position(1,1)),
                 "Possible Bishop moves should give expected result",
                 ""+
                         //1  2  3  4  5  6  7  8
@@ -227,7 +227,7 @@ public class MovementComponentTest {
     @Test
     public void testSimplePawnMove() {
         testValidMoves(
-                BoardFactory.createPawn("", new Position(1,1), 1),
+                PieceFactory.createPawn("", new Position(1,1), 1, 7, true),
                 "Possible Bishop moves should give expected result",
                 ""+
                         //1  2  3  4  5  6  7  8
@@ -249,10 +249,10 @@ public class MovementComponentTest {
 //    @Test
     public void testCastlingMove() {
         testValidMoves(
-                BoardFactory.createKing("", new Position(4,0)),
+                PieceFactory.createKing("", new Position(4,0)),
                 Arrays.asList(
-                        BoardFactory.createRook("", new Position(0,0)),
-                        BoardFactory.createRook("", new Position(7,0))
+                        PieceFactory.createRook("", new Position(0,0)),
+                        PieceFactory.createRook("", new Position(7,0))
                 ),
                 "should allow king to castle",
                 ""+
@@ -275,11 +275,11 @@ public class MovementComponentTest {
         //initialize other pawn that has made one move
         Position startPos = new Position(2,2);
         Position endPos =  new Position(2,1);
-        Piece otherPawn = BoardFactory.createPawn("", startPos, -1);
-        otherPawn.addAction(new Turn.Action(otherPawn, Turn.ActionType.MOVEMENT,startPos,endPos));
+        Piece otherPawn = PieceFactory.createPawn("", startPos, -1, 7, true);
+        otherPawn.addAction(new ChessTurn.Action(otherPawn, ChessTurn.ActionType.MOVEMENT,startPos,endPos));
 
         testValidMoves(
-                BoardFactory.createPawn("", new Position(1,1), 1),
+                PieceFactory.createPawn("", new Position(1,1), 1, 7, true),
                 Arrays.asList(otherPawn),
                 "should allow pawn to en passant",
                 ""+
@@ -292,6 +292,62 @@ public class MovementComponentTest {
                         "-  -  -  -  -  -  -  -  \n" + //5
                         "-  -  -  -  -  -  -  -  \n" + //6
                         "-  -  -  -  -  -  -  -"       //7
+        );
+    }
+
+    @Test
+    public void testCollisionDetectionWithAlly() {
+
+        //ally pieces surrounding queen in all directions
+        List<Piece> allyPieces = Arrays.asList(
+                PieceFactory.createRook("player", new Position(0,0)),
+                PieceFactory.createRook("player", new Position(2,0)),
+                PieceFactory.createRook("player", new Position(4,0)),
+                PieceFactory.createRook("player", new Position(4,2)),
+                PieceFactory.createRook("player", new Position(4,4)),
+                PieceFactory.createRook("player", new Position(2,4)),
+                PieceFactory.createRook("player", new Position(0,4)),
+                PieceFactory.createRook("player", new Position(0,2))
+        );
+
+
+        testValidMoves(
+                PieceFactory.createQueen("player", new Position(2,2)),
+                allyPieces,
+                "Ally rooks should block queen (2,2) in all directions",
+                ""+
+                        //0  1  2  3  4  5  6  7
+                        "-  -  -  -  -  -  -  -  \n" + //0
+                        "-  x  x  x  -  -  -  -  \n" + //1
+                        "-  x  -  x  -  -  -  -  \n" + //2
+                        "-  x  x  x  -  -  -  -  \n" + //3
+                        "-  -  -  -  -  -  -  -  \n" + //4
+                        "-  -  -  -  -  -  -  -  \n" + //5
+                        "-  -  -  -  -  -  -  -  \n" + //6
+                        "-  -  -  -  -  -  -  -"       //7
+        );
+    }
+
+    @Test
+    public void testCollisionDetectionWithEnemy() {
+        //initialize other pawn that has made one move
+        Position startPos = new Position(3,1);
+        Piece allyPawn = PieceFactory.createPawn("enemy", startPos, -1, 7, true);
+
+        testValidMoves(
+                PieceFactory.createRook("player", new Position(1,1)),
+                Arrays.asList(allyPawn),
+                "Enemy pawn (3,1) should block rook (1,1) horizontally and be catchable",
+                ""+
+                        //0  1  2  3  4  5  6  7
+                        "-  x  -  -  -  -  -  -  \n" + //0
+                        "x  -  x  x  -  -  -  -  \n" + //1
+                        "-  x  -  -  -  -  -  -  \n" + //2
+                        "-  x  -  -  -  -  -  -  \n" + //3
+                        "-  x  -  -  -  -  -  -  \n" + //4
+                        "-  x  -  -  -  -  -  -  \n" + //5
+                        "-  x  -  -  -  -  -  -  \n" + //6
+                        "-  x  -  -  -  -  -  -"       //7
         );
     }
 
