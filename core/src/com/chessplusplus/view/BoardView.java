@@ -167,11 +167,8 @@ public class BoardView extends Viewport implements Screen {
         ChessTurn newTurn = this.FBC.getNewTurnIfAvailable();
         if (newTurn != null)
             chessGameController.submitTurn(newTurn, true);
-        String playerForfeit = this.FBC.getForfeitPlayerID();
-        if (playerForfeit != null)
-            System.out.println("player forfeited: " + playerForfeit);
         if ((chessGameController.isPlayerTurn() && this.FBC.allPlayersAreConnected()) ||
-                chessGameController.getOfflineTesting())
+                chessGameController.getOfflineTesting() || FBC.getForfeitPlayerID() != null)
             processUserInput();
         renderBoard();
     }
@@ -205,7 +202,17 @@ public class BoardView extends Viewport implements Screen {
     private void renderBoard() {
         //Signals which players turn it is
         String whichTurn = "Your turn";
-        if (!chessGameController.getOfflineTesting()) {
+
+        String forfeitID = FBC.getForfeitPlayerID();
+        if (forfeitID != null) {
+            if (forfeitID.equals(chessGameController.getPlayerID())){
+                whichTurn = "You forfeited!";
+            }
+            else {
+                whichTurn = "You win by forfeit!";
+            }
+        }
+        else if (!chessGameController.getOfflineTesting()) {
             if (!this.FBC.allPlayersAreConnected()) {
                 whichTurn = "Waiting for player to connect";
             } else if (!chessGameController.isPlayerTurn()) {
