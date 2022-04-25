@@ -82,11 +82,10 @@ public class GameView extends ApplicationAdapter {
         connectedButton.setWidth(stage.getWidth());
         conBut = connectedButton;
 
-        table.add(concedeButton).padBottom(50);
-        table.row();
-        table.add(manualButton).padBottom(50);
-        table.row();
-        table.add(connectedButton);
+
+        table.add(manualButton);
+        table.add(connectedButton).padLeft(20).padRight(20);
+        table.add(concedeButton);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
     }
