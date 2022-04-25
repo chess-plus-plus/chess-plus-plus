@@ -167,8 +167,8 @@ public class BoardView extends Viewport implements Screen {
         ChessTurn newTurn = this.FBC.getNewTurnIfAvailable();
         if (newTurn != null)
             chessGameController.submitTurn(newTurn, true);
-        if ((chessGameController.isPlayerTurn() && this.FBC.allPlayersAreConnected()) ||
-                chessGameController.getOfflineTesting() || FBC.getForfeitPlayerID() != null)
+        if ((chessGameController.isPlayerTurn() && this.FBC.allPlayersAreConnected() && FBC.getForfeitPlayerID() == null ) ||
+                chessGameController.getOfflineTesting())
             processUserInput();
         renderBoard();
     }

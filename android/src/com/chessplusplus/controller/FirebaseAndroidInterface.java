@@ -130,7 +130,7 @@ public class FirebaseAndroidInterface implements FireBaseInterface {
                 currentGame = dataSnapshot;
                 if (dataSnapshot.child("player1").exists() && dataSnapshot.child("player2").exists())
                     allPlayersConnected = true;
-                if (dataSnapshot.child("forfeit").exists())
+                if (dataSnapshot.child("forfeit").exists() && forfeitPlayerID == null)
                     forfeitPlayerID = dataSnapshot.child("forfeit").getValue().toString();
                 else
                     hasUpdates = true;
