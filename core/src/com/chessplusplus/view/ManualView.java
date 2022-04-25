@@ -62,7 +62,7 @@ public class ManualView extends ApplicationAdapter {
         titleField.setDisabled(true);
         titleField.setAlignment(Align.center);
 
-        final Label descriptionLabel = new Label("This game is played with the normal rules of Chess, with a few additions. Whenever a piece performs an action (such as moving) it receives XP (experience points). When a piece other than the Queen and the King reaches a certain amount of XP it levels up and gains a new ability. These pieces can level up and gain new abilities twice. The Queen and the King have abilities which functions a bit differently. This page explains each piece’s additional abilities.", skin);
+        final Label descriptionLabel = new Label("This game is played with the normal rules of Chess, with a few additions. Whenever a piece performs an action (such as moving) it receives XP (experience points). When a piece other than the Queen and the King reaches a certain amount of XP it levels up and gains a new ability. These pieces can level up and gain new abilities twice. The Queen has an ability which functions a bit differently. This page explains each piece’s additional abilities.", skin);
         descriptionLabel.setWrap(true);
 
 
@@ -88,9 +88,9 @@ public class ManualView extends ApplicationAdapter {
         rookTitle.setDisabled(true);
         rookTitle.setAlignment(Align.center);
 
-        final Label rookLabel = new Label("Level 1: The Rook gains the ability to move off the board and continue its move from the opposite side, following any other rules for moving and striking. \n" +
+        final Label rookLabel = new Label("Level 1: The Rook gains the ability to move two spaces diagonally, following any other rules for moving. \n" +
                 "\n" +
-                "Level 2: The Rook gains the ability to strike multiple pieces at the same time given that they are next to each other, following any other rules for moving and striking. ", skin);
+                "Level 2: The Rook gains the ability to move off the board and continue its move from the opposite side, following any other rules for moving and striking.", skin);
         rookLabel.setWrap(true);
 
 
@@ -100,7 +100,7 @@ public class ManualView extends ApplicationAdapter {
 
         final Label knightLabel = new Label("Level 1: The Knight gains the ability to move one step in any direction, in addition to any other available moves. \n" +
                 "\n" +
-                "Level 2: The Knight gains the ability to strike a piece in a movable square, without moving into it itself. ", skin);
+                "Level 2: The Knight gains the ability to move and strike in a larger curve, two steps one way and three another, in addition to any other available moves. ", skin);
         knightLabel.setWrap(true);
 
 
@@ -110,7 +110,7 @@ public class ManualView extends ApplicationAdapter {
 
         final Label bishopLabel = new Label("Level 1: The Bishop gains the ability to move one step horizontally or vertically, in addition to any other available moves. \n" +
                 "\n" +
-                "Level 2: The Bishop gains the ability to move over allied pieces, following any other rules for moving and striking. ", skin);
+                "Level 2: The Bishop gains the ability to move over other pieces, following any other rules for moving and striking. ", skin);
         bishopLabel.setWrap(true);
 
 
@@ -118,7 +118,7 @@ public class ManualView extends ApplicationAdapter {
         queenTitle.setDisabled(true);
         queenTitle.setAlignment(Align.center);
 
-        final Label queenLabel = new Label("Whenever the Queen reaches X xp, the player may put another Pawn on the board. These Pawns are put where Pawns normally start the game. If none of these spaces are free, this ability does nothing. ", skin);
+        final Label queenLabel = new Label("Whenever the Queen reaches enough XP to level up, it spawns a Pawn in the space it just moved from.", skin);
         queenLabel.setWrap(true);
 
 
@@ -126,7 +126,7 @@ public class ManualView extends ApplicationAdapter {
         kingTitle.setDisabled(true);
         kingTitle.setAlignment(Align.center);
 
-        final Label kingLabel = new Label("Whenever the King strikes another piece, it gives any allied pieces within X spaces X xp. ", skin);
+        final Label kingLabel = new Label("The King has no special abilities, protect it all cost!", skin);
         kingLabel.setWrap(true);
 
 
