@@ -1,5 +1,7 @@
 package com.chessplusplus.view;
 
+import static com.chessplusplus.view.utils.PixmapUtils.drawBackground;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -95,9 +97,7 @@ public class GameView extends ApplicationAdapter {
     public void render() {
 
         // Draw background
-        stage.getBatch().begin();
-        stage.getBatch().draw(new Texture(Gdx.files.internal("background.png")), 0, 0, stage.getWidth(), stage.getHeight());
-        stage.getBatch().end();
+        drawBackground(stage);
 
 
         boardView.render(0);
@@ -115,8 +115,6 @@ public class GameView extends ApplicationAdapter {
         conBut.setColor(Color.WHITE);
 
         font.draw(batch, toRender, (float) Gdx.graphics.getWidth() / 2 - (FontUtils.getWidthOfFontText(toRender, font) / 2), Gdx.graphics.getHeight() - 50);
-
-
 
         stage.draw();
     }

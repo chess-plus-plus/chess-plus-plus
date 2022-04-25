@@ -1,5 +1,7 @@
 package com.chessplusplus.view;
 
+import static com.chessplusplus.view.utils.PixmapUtils.drawBackground;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -112,11 +114,7 @@ public class HostGameMenuView extends ApplicationAdapter {
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
-
-        stage.getBatch().begin();
-        stage.getBatch().draw(new Texture(Gdx.files.internal("background.png")), 0, 0, stage.getWidth(), stage.getHeight());
-        stage.getBatch().end();
-
+        drawBackground(stage);
         stage.draw();
     }
 
