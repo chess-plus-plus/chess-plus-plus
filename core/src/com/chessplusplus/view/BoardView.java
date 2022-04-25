@@ -186,7 +186,7 @@ public class BoardView extends Viewport implements Screen {
                 //yTouch relative to the board
                 yTouch -= boardYOffset;
                 //Convert from pixel coordinates to board coordinates
-                Position actionPos = Position.pos(xTouch / squareSize, convertY(yTouch / squareSize));
+                Position actionPos = Position.pos(convertX(xTouch / squareSize), convertY(yTouch / squareSize));
                 chessGameController.processUserInput(this, actionPos);
             } else {
                 selectedPiece = null;
@@ -221,10 +221,10 @@ public class BoardView extends Viewport implements Screen {
             for (ChessTurn turn : selectedPiece.getLegalTurns(chessGameController.getChessGame().getBoard())) {
                 for (ChessTurn.Action action : turn.actions) {
                     if (action.actionType == ChessTurn.ActionType.MOVEMENT || action.actionType == ChessTurn.ActionType.DESTRUCTION) {
-                        batch.draw(legalMoveCircle, action.actionPos.getX() * squareSize + circleOffset,
+                        batch.draw(legalMoveCircle, convertX(action.actionPos.getX()) * squareSize + circleOffset,
                                 convertY(action.actionPos.getY()) * squareSize + boardYOffset + circleOffset);
                     } else if (action.actionType == ChessTurn.ActionType.STRIKE) {
-                        batch.draw(strikeOptionTexture, action.actionPos.getX() * squareSize,
+                        batch.draw(strikeOptionTexture, convertX(action.actionPos.getX()) * squareSize,
                                 convertY(action.actionPos.getY()) * squareSize + boardYOffset);
                     }
                 }
@@ -237,7 +237,7 @@ public class BoardView extends Viewport implements Screen {
             if (piece.getTexture() == null) { // If a piece has no texture we fix that
                 setPieceTexture(piece, piece.getPlayerId());
             }
-            renderPiece(piece.getTexture(), piece.getPosition().getX(), convertY(piece.getPosition().getY()), piece.getLevel());
+            renderPiece(piece.getTexture(), convertX(piece.getPosition().getX()), convertY(piece.getPosition().getY()), piece.getLevel());
         }
 
         //The XP bar of the selected piece
@@ -351,5 +351,10 @@ public class BoardView extends Viewport implements Screen {
      */
     private int convertY(int y) {
         return chessGameController.playerIsBottom() ? y : chessGameController.getBoardHeight() - y - 1;
+    }
+
+    //Same as convertY, only with the x-coordinate
+    private int convertX(int x) {
+        return chessGameController.playerIsBottom() ? x : chessGameController.getBoardWidth() - x - 1;
     }
 }
