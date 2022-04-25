@@ -70,9 +70,9 @@ public class ManualView extends ApplicationAdapter {
         pawnTitle.setDisabled(true);
         pawnTitle.setAlignment(Align.center);
 
-        final Label pawnLabel = new Label("Level 1: The Pawn gains the ability to move one step backwards, in addition to any other available moves. \n" +
+        final Label pawnLabel = new Label("Level 2: The Pawn gains the ability to move one step backwards, in addition to any other available moves. \n" +
                 "\n" +
-                "Level 2: The Pawn gains the ability to move one step in any direction and may also strike a piece in any direction. ", skin);
+                "Level 3: The Pawn gains the ability to move one step in any direction and may also strike a piece in any direction. ", skin);
         pawnLabel.setWrap(true);
 
 
@@ -88,9 +88,9 @@ public class ManualView extends ApplicationAdapter {
         rookTitle.setDisabled(true);
         rookTitle.setAlignment(Align.center);
 
-        final Label rookLabel = new Label("Level 1: The Rook gains the ability to move two spaces diagonally, following any other rules for moving. \n" +
+        final Label rookLabel = new Label("Level 2: The Rook gains the ability to move two spaces diagonally, following any other rules for moving. \n" +
                 "\n" +
-                "Level 2: The Rook gains the ability to move off the board and continue its move from the opposite side, following any other rules for moving and striking.", skin);
+                "Level 3: The Rook gains the ability to move off the board and continue its move from the opposite side, following any other rules for moving and striking.", skin);
         rookLabel.setWrap(true);
 
 
@@ -98,9 +98,9 @@ public class ManualView extends ApplicationAdapter {
         knightTitle.setDisabled(true);
         knightTitle.setAlignment(Align.center);
 
-        final Label knightLabel = new Label("Level 1: The Knight gains the ability to move one step in any direction, in addition to any other available moves. \n" +
+        final Label knightLabel = new Label("Level 2: The Knight gains the ability to move one step in any direction, in addition to any other available moves. \n" +
                 "\n" +
-                "Level 2: The Knight gains the ability to move and strike in a larger curve, two steps one way and three another, in addition to any other available moves. ", skin);
+                "Level 3: The Knight gains the ability to move and strike in a larger curve, two steps one way and three another, in addition to any other available moves. ", skin);
         knightLabel.setWrap(true);
 
 
@@ -108,9 +108,9 @@ public class ManualView extends ApplicationAdapter {
         bishopTitle.setDisabled(true);
         bishopTitle.setAlignment(Align.center);
 
-        final Label bishopLabel = new Label("Level 1: The Bishop gains the ability to move one step horizontally or vertically, in addition to any other available moves. \n" +
+        final Label bishopLabel = new Label("Level 2: The Bishop gains the ability to move one step horizontally or vertically, in addition to any other available moves. \n" +
                 "\n" +
-                "Level 2: The Bishop gains the ability to move over other pieces, following any other rules for moving and striking. ", skin);
+                "Level 3: The Bishop gains the ability to move over other pieces, following any other rules for moving and striking. ", skin);
         bishopLabel.setWrap(true);
 
 
