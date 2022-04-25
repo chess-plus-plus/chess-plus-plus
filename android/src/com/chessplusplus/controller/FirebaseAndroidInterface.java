@@ -26,6 +26,8 @@ public class FirebaseAndroidInterface implements FireBaseInterface {
     private DataSnapshot gameIDs;
     private DataSnapshot currentGame;
 
+    private String forfeitPlayerID;
+
     private boolean connected;
     private boolean gameExists;
     private boolean hasUpdates;
@@ -103,10 +105,17 @@ public class FirebaseAndroidInterface implements FireBaseInterface {
 
     @Override
     public void sendMove(String id, String move) {
-        // we need to figure out where to get IDs for moves
         long moveCount = this.currentGame.getChildrenCount() - 2;
 
         dataRef.child(id).child(String.valueOf(moveCount + 1)).setValue(move);
+    }
+
+    public void sendForfeit(String gameID, String playerID) {
+        dataRef.child(gameID).child("forfeit").setValue(playerID);
+    }
+
+    public String getForfeitPlayerID() {
+        return this.forfeitPlayerID;
     }
 
     @Override
@@ -119,9 +128,12 @@ public class FirebaseAndroidInterface implements FireBaseInterface {
                 // whenever data at this location is updated.
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                 currentGame = dataSnapshot;
-                hasUpdates = true;
                 if (dataSnapshot.child("player1").exists() && dataSnapshot.child("player2").exists())
-                        allPlayersConnected = true;
+                    allPlayersConnected = true;
+                if (dataSnapshot.child("forfeit").exists() && forfeitPlayerID == null)
+                    forfeitPlayerID = dataSnapshot.child("forfeit").getValue().toString();
+                else
+                    hasUpdates = true;
                 System.out.println("###FIREBASE### value has changed to: " + map);
             }
 

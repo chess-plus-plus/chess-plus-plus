@@ -21,6 +21,7 @@ public class GameView extends ApplicationAdapter {
     private ApplicationController applicationController;
     private BoardView boardView;
     private String gameID;
+    private String playerID;
 
     private BitmapFont font;
     private SpriteBatch batch;
@@ -32,6 +33,7 @@ public class GameView extends ApplicationAdapter {
     public GameView(ApplicationController c, String id, String playerID, boolean offlineTesting){
         applicationController = c;
         gameID = id;
+        this.playerID = playerID;
         batch = c.getBatch();
         boardView = new BoardView(c, gameID, playerID, offlineTesting);
     }
@@ -55,6 +57,15 @@ public class GameView extends ApplicationAdapter {
         table.align(Align.bottom);
         table.setPosition(0, 0);
 
+        final TextButton concedeButton = new TextButton("Concede", skin, "default");
+        concedeButton.align(Align.center);
+        concedeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                applicationController.getFBC().sendForfeit(gameID, playerID);
+            }
+        });
+
         final TextButton manualButton = new TextButton("Manual", skin, "default");
         manualButton.align(Align.center);
         GameView gW = this;
@@ -71,9 +82,10 @@ public class GameView extends ApplicationAdapter {
         connectedButton.setWidth(stage.getWidth());
         conBut = connectedButton;
 
-        table.add(manualButton).padBottom(50);
-        table.row();
-        table.add(connectedButton);
+
+        table.add(manualButton);
+        table.add(connectedButton).padLeft(20).padRight(20);
+        table.add(concedeButton);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
     }
